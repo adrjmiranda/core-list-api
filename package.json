@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "**CoreList API** is a high-performance, multi-tenant contact management system designed for scalability and data integrity. This project serves as a cornerstone of my professional portfolio, demonstrating advanced Node.js patterns and a commitment to code quality.",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "tsx watch src/shared/infra/http/server.ts",
     "build": "tsup src",
     "start": "node dist/server.mjs",
     "lint": "eslint .",
