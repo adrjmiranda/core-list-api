@@ -1,5 +1,5 @@
-import { app } from './app.js';
-import { env } from '../../env/index.js';
+import { app } from '@/shared/infra/http/app.js';
+import { env } from '@/shared/env/index.js';
 
 const start = async (): Promise<void> => {
   try {
