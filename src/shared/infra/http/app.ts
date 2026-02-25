@@ -1,15 +1,11 @@
 import fastify from 'fastify';
 
+import { appRoutes } from '@/shared/infra/http/routes.js';
+
 const app = fastify({
   logger: true,
 });
 
-app.get('/ping', async (_request, reply) => {
-  return reply.status(200).send({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    message: 'core-list-api is running!',
-  });
-});
+void app.register(appRoutes);
 
 export { app };
