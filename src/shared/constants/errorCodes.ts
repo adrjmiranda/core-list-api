@@ -1,11 +1,9 @@
-// src/shared/constants/errorCodes.ts
+import { SYSTEM_ERRORS } from '@/shared/constants/error-codes/system.js';
+import { USER_ERRORS } from '@/shared/constants/error-codes/users.js';
+
 export const ERROR_CODES = {
-  INVALID_NAME: 'INVALID_NAME',
-  INVALID_EMAIL: 'INVALID_EMAIL',
-  PASSWORD_TOO_SHORT: 'PASSWORD_TOO_SHORT',
-  USER_ALREADY_EXISTS: 'USER_ALREADY_EXISTS',
-  INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
-  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  ...USER_ERRORS,
+  ...SYSTEM_ERRORS,
 } as const;
 
 export type ErrorCode = keyof typeof ERROR_CODES;
