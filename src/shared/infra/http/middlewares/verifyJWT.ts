@@ -1,8 +1,8 @@
-import type { FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import { AppError } from '@/shared/errors/AppError.js';
 
-export async function verifyJWT(request: FastifyRequest) {
+export async function verifyJWT(request: FastifyRequest, _reply: FastifyReply) {
   try {
     await request.jwtVerify();
   } catch {
