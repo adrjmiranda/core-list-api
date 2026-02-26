@@ -29,7 +29,6 @@ export class CreateUserService {
     const passwordHash = await bcrypt.hash(password, 10);
 
     await db.insert(users).values({
-      id: crypto.randomUUID(),
       name,
       email,
       passwordHash,
