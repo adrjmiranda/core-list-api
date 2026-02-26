@@ -1,3 +1,4 @@
+/// <reference types="@fastify/jwt" />
 import fastify from 'fastify';
 
 import { globalErrorHandler } from '@/shared/infra/http/handlers/globalErrorHandler.js';
