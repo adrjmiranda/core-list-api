@@ -12,7 +12,7 @@ export const addresses = pgTable('addresses', {
   state: text('state').notNull(),
   zipCode: text('zip_code').notNull(),
 
-  contactId: text('contact_id')
+  contactId: uuid('contact_id')
     .notNull()
     .references(() => contacts.id, { onDelete: 'cascade' }),
 

@@ -8,7 +8,7 @@ export const contacts = pgTable('contacts', {
   email: text('email'),
   phone: text('phone').notNull(),
 
-  userId: text('user_id')
+  userId: uuid('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
 

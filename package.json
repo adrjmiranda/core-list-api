@@ -8,7 +8,11 @@
     "start": "node dist/server.mjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:push": "tsx node_modules/drizzle-kit/bin.cjs push",
+    "db:studio": "tsx node_modules/drizzle-kit/bin.cjs studio",
+    "db:generate": "tsx node_modules/drizzle-kit/bin.cjs generate",
+    "db:migrate": "tsx node_modules/drizzle-kit/bin.cjs migrate"
   },
   "lint-staged": {
     "src/**/*.ts": [
@@ -43,6 +47,7 @@
     "@types/pg": "^8.16.0",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
+    "dotenv": "^17.3.1",
     "drizzle-kit": "^0.31.9",
     "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
