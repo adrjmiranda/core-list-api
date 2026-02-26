@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
+import { eq } from 'drizzle-orm';
 
-import { prisma } from '@/shared/infra/database/prisma.js';
+import { users } from '@/shared/infra/database/drizzle/users.js';
+import { db } from '@/shared/infra/database/index.js';
 
 interface CreateUserServiceRequest {
   name: string;
@@ -14,11 +16,11 @@ export class CreateUserService {
     email,
     password,
   }: CreateUserServiceRequest): Promise<void> {
-    const userWithSameEmail = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
+    const [userWithSameEmail] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
 
     if (userWithSameEmail) {
       throw new Error('User with same email already exists');
@@ -26,12 +28,11 @@ export class CreateUserService {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    await prisma.user.create({
-      data: {
-        name,
-        email,
-        passwordHash,
-      },
+    await db.insert(users).values({
+      id: crypto.randomUUID(),
+      name,
+      email,
+      passwordHash,
     });
   }
 }
