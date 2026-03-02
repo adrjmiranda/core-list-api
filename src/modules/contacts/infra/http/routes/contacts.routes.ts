@@ -1,12 +1,11 @@
 import type { FastifyInstance } from 'fastify';
 
+import { CreateContactController } from '@/modules/contacts/infra/http/controllers/CreateContactController.js';
+import { DeleteContactController } from '@/modules/contacts/infra/http/controllers/DeleteContactController.js';
+import { GetContactController } from '@/modules/contacts/infra/http/controllers/GetContactController.js';
+import { ListContactsController } from '@/modules/contacts/infra/http/controllers/ListContactsController.js';
+import { UpdateContactController } from '@/modules/contacts/infra/http/controllers/UpdateContactController.js';
 import { verifyJWT } from '@/shared/infra/http/middlewares/verifyJWT.js';
-
-import { CreateContactController } from '../controllers/CreateContactController.js';
-import { DeleteContactController } from '../controllers/DeleteContactController.js';
-import { GetContactController } from '../controllers/GetContactController.js';
-import { ListContactsController } from '../controllers/ListContactsController.js';
-import { UpdateContactController } from '../controllers/UpdateContactController.js';
 
 const createContactController = new CreateContactController();
 const listContactsController = new ListContactsController();

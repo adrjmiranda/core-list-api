@@ -1,8 +1,8 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import { getContactParamsSchema } from '../../schemas/getContactParamsSchema.js';
-import { updateContactBodySchema } from '../../schemas/updateContactBodySchema.js';
-import { UpdateContactService } from '../../services/UpdateContactService.js';
+import { getContactParamsSchema } from '@/modules/contacts/infra/schemas/getContactParamsSchema.js';
+import { updateContactBodySchema } from '@/modules/contacts/infra/schemas/updateContactBodySchema.js';
+import { UpdateContactService } from '@/modules/contacts/infra/services/UpdateContactService.js';
 
 export class UpdateContactController {
   async handle(request: FastifyRequest, reply: FastifyReply) {

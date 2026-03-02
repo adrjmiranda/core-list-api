@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { ListContactsService } from '../../services/ListContactsService.js';
+import { ListContactsService } from '@/modules/contacts/infra/services/ListContactsService.js';
 
 export class ListContactsController {
   async handle(request: FastifyRequest, reply: FastifyReply) {

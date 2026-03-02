@@ -1,12 +1,11 @@
 import { FastifyInstance } from 'fastify';
 
+import { CreateAddressController } from '@/modules/addresses/http/controllers/CreateAddressController.js';
+import { DeleteAddressController } from '@/modules/addresses/http/controllers/DeleteAddressController.js';
+import { GetAddressController } from '@/modules/addresses/http/controllers/GetAddressController.js';
+import { ListAddressesController } from '@/modules/addresses/http/controllers/ListAddressesController.js';
+import { UpdateAddressController } from '@/modules/addresses/http/controllers/UpdateAddressController.js';
 import { verifyJWT } from '@/shared/infra/http/middlewares/verifyJWT.js';
-
-import { CreateAddressController } from '../controllers/CreateAddressController.js';
-import { DeleteAddressController } from '../controllers/DeleteAddressController.js';
-import { GetAddressController } from '../controllers/GetAddressController.js';
-import { ListAddressesController } from '../controllers/ListAddressesController.js';
-import { UpdateAddressController } from '../controllers/UpdateAddressController.js';
 
 const createAddressController = new CreateAddressController();
 const listAddressesController = new ListAddressesController();

@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import { getContactParamsSchema } from '../../schemas/getContactParamsSchema.js';
-import { DeleteContactService } from '../../services/DeleteContactService.js';
+import { getContactParamsSchema } from '@/modules/contacts/infra/schemas/getContactParamsSchema.js';
+import { DeleteContactService } from '@/modules/contacts/infra/services/DeleteContactService.js';
 
 export class DeleteContactController {
   async handle(request: FastifyRequest, reply: FastifyReply) {

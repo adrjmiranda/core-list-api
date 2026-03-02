@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { getAddressParamsSchema } from '../../schemas/getAddressParamsSchema.js';
-import { DeleteAddressService } from '../../services/DeleteAddressService.js';
+import { getAddressParamsSchema } from '@/modules/addresses/schemas/getAddressParamsSchema.js';
+import { DeleteAddressService } from '@/modules/addresses/services/DeleteAddressService.js';
 
 export class DeleteAddressController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
