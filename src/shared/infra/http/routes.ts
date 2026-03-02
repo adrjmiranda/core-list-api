@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 
-import { addressesRoutes } from '@/modules/addresses/http/routes/addresses.routes.js';
+import { addressesRoutes } from '@/modules/addresses/infra/http/routes/addresses.routes.js';
 import { contactsRoutes } from '@/modules/contacts/infra/http/routes/contacts.routes.js';
 import { profileRoutes } from '@/modules/users/infra/http/routes/profile.routes.js';
 import { usersRoutes } from '@/modules/users/infra/http/routes/users.routes.js';
