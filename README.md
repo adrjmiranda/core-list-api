@@ -27,7 +27,7 @@ CoreList goes beyond a simple contact list. It implements a **Multi-tenancy Lite
 | **Framework**  | Fastify (High Performance) |
 | **Language**   | TypeScript (Strict Mode)   |
 | **Database**   | PostgreSQL                 |
-| **ORM**        | Prisma                     |
+| **ORM**        | Drizzle ORM                |
 | **Validation** | Zod                        |
 | **Infra**      | Docker & Docker Compose    |
 
