@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import { createUserBodySchema } from '@/modules/users/schemas/userSchemas.js';
+import { createUserBodySchema } from '@/modules/users/schemas/createUserBodySchema.js';
 import { CreateUserService } from '@/modules/users/services/CreateUserService.js';
 
 export class CreateUserController {
