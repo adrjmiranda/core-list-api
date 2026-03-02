@@ -1,7 +1,7 @@
 import { contacts } from '@/shared/infra/database/drizzle/contacts.js';
 import { db } from '@/shared/infra/database/index.js';
 
-interface CreateContactServiceRequest {
+interface CreateContactRequest {
   name: string;
   email?: string | null;
   phone: string;
@@ -9,7 +9,7 @@ interface CreateContactServiceRequest {
 }
 
 export class CreateContactService {
-  async execute({ name, email, phone, userId }: CreateContactServiceRequest) {
+  async execute({ name, email, phone, userId }: CreateContactRequest) {
     const [contact] = await db
       .insert(contacts)
       .values({

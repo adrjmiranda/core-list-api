@@ -3,12 +3,12 @@ import { eq } from 'drizzle-orm';
 import { contacts } from '@/shared/infra/database/drizzle/contacts.js';
 import { db } from '@/shared/infra/database/index.js';
 
-interface ListContactsServiceRequest {
+interface ListContactsRequest {
   userId: string;
 }
 
 export class ListContactsService {
-  async execute({ userId }: ListContactsServiceRequest) {
+  async execute({ userId }: ListContactsRequest) {
     const userContacts = await db
       .select()
       .from(contacts)

@@ -5,13 +5,13 @@ import { AppError } from '@/shared/errors/AppError.js';
 import { contacts } from '@/shared/infra/database/drizzle/contacts.js';
 import { db } from '@/shared/infra/database/index.js';
 
-interface GetContactServiceRequest {
+interface GetContactRequest {
   contactId: string;
   userId: string;
 }
 
 export class GetContactService {
-  async execute({ contactId, userId }: GetContactServiceRequest) {
+  async execute({ contactId, userId }: GetContactRequest) {
     const [contact] = await db
       .select()
       .from(contacts)

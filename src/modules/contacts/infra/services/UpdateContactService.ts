@@ -5,7 +5,7 @@ import { AppError } from '@/shared/errors/AppError.js';
 import { contacts } from '@/shared/infra/database/drizzle/contacts.js';
 import { db } from '@/shared/infra/database/index.js';
 
-interface UpdateContactServiceRequest {
+interface UpdateContactRequest {
   contactId: string;
   userId: string;
   data: {
@@ -16,7 +16,7 @@ interface UpdateContactServiceRequest {
 }
 
 export class UpdateContactService {
-  async execute({ contactId, userId, data }: UpdateContactServiceRequest) {
+  async execute({ contactId, userId, data }: UpdateContactRequest) {
     const [updatedContact] = await db
       .update(contacts)
       .set({
