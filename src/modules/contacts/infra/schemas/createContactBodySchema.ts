@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { CONTACT_ERRORS } from '@/shared/constants/error-codes/contacts.js';
+import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
 
 export const createContactBodySchema = z.object({
   name: z
@@ -8,13 +8,13 @@ export const createContactBodySchema = z.object({
     .trim()
     .transform((val) => val.replace(/\s+/g, ' '))
     .refine((val) => val.length >= 3, {
-      message: CONTACT_ERRORS.INVALID_NAME,
+      message: ERROR_CODES.INVALID_NAME,
     }),
-  email: z.email(CONTACT_ERRORS.INVALID_EMAIL).trim().optional().nullable(),
+  email: z.email(ERROR_CODES.INVALID_EMAIL).trim().optional().nullable(),
   phone: z
     .string()
     .trim()
-    .regex(/^\d+$/, CONTACT_ERRORS.INVALID_PHONE)
-    .min(12, CONTACT_ERRORS.INVALID_PHONE)
-    .max(15, CONTACT_ERRORS.INVALID_PHONE),
+    .regex(/^\d+$/, ERROR_CODES.INVALID_PHONE)
+    .min(12, ERROR_CODES.INVALID_PHONE)
+    .max(15, ERROR_CODES.INVALID_PHONE),
 });
