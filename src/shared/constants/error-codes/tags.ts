@@ -1,0 +1,4 @@
+export const TAG_ERRORS = {
+  TAG_NOT_FOUND: 'TAG_NOT_FOUND',
+  TAG_ALREADY_EXISTS: 'TAG_ALREADY_EXISTS',
+} as const;

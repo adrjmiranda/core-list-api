@@ -2,6 +2,7 @@ import { ADDRESSES_ERROR_CODES } from '@/shared/constants/error-codes/addresses.
 import { COMMON_ERRORS } from '@/shared/constants/error-codes/common.js';
 import { CONTACT_ERRORS } from '@/shared/constants/error-codes/contacts.js';
 import { SYSTEM_ERRORS } from '@/shared/constants/error-codes/system.js';
+import { TAG_ERRORS } from '@/shared/constants/error-codes/tags.js';
 import { USER_ERRORS } from '@/shared/constants/error-codes/users.js';
 
 export const ERROR_CODES = {
@@ -9,6 +10,7 @@ export const ERROR_CODES = {
   ...USER_ERRORS,
   ...CONTACT_ERRORS,
   ...ADDRESSES_ERROR_CODES,
+  ...TAG_ERRORS,
   ...SYSTEM_ERRORS,
 } as const;
 
