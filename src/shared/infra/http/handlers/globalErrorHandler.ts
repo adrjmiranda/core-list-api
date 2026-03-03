@@ -35,6 +35,16 @@ export function globalErrorHandler(
     });
   }
 
+  if (
+    'code' in error &&
+    (error.code === 'FST_JWT_NO_AUTHORIZATION_IN_COOKIE' ||
+      error.code === 'FAST_JWT_EXPIRED')
+  ) {
+    return reply.status(401).send({
+      code: ERROR_CODES.UNAUTHORIZED,
+    });
+  }
+
   console.error(error);
   return reply.status(500).send({
     code: ERROR_CODES.INTERNAL_SERVER_ERROR,

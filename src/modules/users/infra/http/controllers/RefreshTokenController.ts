@@ -1,0 +1,30 @@
+import type { FastifyReply, FastifyRequest } from 'fastify';
+
+import { env } from '@/shared/env/index.js';
+
+export class RefreshTokenController {
+  async handle(request: FastifyRequest, reply: FastifyReply) {
+    await request.jwtVerify({ onlyCookie: true });
+
+    const { sub, role } = request.user;
+
+    const accessToken = await reply.jwtSign({ role }, { sign: { sub } });
+
+    const refreshToken = await reply.jwtSign(
+      { role },
+      { sign: { sub, expiresIn: '7d' } },
+    );
+
+    return reply
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        secure: env.APP_ENV === 'production',
+        sameSite: true,
+        httpOnly: true,
+      })
+      .status(200)
+      .send({
+        accessToken,
+      });
+  }
+}

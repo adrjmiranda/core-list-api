@@ -2,6 +2,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import { authenticateBodySchema } from '@/modules/users/schemas/authenticateBodySchema.js';
 import { AuthenticateUserService } from '@/modules/users/services/AuthenticateUserService.js';
+import { env } from '@/shared/env/index.js';
 
 export class AuthenticateUserController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
@@ -13,23 +14,31 @@ export class AuthenticateUserController {
       password,
     });
 
-    const token = await reply.jwtSign(
-      {
-        role: user.role,
-      },
-      {
-        sign: {
-          sub: user.id,
-        },
-      },
+    const accessToken = await reply.jwtSign(
+      { role: user.role },
+      { sign: { sub: user.id } },
     );
-    return reply.status(200).send({
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      },
-      token,
-    });
+
+    const refreshToken = await reply.jwtSign(
+      { role: user.role },
+      { sign: { sub: user.id, expiresIn: '7d' } },
+    );
+
+    return reply
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        secure: env.APP_ENV === 'production',
+        sameSite: true,
+        httpOnly: true,
+      })
+      .status(200)
+      .send({
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        },
+        accessToken,
+      });
   }
 }

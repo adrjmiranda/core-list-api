@@ -1,3 +1,4 @@
+import fastifyCookie from '@fastify/cookie';
 import fastifyJwt from '@fastify/jwt';
 import fastify from 'fastify';
 
@@ -9,11 +10,19 @@ const app = fastify({
   logger: true,
 });
 
+app.register(fastifyCookie, {
+  secret: env.JWT_SECRET,
+});
+
 app.setErrorHandler(globalErrorHandler);
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
+  cookie: {
+    cookieName: 'refreshToken',
+    signed: false,
+  },
   sign: {
-    expiresIn: '7d',
+    expiresIn: '10m',
   },
 });
 app.register(appRoutes);
