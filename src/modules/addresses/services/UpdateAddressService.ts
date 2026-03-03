@@ -18,6 +18,7 @@ interface UpdateAddressRequest {
     city?: string;
     state?: string;
     zipCode?: string;
+    isDefault?: boolean;
   };
 }
 
@@ -29,6 +30,13 @@ export class UpdateAddressService {
 
     if (!contact) {
       throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND);
+    }
+
+    if (data.isDefault === true) {
+      await db
+        .update(addresses)
+        .set({ isDefault: false })
+        .where(eq(addresses.contactId, contactId));
     }
 
     const [updatedAddress] = await db

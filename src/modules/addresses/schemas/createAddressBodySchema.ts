@@ -18,4 +18,5 @@ export const createAddressBodySchema = z.object({
     .string()
     .trim()
     .regex(/^[a-zA-Z0-9\s-]+$/, ERROR_CODES.INVALID_ZIP_CODE),
+  isDefault: z.boolean().optional().default(false),
 });

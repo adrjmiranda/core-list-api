@@ -17,6 +17,7 @@ interface CreateAddressRequest {
     city: string;
     state: string;
     zipCode: string;
+    isDefault?: boolean;
   };
 }
 
@@ -30,11 +31,25 @@ export class CreateAddressService {
       throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND);
     }
 
+    const existingAddress = await db.query.addresses.findFirst({
+      where: eq(addresses.contactId, contactId),
+    });
+
+    const shouldBeDefault = !existingAddress || data.isDefault === true;
+
+    if (shouldBeDefault) {
+      await db
+        .update(addresses)
+        .set({ isDefault: false })
+        .where(eq(addresses.contactId, contactId));
+    }
+
     const [address] = await db
       .insert(addresses)
       .values({
         ...data,
         contactId,
+        isDefault: shouldBeDefault,
       })
       .returning();
 
