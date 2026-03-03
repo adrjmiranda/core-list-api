@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 import { contacts } from '@/shared/infra/database/drizzle/contacts.js';
 
@@ -11,6 +11,8 @@ export const addresses = pgTable('addresses', {
   city: text('city').notNull(),
   state: text('state').notNull(),
   zipCode: text('zip_code').notNull(),
+
+  isDefault: boolean('is_default').default(false).notNull(),
 
   contactId: uuid('contact_id')
     .notNull()
