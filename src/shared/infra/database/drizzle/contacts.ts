@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 import { users } from '@/shared/infra/database/drizzle/users.js';
 
@@ -7,6 +7,8 @@ export const contacts = pgTable('contacts', {
   name: text('name').notNull(),
   email: text('email'),
   phone: text('phone').notNull(),
+
+  isFavorite: boolean('is_favorite').default(false).notNull(),
 
   userId: uuid('user_id')
     .notNull()

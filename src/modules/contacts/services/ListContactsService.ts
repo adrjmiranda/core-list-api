@@ -8,13 +8,24 @@ interface ListContactsRequest {
   page: number;
   perPage: number;
   search?: string;
+  isFavorite?: boolean;
 }
 
 export class ListContactsService {
-  async execute({ userId, page, perPage, search }: ListContactsRequest) {
+  async execute({
+    userId,
+    page,
+    perPage,
+    search,
+    isFavorite,
+  }: ListContactsRequest) {
     const offset = (page - 1) * perPage;
 
     const whereConditions: SQL[] = [eq(contacts.userId, userId)];
+
+    if (isFavorite !== undefined) {
+      whereConditions.push(eq(contacts.isFavorite, isFavorite));
+    }
 
     if (search) {
       whereConditions.push(

@@ -14,4 +14,9 @@ export const listContactsQuerySchema = z.object({
     )
     .default(10),
   search: z.string().optional(),
+  isFavorite: z.preprocess(
+    (value) =>
+      value === 'true' ? true : value === 'false' ? false : undefined,
+    z.boolean().optional(),
+  ),
 });
