@@ -10,6 +10,17 @@ const refreshTokenController = new RefreshTokenController();
 
 export async function usersRoutes(app: FastifyInstance): Promise<void> {
   app.post('/', createUserController.handle);
-  app.post('/sessions', authenticateUserController.handle);
+  app.post(
+    '/sessions',
+    {
+      config: {
+        rateLimit: {
+          max: 5,
+          timeWindow: 60 * 1000,
+        },
+      },
+    },
+    authenticateUserController.handle,
+  );
   app.patch('/token/refresh', refreshTokenController.handle);
 }

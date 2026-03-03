@@ -29,6 +29,10 @@ export function globalErrorHandler(
     });
   }
 
+  if ('statusCode' in error && error.statusCode === 429) {
+    return reply.send(error);
+  }
+
   if (error instanceof AppError) {
     return reply.status(error.statusCode).send({
       code: error.code,
