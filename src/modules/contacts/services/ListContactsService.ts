@@ -1,6 +1,7 @@
-import { and, eq, ilike, or, SQL, sql } from 'drizzle-orm';
+import { and, eq, exists, ilike, inArray, or, SQL, sql } from 'drizzle-orm';
 
 import { contacts } from '@/shared/infra/database/drizzle/contacts.js';
+import { contactsToTags } from '@/shared/infra/database/drizzle/tags.js';
 import { db } from '@/shared/infra/database/index.js';
 
 interface ListContactsRequest {
@@ -9,6 +10,7 @@ interface ListContactsRequest {
   perPage: number;
   search?: string;
   isFavorite?: boolean;
+  tagIds?: string[];
 }
 
 export class ListContactsService {
@@ -18,6 +20,7 @@ export class ListContactsService {
     perPage,
     search,
     isFavorite,
+    tagIds,
   }: ListContactsRequest) {
     const offset = (page - 1) * perPage;
 
@@ -36,10 +39,28 @@ export class ListContactsService {
       );
     }
 
+    if (tagIds && tagIds.length > 0) {
+      whereConditions.push(
+        exists(
+          db
+            .select()
+            .from(contactsToTags)
+            .where(
+              and(
+                eq(contactsToTags.contactId, contacts.id),
+                inArray(contactsToTags.tagId, tagIds),
+              ),
+            ),
+        ),
+      );
+    }
+
+    const filteredConditions = and(...whereConditions);
+
     const data = await db
       .select()
       .from(contacts)
-      .where(and(...whereConditions))
+      .where(filteredConditions)
       .limit(perPage)
       .offset(offset)
       .orderBy(contacts.name);

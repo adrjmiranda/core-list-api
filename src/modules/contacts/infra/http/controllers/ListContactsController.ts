@@ -5,9 +5,8 @@ import { ListContactsService } from '@/modules/contacts/services/ListContactsSer
 
 export class ListContactsController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
-    const { page, perPage, search, isFavorite } = listContactsQuerySchema.parse(
-      request.query,
-    );
+    const { page, perPage, search, isFavorite, tagIds } =
+      listContactsQuerySchema.parse(request.query);
     const userId = request.user.sub;
     const listContactsService = new ListContactsService();
 
@@ -17,6 +16,7 @@ export class ListContactsController {
       perPage,
       search,
       isFavorite,
+      tagIds,
     });
 
     return reply.status(200).send(result);
