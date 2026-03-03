@@ -8,14 +8,14 @@ import { ListContactsController } from '@/modules/contacts/infra/http/controller
 import { UpdateContactController } from '@/modules/contacts/infra/http/controllers/UpdateContactController.js';
 import { verifyJWT } from '@/shared/infra/http/middlewares/verifyJWT.js';
 
-const createContactController = new CreateContactController();
-const listContactsController = new ListContactsController();
-const getContactController = new GetContactController();
-const updateContactController = new UpdateContactController();
-const deleteContactController = new DeleteContactController();
-const attachTagToContactController = new AttachTagToContactController();
-
 export async function contactsRoutes(app: FastifyInstance): Promise<void> {
+  const createContactController = new CreateContactController();
+  const listContactsController = new ListContactsController();
+  const getContactController = new GetContactController();
+  const updateContactController = new UpdateContactController();
+  const deleteContactController = new DeleteContactController();
+  const attachTagToContactController = new AttachTagToContactController();
+
   app.addHook('onRequest', verifyJWT);
 
   app.post('/', createContactController.handle);

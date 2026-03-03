@@ -7,13 +7,13 @@ import { ListAddressesController } from '@/modules/addresses/infra/http/controll
 import { UpdateAddressController } from '@/modules/addresses/infra/http/controllers/UpdateAddressController.js';
 import { verifyJWT } from '@/shared/infra/http/middlewares/verifyJWT.js';
 
-const createAddressController = new CreateAddressController();
-const listAddressesController = new ListAddressesController();
-const getAddressController = new GetAddressController();
-const updateAddressControoler = new UpdateAddressController();
-const deleteAddressController = new DeleteAddressController();
-
 export async function addressesRoutes(app: FastifyInstance): Promise<void> {
+  const createAddressController = new CreateAddressController();
+  const listAddressesController = new ListAddressesController();
+  const getAddressController = new GetAddressController();
+  const updateAddressControoler = new UpdateAddressController();
+  const deleteAddressController = new DeleteAddressController();
+
   app.addHook('onRequest', verifyJWT);
 
   app.post('/:contactId/addresses', createAddressController.handle);

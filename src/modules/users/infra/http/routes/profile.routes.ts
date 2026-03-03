@@ -6,12 +6,12 @@ import { UpdatePasswordController } from '@/modules/users/infra/http/controllers
 import { UpdateUserController } from '@/modules/users/infra/http/controllers/UpdateUserController.js';
 import { verifyJWT } from '@/shared/infra/http/middlewares/verifyJWT.js';
 
-const getUserProfileController = new GetUserProfileController();
-const updateUserController = new UpdateUserController();
-const deleteUserController = new DeleteUserController();
-const updatePasswordController = new UpdatePasswordController();
-
 export async function profileRoutes(app: FastifyInstance): Promise<void> {
+  const getUserProfileController = new GetUserProfileController();
+  const updateUserController = new UpdateUserController();
+  const deleteUserController = new DeleteUserController();
+  const updatePasswordController = new UpdatePasswordController();
+
   app.addHook('onRequest', verifyJWT);
 
   app.get('/me', getUserProfileController.handle);
