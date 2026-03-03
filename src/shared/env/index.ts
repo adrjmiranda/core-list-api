@@ -8,6 +8,7 @@ const envSchema = z.object({
   HOST: z.string().default('0.0.0.0'),
   DATABASE_URL: z.string(),
   JWT_SECRET: z.string(),
+  SENTRY_DSN: z.string().optional(),
 });
 
 const _env = envSchema.safeParse(process.env);

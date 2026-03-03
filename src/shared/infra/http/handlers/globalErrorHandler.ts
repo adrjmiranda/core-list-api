@@ -1,7 +1,9 @@
+import * as Sentry from '@sentry/node';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { ZodError } from 'zod';
 
 import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
+import { env } from '@/shared/env/index.js';
 import { AppError } from '@/shared/errors/AppError.js';
 
 export function globalErrorHandler(
@@ -47,6 +49,10 @@ export function globalErrorHandler(
     return reply.status(401).send({
       code: ERROR_CODES.UNAUTHORIZED,
     });
+  }
+
+  if (env.APP_ENV === 'production' && env.SENTRY_DSN) {
+    Sentry.captureException(error);
   }
 
   console.error(error);
