@@ -9,6 +9,8 @@ import { UpdateContactAvatarController } from '@/modules/contacts/infra/http/con
 import { UpdateContactController } from '@/modules/contacts/infra/http/controllers/UpdateContactController.js';
 import { verifyJWT } from '@/shared/infra/http/middlewares/verifyJWT.js';
 
+import { ShowContactAvatarController } from '../controllers/ShowContactAvatarController.js';
+
 export async function contactsRoutes(app: FastifyInstance): Promise<void> {
   const createContactController = new CreateContactController();
   const listContactsController = new ListContactsController();
@@ -17,6 +19,7 @@ export async function contactsRoutes(app: FastifyInstance): Promise<void> {
   const deleteContactController = new DeleteContactController();
   const attachTagToContactController = new AttachTagToContactController();
   const updateContactAvatarController = new UpdateContactAvatarController();
+  const showContactAvatarController = new ShowContactAvatarController();
 
   app.addHook('onRequest', verifyJWT);
 
@@ -29,4 +32,5 @@ export async function contactsRoutes(app: FastifyInstance): Promise<void> {
   app.post('/:contactId/tags/:tagId', attachTagToContactController.handle);
 
   app.patch('/:contactId/avatar', updateContactAvatarController.handle);
+  app.get('/:contactId/avatar', showContactAvatarController.handle);
 }
