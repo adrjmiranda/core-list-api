@@ -9,6 +9,7 @@ export const contacts = pgTable('contacts', {
   phone: text('phone').notNull(),
 
   isFavorite: boolean('is_favorite').default(false).notNull(),
+  avatar: text('avatar'),
 
   userId: uuid('user_id')
     .notNull()

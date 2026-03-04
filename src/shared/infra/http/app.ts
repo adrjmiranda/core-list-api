@@ -1,5 +1,6 @@
 import fastifyCookie from '@fastify/cookie';
 import fastifyJwt from '@fastify/jwt';
+import multipart from '@fastify/multipart';
 import fastifyRateLimit from '@fastify/rate-limit';
 import * as Sentry from '@sentry/node';
 import fastify from 'fastify';
@@ -34,6 +35,8 @@ app.register(fastifyRateLimit, {
 app.register(fastifyCookie, {
   secret: env.JWT_SECRET,
 });
+
+app.register(multipart);
 
 app.setErrorHandler(globalErrorHandler);
 app.register(fastifyJwt, {

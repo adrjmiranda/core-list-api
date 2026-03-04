@@ -1,30 +1,18 @@
-import crypto from 'crypto';
-import fs from 'fs';
-import multer from 'multer';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import crypto from 'node:crypto';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
-const uploadsFolder = path.resolve(tmpFolder, 'uploads');
-
-if (!fs.existsSync(uploadsFolder)) {
-  fs.mkdirSync(uploadsFolder, { recursive: true });
-}
 
 export default {
   tmpFolder,
-  uploadsFolder,
+  uploadsFolder: path.resolve(tmpFolder, 'uploads'),
 
-  storage: multer.diskStorage({
-    destination: tmpFolder,
-    filename(_request, file, callback) {
-      const fileHash = crypto.randomBytes(10).toString('hex');
-      const fileName = `${fileHash}-${file.originalname}`;
-
-      return callback(null, fileName);
-    },
-  }),
+  generateHashName(originalName: string): string {
+    const fileHash = crypto.randomBytes(10).toString('hex');
+    return `${fileHash}-${originalName}`;
+  },
 };

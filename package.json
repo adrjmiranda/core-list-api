@@ -35,12 +35,12 @@
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
     "@fastify/jwt": "^10.0.0",
+    "@fastify/multipart": "^9.4.0",
     "@fastify/rate-limit": "^10.3.0",
     "@sentry/node": "^10.42.0",
     "bcrypt": "^6.0.0",
     "drizzle-orm": "^0.45.1",
     "fastify": "^5.7.4",
-    "multer": "^2.1.0",
     "pg": "^8.19.0",
     "zod": "^4.3.6"
   },
@@ -48,7 +48,6 @@
     "@commitlint/cli": "^20.4.2",
     "@commitlint/config-conventional": "^20.4.2",
     "@types/bcrypt": "^6.0.0",
-    "@types/multer": "^2.0.0",
     "@types/node": "^25.3.0",
     "@types/pg": "^8.16.0",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
