@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import fs from 'fs';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,10 +8,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
+const uploadsFolder = path.resolve(tmpFolder, 'uploads');
+
+if (!fs.existsSync(uploadsFolder)) {
+  fs.mkdirSync(uploadsFolder, { recursive: true });
+}
 
 export default {
   tmpFolder,
-  uploadsFolder: path.resolve(tmpFolder, 'uploads'),
+  uploadsFolder,
 
   storage: multer.diskStorage({
     destination: tmpFolder,
