@@ -5,7 +5,7 @@ import { AuthenticateUserService } from '@/modules/users/services/AuthenticateUs
 import { env } from '@/shared/env/index.js';
 
 export class AuthenticateUserController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const { email, password } = authenticateBodySchema.parse(request.body);
 
     const authenticateUserService = new AuthenticateUserService();

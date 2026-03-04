@@ -11,7 +11,10 @@ interface DeleteContactRequest {
 }
 
 export class DeleteContactService {
-  async execute({ contactId, userId }: DeleteContactRequest): Promise<void> {
+  public async execute({
+    contactId,
+    userId,
+  }: DeleteContactRequest): Promise<void> {
     const [deletedContact] = await db
       .delete(contacts)
       .where(and(eq(contacts.id, contactId), eq(contacts.userId, userId)))

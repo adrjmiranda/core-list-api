@@ -4,7 +4,7 @@ import { listContactsQuerySchema } from '@/modules/contacts/schemas/listContacts
 import { ListContactsService } from '@/modules/contacts/services/ListContactsService.js';
 
 export class ListContactsController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const { page, perPage, search, isFavorite, tagIds } =
       listContactsQuerySchema.parse(request.query);
     const userId = request.user.sub;

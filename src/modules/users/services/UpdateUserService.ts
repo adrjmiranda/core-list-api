@@ -14,7 +14,7 @@ interface UpdateUserRequest {
 }
 
 export class UpdateUserService {
-  async execute({ userId, data }: UpdateUserRequest) {
+  public async execute({ userId, data }: UpdateUserRequest) {
     if (data.email) {
       const userWithSameEmail = await db.query.users.findFirst({
         where: eq(users.email, data.email),

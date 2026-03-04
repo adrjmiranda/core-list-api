@@ -9,7 +9,7 @@ interface CreateContactRequest {
 }
 
 export class CreateContactService {
-  async execute({ name, email, phone, userId }: CreateContactRequest) {
+  public async execute({ name, email, phone, userId }: CreateContactRequest) {
     const [contact] = await db
       .insert(contacts)
       .values({

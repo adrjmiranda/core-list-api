@@ -8,7 +8,7 @@ import { db } from '@/shared/infra/database/index.js';
 type CreateUserServiceRequest = typeof users.$inferInsert;
 
 export class CreateUserService {
-  async execute(data: CreateUserServiceRequest): Promise<void> {
+  public async execute(data: CreateUserServiceRequest): Promise<void> {
     const { name, email, passwordHash } = data;
 
     const [userWithSameEmail] = await db

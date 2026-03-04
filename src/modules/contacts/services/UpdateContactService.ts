@@ -16,7 +16,7 @@ interface UpdateContactRequest {
 }
 
 export class UpdateContactService {
-  async execute({ contactId, userId, data }: UpdateContactRequest) {
+  public async execute({ contactId, userId, data }: UpdateContactRequest) {
     const [updatedContact] = await db
       .update(contacts)
       .set({

@@ -11,7 +11,7 @@ interface GetContactRequest {
 }
 
 export class GetContactService {
-  async execute({ contactId, userId }: GetContactRequest) {
+  public async execute({ contactId, userId }: GetContactRequest) {
     const [contact] = await db
       .select()
       .from(contacts)

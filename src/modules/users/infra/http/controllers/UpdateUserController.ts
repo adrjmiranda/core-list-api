@@ -4,7 +4,7 @@ import { updateUserBodySchema } from '@/modules/users/schemas/updateUserBodySche
 import { UpdateUserService } from '@/modules/users/services/UpdateUserService.js';
 
 export class UpdateUserController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const userId = request.user.sub;
     const data = updateUserBodySchema.parse(request.body);
 

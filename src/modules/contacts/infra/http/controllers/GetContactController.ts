@@ -4,7 +4,7 @@ import { getContactParamsSchema } from '@/modules/contacts/schemas/getContactPar
 import { GetContactService } from '@/modules/contacts/services/GetContactService.js';
 
 export class GetContactController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const { contactId } = getContactParamsSchema.parse(request.params);
     const userId = request.user.sub;
 

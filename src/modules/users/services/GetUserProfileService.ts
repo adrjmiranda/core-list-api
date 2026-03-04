@@ -9,7 +9,7 @@ interface GetUserProfileRequest {
 }
 
 export class GetUserProfileService {
-  async execute({ userId }: GetUserProfileRequest) {
+  public async execute({ userId }: GetUserProfileRequest) {
     const [user] = await db
       .select({
         id: users.id,

@@ -4,7 +4,7 @@ import { getAddressParamsSchema } from '@/modules/addresses/schemas/getAddressPa
 import { GetAddressService } from '@/modules/addresses/services/GetAddressService.js';
 
 export class GetAddressController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const { contactId, addressId } = getAddressParamsSchema.parse(
       request.params,
     );

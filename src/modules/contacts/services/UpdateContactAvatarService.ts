@@ -15,7 +15,7 @@ interface IRequest {
 }
 
 export class UpdateContactAvatarService {
-  constructor(private storageProvider: IStorageProvider) {}
+  constructor(private readonly storageProvider: IStorageProvider) {}
 
   public async execute({
     contactId,

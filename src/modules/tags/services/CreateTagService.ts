@@ -11,7 +11,7 @@ interface CreateTagRequest {
 }
 
 export class CreateTagService {
-  async execute({ name, userId }: CreateTagRequest) {
+  public async execute({ name, userId }: CreateTagRequest) {
     const [existingTag] = await db
       .select()
       .from(tags)

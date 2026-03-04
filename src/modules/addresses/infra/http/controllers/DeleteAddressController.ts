@@ -4,7 +4,7 @@ import { getAddressParamsSchema } from '@/modules/addresses/schemas/getAddressPa
 import { DeleteAddressService } from '@/modules/addresses/services/DeleteAddressService.js';
 
 export class DeleteAddressController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const { contactId, addressId } = getAddressParamsSchema.parse(
       request.params,
     );

@@ -12,7 +12,7 @@ interface ListAddressesRequest {
 }
 
 export class ListAddressesService {
-  async execute({ contactId, userId }: ListAddressesRequest) {
+  public async execute({ contactId, userId }: ListAddressesRequest) {
     const contact = await db.query.contacts.findFirst({
       where: and(eq(contacts.id, contactId), eq(contacts.userId, userId)),
     });

@@ -13,7 +13,7 @@ interface GetAddressRequest {
 }
 
 export class GetAddressService {
-  async execute({ contactId, addressId, userId }: GetAddressRequest) {
+  public async execute({ contactId, addressId, userId }: GetAddressRequest) {
     const contact = await db.query.contacts.findFirst({
       where: and(eq(contacts.id, contactId), eq(contacts.userId, userId)),
     });

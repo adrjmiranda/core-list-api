@@ -4,7 +4,7 @@ import { createContactBodySchema } from '@/modules/contacts/schemas/createContac
 import { CreateContactService } from '@/modules/contacts/services/CreateContactService.js';
 
 export class CreateContactController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const { name, email, phone } = createContactBodySchema.parse(request.body);
 
     const userId = request.user.sub;

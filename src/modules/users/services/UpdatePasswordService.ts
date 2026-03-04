@@ -13,7 +13,11 @@ interface UpdatePasswordRequest {
 }
 
 export class UpdatePasswordService {
-  async execute({ userId, oldPassword, newPassword }: UpdatePasswordRequest) {
+  public async execute({
+    userId,
+    oldPassword,
+    newPassword,
+  }: UpdatePasswordRequest) {
     const user = await db.query.users.findFirst({
       where: eq(users.id, userId),
     });

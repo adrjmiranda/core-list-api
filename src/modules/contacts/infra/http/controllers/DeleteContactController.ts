@@ -4,7 +4,7 @@ import { getContactParamsSchema } from '@/modules/contacts/schemas/getContactPar
 import { DeleteContactService } from '@/modules/contacts/services/DeleteContactService.js';
 
 export class DeleteContactController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const { contactId } = getContactParamsSchema.parse(request.params);
     const userId = request.user.sub;
 

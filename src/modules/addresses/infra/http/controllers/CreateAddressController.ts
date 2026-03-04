@@ -5,7 +5,7 @@ import { CreateAddressService } from '@/modules/addresses/services/CreateAddress
 import { getContactParamsSchema } from '@/modules/contacts/schemas/getContactParamsSchema.js';
 
 export class CreateAddressController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const { contactId } = getContactParamsSchema.parse(request.params);
     const userId = request.user.sub;
     const data = createAddressBodySchema.parse(request.body);

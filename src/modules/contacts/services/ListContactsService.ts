@@ -14,7 +14,7 @@ interface ListContactsRequest {
 }
 
 export class ListContactsService {
-  async execute({
+  public async execute({
     userId,
     page,
     perPage,

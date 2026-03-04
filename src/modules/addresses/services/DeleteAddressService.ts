@@ -13,7 +13,7 @@ interface DeleteAddressRequest {
 }
 
 export class DeleteAddressService {
-  async execute({
+  public async execute({
     contactId,
     addressId,
     userId,

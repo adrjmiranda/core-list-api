@@ -13,7 +13,11 @@ interface AttachTagToContactRequest {
 }
 
 export class AttachTagToContactService {
-  async execute({ contactId, tagId, userId }: AttachTagToContactRequest) {
+  public async execute({
+    contactId,
+    tagId,
+    userId,
+  }: AttachTagToContactRequest) {
     const [contactExists] = await db
       .select()
       .from(contacts)

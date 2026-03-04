@@ -23,7 +23,12 @@ interface UpdateAddressRequest {
 }
 
 export class UpdateAddressService {
-  async execute({ contactId, addressId, userId, data }: UpdateAddressRequest) {
+  public async execute({
+    contactId,
+    addressId,
+    userId,
+    data,
+  }: UpdateAddressRequest) {
     const contact = await db.query.contacts.findFirst({
       where: and(eq(contacts.id, contactId), eq(contacts.userId, userId)),
     });

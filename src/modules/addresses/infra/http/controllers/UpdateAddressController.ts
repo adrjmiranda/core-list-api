@@ -5,7 +5,7 @@ import { updateAddressBodySchema } from '@/modules/addresses/schemas/updateAddre
 import { UpdateAddressService } from '@/modules/addresses/services/UpdateAddressService.js';
 
 export class UpdateAddressController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const { contactId, addressId } = getAddressParamsSchema.parse(
       request.params,
     );

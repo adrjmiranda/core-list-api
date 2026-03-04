@@ -5,7 +5,7 @@ import { updateContactBodySchema } from '@/modules/contacts/schemas/updateContac
 import { UpdateContactService } from '@/modules/contacts/services/UpdateContactService.js';
 
 export class UpdateContactController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const { contactId } = getContactParamsSchema.parse(request.params);
     const userId = request.user.sub;
     const data = updateContactBodySchema.parse(request.body);

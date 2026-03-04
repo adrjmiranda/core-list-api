@@ -4,7 +4,7 @@ import { attachTagParamsSchema } from '@/modules/contacts/schemas/attachTagParam
 import { AttachTagToContactService } from '@/modules/contacts/services/AttachTagToContactService.js';
 
 export class AttachTagToContactController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const { contactId, tagId } = attachTagParamsSchema.parse(request.params);
     const userId = request.user.sub;
 

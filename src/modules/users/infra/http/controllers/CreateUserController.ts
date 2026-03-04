@@ -4,7 +4,7 @@ import { createUserBodySchema } from '@/modules/users/schemas/createUserBodySche
 import { CreateUserService } from '@/modules/users/services/CreateUserService.js';
 
 export class CreateUserController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const { name, email, password } = createUserBodySchema.parse(request.body);
 
     const createUserService = new CreateUserService();

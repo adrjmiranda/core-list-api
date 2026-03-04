@@ -10,7 +10,7 @@ import { db } from '@/shared/infra/database/index.js';
 type AuthenticateUserServiceRequest = z.infer<typeof authenticateBodySchema>;
 
 export class AuthenticateUserService {
-  async execute({ email, password }: AuthenticateUserServiceRequest) {
+  public async execute({ email, password }: AuthenticateUserServiceRequest) {
     const [user] = await db.select().from(users).where(eq(users.email, email));
 
     if (!user) {

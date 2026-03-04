@@ -22,7 +22,7 @@ interface CreateAddressRequest {
 }
 
 export class CreateAddressService {
-  async execute({ contactId, userId, data }: CreateAddressRequest) {
+  public async execute({ contactId, userId, data }: CreateAddressRequest) {
     const contact = await db.query.contacts.findFirst({
       where: and(eq(contacts.id, contactId), eq(contacts.userId, userId)),
     });

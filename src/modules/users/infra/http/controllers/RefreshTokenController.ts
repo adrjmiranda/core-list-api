@@ -3,7 +3,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 import { env } from '@/shared/env/index.js';
 
 export class RefreshTokenController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     await request.jwtVerify({ onlyCookie: true });
 
     const { sub, role } = request.user;

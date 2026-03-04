@@ -4,7 +4,7 @@ import { updatePasswordBodySchema } from '@/modules/users/schemas/updatePassword
 import { UpdatePasswordService } from '@/modules/users/services/UpdatePasswordService.js';
 
 export class UpdatePasswordController {
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
     const userId = request.user.sub;
     const { oldPassword, newPassword } = updatePasswordBodySchema.parse(
       request.body,
