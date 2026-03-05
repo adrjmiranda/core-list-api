@@ -2,6 +2,7 @@ import * as z from 'zod';
 
 import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
 
+// TODO: Criar regex para validar nome
 export const updateContactBodySchema = z.object({
   name: z
     .string()
@@ -9,9 +10,7 @@ export const updateContactBodySchema = z.object({
     .transform((val) => val.replace(/\s+/g, ' '))
     .refine((val) => val.length >= 3, ERROR_CODES.INVALID_NAME)
     .optional(),
-
   email: z.email(ERROR_CODES.INVALID_EMAIL).trim().optional().nullable(),
-
   phone: z
     .string()
     .trim()
