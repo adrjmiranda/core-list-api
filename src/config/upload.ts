@@ -7,13 +7,18 @@ const __dirname = path.dirname(__filename);
 
 const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
 
-// TODO: Lembrar de limitar tamanho de arquivo que pode ser enviado
 export default {
   tmpFolder,
   uploadsFolder: path.resolve(tmpFolder, 'uploads'),
+  maxFileSize: 5 * 1024 * 1024, // 5MB
+  allowedMimetypes: ['image/jpeg', 'image/png', 'image/webp'],
 
   generateHashName(originalName: string): string {
     const fileHash = crypto.randomBytes(10).toString('hex');
-    return `${fileHash}-${originalName}`;
+    const sanitizedName = originalName
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-zA-Z0-9-]/g, '');
+    return `${fileHash}-${sanitizedName}`;
   },
 };
