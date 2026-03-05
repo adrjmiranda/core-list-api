@@ -5,13 +5,13 @@ import { AppError } from '@/shared/errors/AppError.js';
 import { tags } from '@/shared/infra/database/drizzle/tags.js';
 import { db } from '@/shared/infra/database/index.js';
 
-interface DeleteTagRequest {
+interface GetTagRequest {
   tagId: string;
   userId: string;
 }
 
-export class DeleteTagService {
-  public async execute({ tagId, userId }: DeleteTagRequest): Promise<void> {
+export class GetTagService {
+  public async execute({ tagId, userId }: GetTagRequest) {
     const [tag] = await db
       .select()
       .from(tags)
@@ -21,6 +21,6 @@ export class DeleteTagService {
       throw new AppError(ERROR_CODES.TAG_NOT_FOUND, 404);
     }
 
-    await db.delete(tags).where(eq(tags.id, tagId));
+    return { tag };
   }
 }
