@@ -7,12 +7,15 @@ import { tags } from '@/shared/infra/database/drizzle/tags.js';
 import { db } from '@/shared/infra/database/index.js';
 
 interface CreateTagRequest {
-  name: string;
   userId: string;
+  data: {
+    name: string;
+    color: string;
+  };
 }
 
 export class CreateTagService {
-  public async execute({ name, userId }: CreateTagRequest) {
+  public async execute({ data, userId }: CreateTagRequest) {
     const [result] = await db
       .select({ total: count() })
       .from(tags)
@@ -25,7 +28,7 @@ export class CreateTagService {
     const [existingTag] = await db
       .select()
       .from(tags)
-      .where(and(eq(tags.name, name), eq(tags.userId, userId)));
+      .where(and(eq(tags.name, data.name), eq(tags.userId, userId)));
 
     if (existingTag) {
       throw new AppError(ERROR_CODES.TAG_ALREADY_EXISTS, 409);
@@ -34,7 +37,8 @@ export class CreateTagService {
     const [tag] = await db
       .insert(tags)
       .values({
-        name,
+        name: data.name,
+        color: data.color,
         userId,
       })
       .returning();

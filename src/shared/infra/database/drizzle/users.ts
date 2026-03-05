@@ -18,5 +18,8 @@ export const users = pgTable('users', {
   isActive: boolean('is_active').default(true),
   tenantId: text('tenant_id'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
 });

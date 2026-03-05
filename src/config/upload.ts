@@ -7,6 +7,7 @@ const __dirname = path.dirname(__filename);
 
 const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
 
+// TODO: Lembrar de limitar tamanho de arquivo que pode ser enviado
 export default {
   tmpFolder,
   uploadsFolder: path.resolve(tmpFolder, 'uploads'),

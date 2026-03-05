@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1772548412523,
-      "tag": "0000_majestic_supernaut",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1772551411760,
-      "tag": "0001_sudden_agent_brand",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1772567163502,
-      "tag": "0002_sloppy_captain_stacy",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1772653257692,
-      "tag": "0003_common_gamma_corps",
+      "when": 1772727870062,
+      "tag": "0000_lying_sunspot",
       "breakpoints": true
     }
   ]
