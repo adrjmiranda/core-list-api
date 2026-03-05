@@ -1,5 +1,6 @@
-import { and, eq } from 'drizzle-orm';
+import { and, count, eq } from 'drizzle-orm';
 
+import tagsConfig from '@/config/tags.js';
 import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
 import { AppError } from '@/shared/errors/AppError.js';
 import { tags } from '@/shared/infra/database/drizzle/tags.js';
@@ -10,8 +11,18 @@ interface CreateTagRequest {
   userId: string;
 }
 
+// TODO: Verificar se o código de erro está correto nos outros services e controllers
 export class CreateTagService {
   public async execute({ name, userId }: CreateTagRequest) {
+    const [result] = await db
+      .select({ total: count() })
+      .from(tags)
+      .where(eq(tags.userId, userId));
+
+    if (result.total >= tagsConfig.limitPerUser) {
+      throw new AppError(ERROR_CODES.TAG_LIMIT_EXCEEDED, 400);
+    }
+
     const [existingTag] = await db
       .select()
       .from(tags)
