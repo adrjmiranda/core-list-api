@@ -11,6 +11,8 @@ import { UpdateContactAvatarController } from '@/modules/contacts/infra/http/con
 import { UpdateContactController } from '@/modules/contacts/infra/http/controllers/UpdateContactController.js';
 import { verifyJWT } from '@/shared/infra/http/middlewares/verifyJWT.js';
 
+import { ExportContactsVcfController } from '../controllers/ExportContactsVcfController.js';
+
 export async function contactsRoutes(app: FastifyInstance): Promise<void> {
   const createContactController = new CreateContactController();
   const listContactsController = new ListContactsController();
@@ -21,6 +23,7 @@ export async function contactsRoutes(app: FastifyInstance): Promise<void> {
   const updateContactAvatarController = new UpdateContactAvatarController();
   const showContactAvatarController = new ShowContactAvatarController();
   const exportContactsCsvController = new ExportContactsCsvController();
+  const exportContactsVcfController = new ExportContactsVcfController();
 
   app.addHook('onRequest', verifyJWT);
 
@@ -36,4 +39,5 @@ export async function contactsRoutes(app: FastifyInstance): Promise<void> {
   app.get('/:contactId/avatar', showContactAvatarController.handle);
 
   app.get('/export/csv', exportContactsCsvController.handle);
+  app.get('/export/vcf', exportContactsVcfController.handle);
 }
