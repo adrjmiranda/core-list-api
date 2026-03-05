@@ -10,7 +10,7 @@ interface CreateTagRequest {
   userId: string;
   data: {
     name: string;
-    color: string;
+    color?: string;
   };
 }
 

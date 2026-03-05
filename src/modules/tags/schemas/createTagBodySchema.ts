@@ -15,5 +15,6 @@ export const createTagBodySchema = z.object({
     .trim()
     .min(1, ERROR_CODES.INVALID_COLOR)
     .transform((value) => value.replace(/\s+/g, ''))
-    .transform((value) => value.toUpperCase()),
+    .transform((value) => value.toUpperCase())
+    .optional(),
 });
