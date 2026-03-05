@@ -7,8 +7,7 @@ import { AppError } from '@/shared/errors/AppError.js';
 import { contacts } from '@/shared/infra/database/drizzle/contacts.js';
 import { db } from '@/shared/infra/database/index.js';
 
-// TODO: Modificar nome dessa interface para o padrão do projeto
-interface IRequest {
+interface UpdateContactAvatarRequest {
   contactId: string;
   userId: string;
   avatarFilename: string;
@@ -23,7 +22,7 @@ export class UpdateContactAvatarService {
     userId,
     avatarFilename,
     fileStream,
-  }: IRequest) {
+  }: UpdateContactAvatarRequest) {
     const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
     const extension = path.extname(avatarFilename).toLowerCase();
 
