@@ -23,7 +23,7 @@ export class DeleteAddressService {
     });
 
     if (!contact) {
-      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND);
+      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
     }
 
     const [deletedAddress] = await db
@@ -34,7 +34,7 @@ export class DeleteAddressService {
       .returning();
 
     if (!deletedAddress) {
-      throw new AppError(ERROR_CODES.ADDRESS_NOT_FOUND);
+      throw new AppError(ERROR_CODES.ADDRESS_NOT_FOUND, 404);
     }
   }
 }

@@ -19,7 +19,7 @@ export class GetAddressService {
     });
 
     if (!contact) {
-      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND);
+      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
     }
 
     const [address] = await db
@@ -30,7 +30,7 @@ export class GetAddressService {
       );
 
     if (!address) {
-      throw new AppError(ERROR_CODES.ADDRESS_NOT_FOUND);
+      throw new AppError(ERROR_CODES.ADDRESS_NOT_FOUND, 404);
     }
 
     return { address };

@@ -28,7 +28,7 @@ export class CreateAddressService {
     });
 
     if (!contact) {
-      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND);
+      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
     }
 
     const existingAddress = await db.query.addresses.findFirst({

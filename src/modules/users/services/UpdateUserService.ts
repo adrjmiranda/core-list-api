@@ -21,7 +21,7 @@ export class UpdateUserService {
       });
 
       if (userWithSameEmail && userWithSameEmail.id !== userId) {
-        throw new AppError(ERROR_CODES.USER_ALREADY_EXISTS);
+        throw new AppError(ERROR_CODES.USER_ALREADY_EXISTS, 409);
       }
     }
 

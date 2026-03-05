@@ -34,7 +34,7 @@ export class UpdateAddressService {
     });
 
     if (!contact) {
-      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND);
+      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
     }
 
     if (data.isDefault === true) {
@@ -53,7 +53,7 @@ export class UpdateAddressService {
       .returning();
 
     if (!updatedAddress) {
-      throw new AppError(ERROR_CODES.ADDRESS_NOT_FOUND);
+      throw new AppError(ERROR_CODES.ADDRESS_NOT_FOUND, 404);
     }
 
     return { address: updatedAddress };

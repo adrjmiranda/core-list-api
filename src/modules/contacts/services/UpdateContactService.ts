@@ -26,7 +26,7 @@ export class UpdateContactService {
       .returning();
 
     if (!updatedContact) {
-      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND);
+      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
     }
 
     return { contact: updatedContact };

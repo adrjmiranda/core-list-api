@@ -11,7 +11,6 @@ interface CreateTagRequest {
   userId: string;
 }
 
-// TODO: Verificar se o código de erro está correto nos outros services e controllers
 export class CreateTagService {
   public async execute({ name, userId }: CreateTagRequest) {
     const [result] = await db
@@ -29,7 +28,7 @@ export class CreateTagService {
       .where(and(eq(tags.name, name), eq(tags.userId, userId)));
 
     if (existingTag) {
-      throw new AppError(ERROR_CODES.TAG_ALREADY_EXISTS);
+      throw new AppError(ERROR_CODES.TAG_ALREADY_EXISTS, 409);
     }
 
     const [tag] = await db

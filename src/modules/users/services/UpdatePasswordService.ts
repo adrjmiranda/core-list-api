@@ -23,13 +23,13 @@ export class UpdatePasswordService {
     });
 
     if (!user) {
-      throw new AppError(ERROR_CODES.USER_NOT_FOUND);
+      throw new AppError(ERROR_CODES.USER_NOT_FOUND, 404);
     }
 
     const isOldPasswordCorrect = await compare(oldPassword, user.passwordHash);
 
     if (!isOldPasswordCorrect) {
-      throw new AppError(ERROR_CODES.INVALID_CREDENTIALS);
+      throw new AppError(ERROR_CODES.INVALID_CREDENTIALS, 401);
     }
 
     const newPasswordHash = await hash(newPassword, 10);

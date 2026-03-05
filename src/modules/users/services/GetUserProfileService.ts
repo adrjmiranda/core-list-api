@@ -22,7 +22,7 @@ export class GetUserProfileService {
       .where(eq(users.id, userId));
 
     if (!user) {
-      throw new AppError('USER_NOT_FOUND');
+      throw new AppError('USER_NOT_FOUND', 404);
     }
 
     return { user };
