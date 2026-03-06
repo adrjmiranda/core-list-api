@@ -27,7 +27,7 @@ export class AuthenticateUserController {
     return reply
       .setCookie('refreshToken', refreshToken, {
         path: '/',
-        secure: env.APP_ENV === 'production',
+        secure: env.NODE_ENV === 'production',
         sameSite: true,
         httpOnly: true,
       })

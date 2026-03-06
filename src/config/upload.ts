@@ -12,13 +12,18 @@ export default {
   uploadsFolder: path.resolve(tmpFolder, 'uploads'),
   maxFileSize: 5 * 1024 * 1024, // 5MB
   allowedMimetypes: ['image/jpeg', 'image/png', 'image/webp'],
+  allowedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
 
   generateHashName(originalName: string): string {
     const fileHash = crypto.randomBytes(10).toString('hex');
-    const sanitizedName = originalName
+    const extension = path.extname(originalName);
+    const baseName = path.basename(originalName, extension);
+
+    const sanitizedBaseName = baseName
       .trim()
       .replace(/\s+/g, '-')
       .replace(/[^a-zA-Z0-9-]/g, '');
-    return `${fileHash}-${sanitizedName}`;
+
+    return `${fileHash}-${sanitizedBaseName}${extension}`;
   },
 };

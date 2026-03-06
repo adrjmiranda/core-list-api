@@ -5,46 +5,41 @@ import uploadConfig from '@/config/upload.js';
 import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
 import { IStorageProvider } from '@/shared/container/providers/StorageProvider/models/IStorageProvider.js';
 import { AppError } from '@/shared/errors/AppError.js';
-import { contacts } from '@/shared/infra/database/drizzle/contacts.js';
+import { users } from '@/shared/infra/database/drizzle/users.js';
 import { db } from '@/shared/infra/database/index.js';
 
-interface UpdateContactAvatarRequest {
-  contactId: string;
+interface UpdateUserAvatarRequest {
   userId: string;
   avatarFilename: string;
   fileStream: NodeJS.ReadableStream;
 }
 
-export class UpdateContactAvatarService {
-  constructor(private readonly storageProvider: IStorageProvider) {}
+export class UpdateUserAvatarService {
+  constructor(private storageProvider: IStorageProvider) {}
 
   public async execute({
-    contactId,
     userId,
     avatarFilename,
     fileStream,
-  }: UpdateContactAvatarRequest): Promise<{ avatar: string | null }> {
+  }: UpdateUserAvatarRequest): Promise<{ avatar: string | null }> {
     const extension = path.extname(avatarFilename).toLowerCase();
+
+    console.log('DEBUG: avatarFilename recebido ->', avatarFilename);
+    console.log('DEBUG: Extensão extraída ->', extension);
+    console.log('DEBUG: Lista permitida ->', uploadConfig.allowedExtensions);
 
     if (!uploadConfig.allowedExtensions.includes(extension)) {
       throw new AppError(ERROR_CODES.INVALID_FILE_TYPE, 400);
     }
 
-    const [contact] = await db
-      .select()
-      .from(contacts)
-      .where(eq(contacts.id, contactId));
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
 
-    if (!contact) {
-      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
+    if (!user) {
+      throw new AppError(ERROR_CODES.USER_NOT_FOUND, 404);
     }
 
-    if (contact.userId !== userId) {
-      throw new AppError(ERROR_CODES.UNAUTHORIZED, 401);
-    }
-
-    if (contact.avatar) {
-      await this.storageProvider.deleteFile(contact.avatar);
+    if (user.avatar) {
+      await this.storageProvider.deleteFile(user.avatar);
     }
 
     const fileName = await this.storageProvider.saveFile(
@@ -52,14 +47,15 @@ export class UpdateContactAvatarService {
       fileStream,
     );
 
-    const [updatedContact] = await db
-      .update(contacts)
+    const [updatedUser] = await db
+      .update(users)
       .set({
         avatar: fileName,
+        updatedAt: new Date(),
       })
-      .where(eq(contacts.id, contactId))
+      .where(eq(users.id, userId))
       .returning();
 
-    return { avatar: updatedContact.avatar };
+    return { avatar: updatedUser.avatar };
   }
 }

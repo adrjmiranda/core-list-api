@@ -18,6 +18,7 @@ export const users = pgTable('users', {
   verificationToken: text('verification_token'),
   tokenExpiresAt: timestamp('token_expires_at'),
   role: userRoleEnum('role').default('USER').notNull(),
+  avatar: text('avatar'),
   isActive: boolean('is_active').default(true),
   tenantId: text('tenant_id'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
