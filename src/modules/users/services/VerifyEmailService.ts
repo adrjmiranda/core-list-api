@@ -20,13 +20,19 @@ export class VerifyEmailService {
       throw new AppError(ERROR_CODES.INVALID_TOKEN, 401);
     }
 
+    if (user.tokenExpiresAt && new Date() > user.tokenExpiresAt) {
+      throw new AppError(ERROR_CODES.EXPIRED_TOKEN, 401);
+    }
+
     await db
       .update(users)
       .set({
         isVerified: true,
         verificationToken: null,
+        tokenExpiresAt: null,
         updatedAt: new Date(),
       })
-      .where(eq(users.id, user.id));
+      .where(eq(users.id, user.id))
+      .returning();
   }
 }

@@ -15,7 +15,7 @@ export class CreateUserService {
 
   public async execute(
     data: CreateUserServiceRequest,
-  ): Promise<{ user: typeof users.$inferSelect }> {
+  ): Promise<{ user: { id: string; name: string; email: string } }> {
     const { name, email, passwordHash } = data;
 
     const [userWithSameEmail] = await db
@@ -31,6 +31,8 @@ export class CreateUserService {
     const hashedPassword = await bcrypt.hash(passwordHash, 10);
 
     const verificationToken = crypto.randomUUID();
+    const tokenExpiresAt = new Date();
+    tokenExpiresAt.setHours(tokenExpiresAt.getHours() + 24);
 
     const [user] = await db
       .insert(users)
@@ -40,8 +42,13 @@ export class CreateUserService {
         passwordHash: hashedPassword,
         verificationToken,
         isVerified: false,
+        tokenExpiresAt,
       })
-      .returning();
+      .returning({
+        id: users.id,
+        name: users.name,
+        email: users.email,
+      });
 
     const sendVerificationEmail = new SendVerificationEmailService(
       this.mailProvider,

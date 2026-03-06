@@ -11,7 +11,7 @@ export class SendVerificationEmailService {
   constructor(private mailProvider: IMailProvider) {}
 
   public async execute({ name, email, token }: Request): Promise<void> {
-    const confirmationLink = `${env.APP_URL}/users/verify?token=${token}`;
+    const confirmationLink = `${env.API_URL}/users/verify?token=${token}`;
 
     await this.mailProvider.sendMail({
       to: email,

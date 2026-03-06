@@ -3,12 +3,29 @@ import 'dotenv/config';
 import * as z from 'zod';
 
 const envSchema = z.object({
-  APP_ENV: z.enum(['development', 'test', 'production']).default('development'),
-  APP_URL: z.string(),
+  // === Application ===
+  NODE_ENV: z
+    .enum(['development', 'test', 'production'])
+    .default('development'),
+  APP_NAME: z.string().default('CoreList API'),
+
+  // === URLs ===
+  // Nota: z.string().url() é mais seguro que z.url() em algumas versões do Zod
+  API_URL: z.string().url(),
+  WEB_URL: z.string().url(),
+
+  // === Server Configuration ===
   PORT: z.coerce.number().default(3333),
   HOST: z.string().default('0.0.0.0'),
-  DATABASE_URL: z.string(),
+
+  // === Database ===
+  DATABASE_URL: z.string().url(),
+
+  // === Auth & Security ===
   JWT_SECRET: z.string(),
+  JWT_EXPIRES_IN: z.string().default('1d'),
+
+  // === Observability ===
   SENTRY_DSN: z.string().optional(),
 });
 

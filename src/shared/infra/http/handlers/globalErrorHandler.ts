@@ -8,9 +8,13 @@ import { AppError } from '@/shared/errors/AppError.js';
 
 export function globalErrorHandler(
   error: Error,
-  _request: FastifyRequest,
+  request: FastifyRequest,
   reply: FastifyReply,
 ) {
+  if (request.url.includes('/users/verify')) {
+    return reply.redirect(`${env.WEB_URL}/login?verified=false`);
+  }
+
   if (error instanceof ZodError) {
     const validationErrors = error.issues.reduce(
       (acc, issue) => {
@@ -51,7 +55,7 @@ export function globalErrorHandler(
     });
   }
 
-  if (env.APP_ENV === 'production' && env.SENTRY_DSN) {
+  if (env.NODE_ENV === 'production' && env.SENTRY_DSN) {
     Sentry.captureException(error);
   }
 
