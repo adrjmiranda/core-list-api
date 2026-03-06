@@ -15,12 +15,12 @@ export class AuthenticateUserController {
     });
 
     const accessToken = await reply.jwtSign(
-      { role: user.role },
+      { role: user.role, isVerified: user.isVerified },
       { sign: { sub: user.id } },
     );
 
     const refreshToken = await reply.jwtSign(
-      { role: user.role },
+      { role: user.role, isVerified: user.isVerified },
       { sign: { sub: user.id, expiresIn: '7d' } },
     );
 

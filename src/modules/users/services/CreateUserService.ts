@@ -1,6 +1,9 @@
 import bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
 
+import { SendVerificationEmailService } from '@/modules/users/services/SendVerificationEmailService.js';
+import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
+import { IMailProvider } from '@/shared/container/providers/MailProvider/models/IMailProvider.js';
 import { AppError } from '@/shared/errors/AppError.js';
 import { users } from '@/shared/infra/database/drizzle/users.js';
 import { db } from '@/shared/infra/database/index.js';
@@ -8,7 +11,11 @@ import { db } from '@/shared/infra/database/index.js';
 type CreateUserServiceRequest = typeof users.$inferInsert;
 
 export class CreateUserService {
-  public async execute(data: CreateUserServiceRequest): Promise<void> {
+  constructor(private mailProvider: IMailProvider) {}
+
+  public async execute(
+    data: CreateUserServiceRequest,
+  ): Promise<{ user: typeof users.$inferSelect }> {
     const { name, email, passwordHash } = data;
 
     const [userWithSameEmail] = await db
@@ -18,15 +25,34 @@ export class CreateUserService {
       .limit(1);
 
     if (userWithSameEmail) {
-      throw new AppError('USER_ALREADY_EXISTS', 409);
+      throw new AppError(ERROR_CODES.USER_ALREADY_EXISTS, 409);
     }
 
     const hashedPassword = await bcrypt.hash(passwordHash, 10);
 
-    await db.insert(users).values({
-      name,
-      email,
-      passwordHash: hashedPassword,
+    const verificationToken = crypto.randomUUID();
+
+    const [user] = await db
+      .insert(users)
+      .values({
+        name,
+        email,
+        passwordHash: hashedPassword,
+        verificationToken,
+        isVerified: false,
+      })
+      .returning();
+
+    const sendVerificationEmail = new SendVerificationEmailService(
+      this.mailProvider,
+    );
+
+    await sendVerificationEmail.execute({
+      name: user.name,
+      email: user.email,
+      token: verificationToken,
     });
+
+    return { user };
   }
 }
