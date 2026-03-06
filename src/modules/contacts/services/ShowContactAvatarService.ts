@@ -23,8 +23,12 @@ export class ShowContactAvatarService {
       .where(and(eq(contacts.id, contactId), eq(contacts.userId, userId)))
       .limit(1);
 
-    if (!contact || !contact.avatar) {
-      throw new AppError(ERROR_CODES.UNAUTHORIZED, 404);
+    if (!contact) {
+      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
+    }
+
+    if (!contact.avatar) {
+      throw new AppError(ERROR_CODES.CONTACT_AVATAR_NOT_FOUND, 401);
     }
 
     const filePath = path.resolve(uploadConfig.uploadsFolder, contact.avatar);

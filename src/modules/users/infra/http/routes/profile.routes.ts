@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify';
 
 import { DeleteUserController } from '@/modules/users/infra/http/controllers/DeleteUserController.js';
 import { GetUserProfileController } from '@/modules/users/infra/http/controllers/GetUserProfileController.js';
+import { ShowUserAvatarController } from '@/modules/users/infra/http/controllers/ShowUserAvatarController.js';
 import { UpdatePasswordController } from '@/modules/users/infra/http/controllers/UpdatePasswordController.js';
 import { UpdateUserAvatarController } from '@/modules/users/infra/http/controllers/UpdateUserAvatarController.js';
 import { UpdateUserController } from '@/modules/users/infra/http/controllers/UpdateUserController.js';
@@ -13,6 +14,7 @@ export async function profileRoutes(app: FastifyInstance): Promise<void> {
   const deleteUserController = new DeleteUserController();
   const updatePasswordController = new UpdatePasswordController();
   const userAvatarController = new UpdateUserAvatarController();
+  const showUserAvatarController = new ShowUserAvatarController();
 
   app.addHook('onRequest', verifyJWT);
 
@@ -22,4 +24,5 @@ export async function profileRoutes(app: FastifyInstance): Promise<void> {
   app.patch('/me/password', updatePasswordController.handle);
 
   app.patch('/avatar', userAvatarController.handle);
+  app.get('/avatar', showUserAvatarController.handle);
 }

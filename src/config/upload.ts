@@ -10,7 +10,7 @@ const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
 export default {
   tmpFolder,
   uploadsFolder: path.resolve(tmpFolder, 'uploads'),
-  maxFileSize: 5 * 1024 * 1024, // 5MB
+  maxFileSize: 2 * 1024 * 1024, // 2MB
   allowedMimetypes: ['image/jpeg', 'image/png', 'image/webp'],
   allowedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
 
