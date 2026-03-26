@@ -1,38 +1,38 @@
 import { eq } from 'drizzle-orm';
+import { injectable } from 'tsyringe';
 
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
-import { injectable } from 'tsyringe';
 
 interface UpdateUserRequest {
-  userId: string;
-  data: {
-    name?: string;
-    email?: string;
-  };
+	userId: string;
+	data: {
+		name?: string;
+		email?: string;
+	};
 }
 
 @injectable()
 export class UpdateUserService {
-  public execute = async ({ userId, data }: UpdateUserRequest) => {
-    if (data.email) {
-      const userWithSameEmail = await db.query.usersTable.findFirst({
-        where: eq(usersTable.email, data.email),
-      });
+	public execute = async ({ userId, data }: UpdateUserRequest) => {
+		if (data.email) {
+			const userWithSameEmail = await db.query.usersTable.findFirst({
+				where: eq(usersTable.email, data.email),
+			});
 
-      if (userWithSameEmail && userWithSameEmail.id !== userId) {
-        throw new AppError(ERROR_CODES.USER_ALREADY_EXISTS, 409);
-      }
-    }
+			if (userWithSameEmail && userWithSameEmail.id !== userId) {
+				throw new AppError(ERROR_CODES.USER_ALREADY_EXISTS, 409);
+			}
+		}
 
-    const [updatedUser] = await db
-      .update(usersTable)
-      .set(data)
-      .where(eq(usersTable.id, userId))
-      .returning();
+		const [updatedUser] = await db
+			.update(usersTable)
+			.set(data)
+			.where(eq(usersTable.id, userId))
+			.returning();
 
-    return { user: updatedUser };
-  };
+		return { user: updatedUser };
+	};
 }

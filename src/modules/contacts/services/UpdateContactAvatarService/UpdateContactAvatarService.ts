@@ -1,5 +1,6 @@
 import { eq } from 'drizzle-orm';
 import path from 'path';
+import { inject, injectable } from 'tsyringe';
 
 import uploadConfig from '#/config/upload.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
@@ -7,64 +8,63 @@ import { IStorageProvider } from '#/shared/container/providers/StorageProvider/m
 import { AppError } from '#/shared/errors/AppError.js';
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
-import { inject, injectable } from 'tsyringe';
 
 interface UpdateContactAvatarRequest {
-  contactId: string;
-  userId: string;
-  avatarFilename: string;
-  fileStream: NodeJS.ReadableStream;
+	contactId: string;
+	userId: string;
+	avatarFilename: string;
+	fileStream: NodeJS.ReadableStream;
 }
 
 @injectable()
 export class UpdateContactAvatarService {
-  constructor(
-    @inject('StorageProvider')
-    private readonly storageProvider: IStorageProvider,
-  ) {}
+	constructor(
+		@inject('StorageProvider')
+		private readonly storageProvider: IStorageProvider
+	) {}
 
-  public execute = async ({
-    contactId,
-    userId,
-    avatarFilename,
-    fileStream,
-  }: UpdateContactAvatarRequest): Promise<{ avatar: string | null }> => {
-    const extension = path.extname(avatarFilename).toLowerCase();
+	public execute = async ({
+		contactId,
+		userId,
+		avatarFilename,
+		fileStream,
+	}: UpdateContactAvatarRequest): Promise<{ avatar: string | null }> => {
+		const extension = path.extname(avatarFilename).toLowerCase();
 
-    if (!uploadConfig.allowedExtensions.includes(extension)) {
-      throw new AppError(ERROR_CODES.INVALID_FILE_TYPE, 400);
-    }
+		if (!uploadConfig.allowedExtensions.includes(extension)) {
+			throw new AppError(ERROR_CODES.INVALID_FILE_TYPE, 400);
+		}
 
-    const [contact] = await db
-      .select()
-      .from(contactsTable)
-      .where(eq(contactsTable.id, contactId));
+		const [contact] = await db
+			.select()
+			.from(contactsTable)
+			.where(eq(contactsTable.id, contactId));
 
-    if (!contact) {
-      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
-    }
+		if (!contact) {
+			throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
+		}
 
-    if (contact.userId !== userId) {
-      throw new AppError(ERROR_CODES.UNAUTHORIZED, 401);
-    }
+		if (contact.userId !== userId) {
+			throw new AppError(ERROR_CODES.UNAUTHORIZED, 401);
+		}
 
-    if (contact.avatar) {
-      await this.storageProvider.deleteFile(contact.avatar);
-    }
+		if (contact.avatar) {
+			await this.storageProvider.deleteFile(contact.avatar);
+		}
 
-    const fileName = await this.storageProvider.saveFile(
-      avatarFilename,
-      fileStream,
-    );
+		const fileName = await this.storageProvider.saveFile(
+			avatarFilename,
+			fileStream
+		);
 
-    const [updatedContact] = await db
-      .update(contactsTable)
-      .set({
-        avatar: fileName,
-      })
-      .where(eq(contactsTable.id, contactId))
-      .returning();
+		const [updatedContact] = await db
+			.update(contactsTable)
+			.set({
+				avatar: fileName,
+			})
+			.where(eq(contactsTable.id, contactId))
+			.returning();
 
-    return { avatar: updatedContact.avatar };
-  };
+		return { avatar: updatedContact.avatar };
+	};
 }

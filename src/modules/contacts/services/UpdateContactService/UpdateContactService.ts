@@ -1,42 +1,42 @@
 import { and, eq } from 'drizzle-orm';
+import { injectable } from 'tsyringe';
 
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
-import { injectable } from 'tsyringe';
 
 interface UpdateContactRequest {
-  contactId: string;
-  userId: string;
-  data: {
-    name?: string;
-    email?: string | null;
-    phone?: string;
-  };
+	contactId: string;
+	userId: string;
+	data: {
+		name?: string;
+		email?: string | null;
+		phone?: string;
+	};
 }
 
 @injectable()
 export class UpdateContactService {
-  public execute = async ({
-    contactId,
-    userId,
-    data,
-  }: UpdateContactRequest) => {
-    const [updatedContact] = await db
-      .update(contactsTable)
-      .set({
-        ...data,
-      })
-      .where(
-        and(eq(contactsTable.id, contactId), eq(contactsTable.userId, userId)),
-      )
-      .returning();
+	public execute = async ({
+		contactId,
+		userId,
+		data,
+	}: UpdateContactRequest) => {
+		const [updatedContact] = await db
+			.update(contactsTable)
+			.set({
+				...data,
+			})
+			.where(
+				and(eq(contactsTable.id, contactId), eq(contactsTable.userId, userId))
+			)
+			.returning();
 
-    if (!updatedContact) {
-      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
-    }
+		if (!updatedContact) {
+			throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
+		}
 
-    return { contact: updatedContact };
-  };
+		return { contact: updatedContact };
+	};
 }

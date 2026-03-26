@@ -1,50 +1,50 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
+import { inject, injectable } from 'tsyringe';
 
 import { authenticateBodySchema } from '#/modules/users/schemas/authenticateBodySchema.js';
 import { AuthenticateUserService } from '#/modules/users/services/AuthenticateUserService/AuthenticateUserService.js';
 import { env } from '#/shared/env/index.js';
-import { inject, injectable } from 'tsyringe';
 
 @injectable()
 export class AuthenticateUserController {
-  constructor(
-    @inject(AuthenticateUserService)
-    private authenticateUserService: AuthenticateUserService,
-  ) {}
+	constructor(
+		@inject(AuthenticateUserService)
+		private authenticateUserService: AuthenticateUserService
+	) {}
 
-  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-    const { email, password } = authenticateBodySchema.parse(request.body);
+	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
+		const { email, password } = authenticateBodySchema.parse(request.body);
 
-    const user = await this.authenticateUserService.execute({
-      email,
-      password,
-    });
+		const user = await this.authenticateUserService.execute({
+			email,
+			password,
+		});
 
-    const accessToken = await reply.jwtSign(
-      { role: user.role, isVerified: user.isVerified },
-      { sign: { sub: user.id } },
-    );
+		const accessToken = await reply.jwtSign(
+			{ role: user.role, isVerified: user.isVerified },
+			{ sign: { sub: user.id } }
+		);
 
-    const refreshToken = await reply.jwtSign(
-      { role: user.role, isVerified: user.isVerified },
-      { sign: { sub: user.id, expiresIn: '7d' } },
-    );
+		const refreshToken = await reply.jwtSign(
+			{ role: user.role, isVerified: user.isVerified },
+			{ sign: { sub: user.id, expiresIn: '7d' } }
+		);
 
-    return reply
-      .setCookie('refreshToken', refreshToken, {
-        path: '/',
-        secure: env.NODE_ENV === 'production',
-        sameSite: true,
-        httpOnly: true,
-      })
-      .status(200)
-      .send({
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-        },
-        accessToken,
-      });
-  };
+		return reply
+			.setCookie('refreshToken', refreshToken, {
+				path: '/',
+				secure: env.NODE_ENV === 'production',
+				sameSite: true,
+				httpOnly: true,
+			})
+			.status(200)
+			.send({
+				user: {
+					id: user.id,
+					name: user.name,
+					email: user.email,
+				},
+				accessToken,
+			});
+	};
 }

@@ -1,50 +1,50 @@
 import nodemailer, { Transporter } from 'nodemailer';
+import { injectable } from 'tsyringe';
 
 import {
-  IMailProvider,
-  ISendMailDTO,
+	IMailProvider,
+	ISendMailDTO,
 } from '#/shared/container/providers/MailProvider/models/IMailProvider.js';
-import { injectable } from 'tsyringe';
 
 @injectable()
 export class EtherealMailProvider implements IMailProvider {
-  private client: Transporter | null = null;
+	private client: Transporter | null = null;
 
-  private getClient = async (): Promise<Transporter> => {
-    if (!this.client) {
-      const account = await nodemailer.createTestAccount();
+	private getClient = async (): Promise<Transporter> => {
+		if (!this.client) {
+			const account = await nodemailer.createTestAccount();
 
-      const transporter = nodemailer.createTransport({
-        host: account.smtp.host,
-        port: account.smtp.port,
-        secure: account.smtp.secure,
-        auth: {
-          user: account.user,
-          pass: account.pass,
-        },
-      });
+			const transporter = nodemailer.createTransport({
+				host: account.smtp.host,
+				port: account.smtp.port,
+				secure: account.smtp.secure,
+				auth: {
+					user: account.user,
+					pass: account.pass,
+				},
+			});
 
-      this.client = transporter;
-    }
+			this.client = transporter;
+		}
 
-    return this.client;
-  };
+		return this.client;
+	};
 
-  public sendMail = async ({
-    to,
-    subject,
-    body,
-  }: ISendMailDTO): Promise<void> => {
-    const transporter = await this.getClient();
+	public sendMail = async ({
+		to,
+		subject,
+		body,
+	}: ISendMailDTO): Promise<void> => {
+		const transporter = await this.getClient();
 
-    const message = await transporter.sendMail({
-      from: 'Core List API <noreply@corelist.com.br>',
-      to,
-      subject,
-      html: body,
-    });
+		const message = await transporter.sendMail({
+			from: 'Core List API <noreply@corelist.com.br>',
+			to,
+			subject,
+			html: body,
+		});
 
-    console.log('Message sent: %s', message.messageId);
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message));
-  };
+		console.log('Message sent: %s', message.messageId);
+		console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message));
+	};
 }

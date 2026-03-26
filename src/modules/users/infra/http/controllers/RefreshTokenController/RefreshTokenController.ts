@@ -1,35 +1,35 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
+import { injectable } from 'tsyringe';
 
 import { env } from '#/shared/env/index.js';
-import { injectable } from 'tsyringe';
 
 @injectable()
 export class RefreshTokenController {
-  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-    await request.jwtVerify({ onlyCookie: true });
+	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
+		await request.jwtVerify({ onlyCookie: true });
 
-    const { sub, role, isVerified } = request.user;
+		const { sub, role, isVerified } = request.user;
 
-    const accessToken = await reply.jwtSign(
-      { role, isVerified },
-      { sign: { sub } },
-    );
+		const accessToken = await reply.jwtSign(
+			{ role, isVerified },
+			{ sign: { sub } }
+		);
 
-    const refreshToken = await reply.jwtSign(
-      { role, isVerified },
-      { sign: { sub, expiresIn: '7d' } },
-    );
+		const refreshToken = await reply.jwtSign(
+			{ role, isVerified },
+			{ sign: { sub, expiresIn: '7d' } }
+		);
 
-    return reply
-      .setCookie('refreshToken', refreshToken, {
-        path: '/',
-        secure: env.NODE_ENV === 'production',
-        sameSite: true,
-        httpOnly: true,
-      })
-      .status(200)
-      .send({
-        accessToken,
-      });
-  };
+		return reply
+			.setCookie('refreshToken', refreshToken, {
+				path: '/',
+				secure: env.NODE_ENV === 'production',
+				sameSite: true,
+				httpOnly: true,
+			})
+			.status(200)
+			.send({
+				accessToken,
+			});
+	};
 }

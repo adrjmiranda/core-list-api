@@ -140,9 +140,6 @@ vite.config.ts.timestamp-*
 
 /src/generated/prisma
 
-# vscode settings
-.vscode
-
 # uploads files
 tmp/uploads/*
 

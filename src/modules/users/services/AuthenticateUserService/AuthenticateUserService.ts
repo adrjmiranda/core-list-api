@@ -1,5 +1,6 @@
 import { compare } from 'bcrypt';
 import { eq } from 'drizzle-orm';
+import { injectable } from 'tsyringe';
 import * as z from 'zod';
 
 import { authenticateBodySchema } from '#/modules/users/schemas/authenticateBodySchema.js';
@@ -7,35 +8,34 @@ import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
-import { injectable } from 'tsyringe';
 
 type AuthenticateUserServiceRequest = z.infer<typeof authenticateBodySchema>;
 
 @injectable()
 export class AuthenticateUserService {
-  public execute = async ({
-    email,
-    password,
-  }: AuthenticateUserServiceRequest) => {
-    const [user] = await db
-      .select()
-      .from(usersTable)
-      .where(eq(usersTable.email, email));
+	public execute = async ({
+		email,
+		password,
+	}: AuthenticateUserServiceRequest) => {
+		const [user] = await db
+			.select()
+			.from(usersTable)
+			.where(eq(usersTable.email, email));
 
-    if (!user.isVerified) {
-      throw new AppError(ERROR_CODES.USER_NOT_VERIFIED, 403);
-    }
+		if (!user.isVerified) {
+			throw new AppError(ERROR_CODES.USER_NOT_VERIFIED, 403);
+		}
 
-    if (!user) {
-      throw new AppError(ERROR_CODES.INVALID_CREDENTIALS, 401);
-    }
+		if (!user) {
+			throw new AppError(ERROR_CODES.INVALID_CREDENTIALS, 401);
+		}
 
-    const passwordMatch = await compare(password, user.passwordHash);
+		const passwordMatch = await compare(password, user.passwordHash);
 
-    if (!passwordMatch) {
-      throw new AppError(ERROR_CODES.INVALID_CREDENTIALS, 401);
-    }
+		if (!passwordMatch) {
+			throw new AppError(ERROR_CODES.INVALID_CREDENTIALS, 401);
+		}
 
-    return user;
-  };
+		return user;
+	};
 }

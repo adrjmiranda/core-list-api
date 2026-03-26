@@ -1,44 +1,44 @@
 import { compare, hash } from 'bcrypt';
 import { eq } from 'drizzle-orm';
+import { injectable } from 'tsyringe';
 
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
-import { injectable } from 'tsyringe';
 
 interface UpdatePasswordRequest {
-  userId: string;
-  oldPassword: string;
-  newPassword: string;
+	userId: string;
+	oldPassword: string;
+	newPassword: string;
 }
 
 @injectable()
 export class UpdatePasswordService {
-  public execute = async ({
-    userId,
-    oldPassword,
-    newPassword,
-  }: UpdatePasswordRequest) => {
-    const user = await db.query.usersTable.findFirst({
-      where: eq(usersTable.id, userId),
-    });
+	public execute = async ({
+		userId,
+		oldPassword,
+		newPassword,
+	}: UpdatePasswordRequest) => {
+		const user = await db.query.usersTable.findFirst({
+			where: eq(usersTable.id, userId),
+		});
 
-    if (!user) {
-      throw new AppError(ERROR_CODES.USER_NOT_FOUND, 404);
-    }
+		if (!user) {
+			throw new AppError(ERROR_CODES.USER_NOT_FOUND, 404);
+		}
 
-    const isOldPasswordCorrect = await compare(oldPassword, user.passwordHash);
+		const isOldPasswordCorrect = await compare(oldPassword, user.passwordHash);
 
-    if (!isOldPasswordCorrect) {
-      throw new AppError(ERROR_CODES.INVALID_CREDENTIALS, 401);
-    }
+		if (!isOldPasswordCorrect) {
+			throw new AppError(ERROR_CODES.INVALID_CREDENTIALS, 401);
+		}
 
-    const newPasswordHash = await hash(newPassword, 10);
+		const newPasswordHash = await hash(newPassword, 10);
 
-    await db
-      .update(usersTable)
-      .set({ passwordHash: newPasswordHash })
-      .where(eq(usersTable.id, userId));
-  };
+		await db
+			.update(usersTable)
+			.set({ passwordHash: newPasswordHash })
+			.where(eq(usersTable.id, userId));
+	};
 }

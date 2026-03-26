@@ -3,48 +3,48 @@ import path from 'node:path';
 import { and, eq } from 'drizzle-orm';
 import fs from 'fs';
 import mime from 'mime-types';
+import { injectable } from 'tsyringe';
 
 import uploadConfig from '#/config/upload.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
-import { injectable } from 'tsyringe';
 
 interface ShowContactAvatarRequest {
-  contactId: string;
-  userId: string;
+	contactId: string;
+	userId: string;
 }
 
 @injectable()
 export class ShowContactAvatarService {
-  public execute = async ({ contactId, userId }: ShowContactAvatarRequest) => {
-    const [contact] = await db
-      .select()
-      .from(contactsTable)
-      .where(
-        and(eq(contactsTable.id, contactId), eq(contactsTable.userId, userId)),
-      )
-      .limit(1);
+	public execute = async ({ contactId, userId }: ShowContactAvatarRequest) => {
+		const [contact] = await db
+			.select()
+			.from(contactsTable)
+			.where(
+				and(eq(contactsTable.id, contactId), eq(contactsTable.userId, userId))
+			)
+			.limit(1);
 
-    if (!contact) {
-      throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
-    }
+		if (!contact) {
+			throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
+		}
 
-    if (!contact.avatar) {
-      throw new AppError(ERROR_CODES.CONTACT_AVATAR_NOT_FOUND, 401);
-    }
+		if (!contact.avatar) {
+			throw new AppError(ERROR_CODES.CONTACT_AVATAR_NOT_FOUND, 401);
+		}
 
-    const filePath = path.resolve(uploadConfig.uploadsFolder, contact.avatar);
+		const filePath = path.resolve(uploadConfig.uploadsFolder, contact.avatar);
 
-    if (!fs.existsSync(filePath)) {
-      throw new AppError(ERROR_CODES.FILE_NOT_FOUND, 404);
-    }
+		if (!fs.existsSync(filePath)) {
+			throw new AppError(ERROR_CODES.FILE_NOT_FOUND, 404);
+		}
 
-    const contentType = mime.lookup(filePath) || 'application/octet-stream';
+		const contentType = mime.lookup(filePath) || 'application/octet-stream';
 
-    const stream = fs.createReadStream(filePath);
+		const stream = fs.createReadStream(filePath);
 
-    return { stream, contentType };
-  };
+		return { stream, contentType };
+	};
 }
