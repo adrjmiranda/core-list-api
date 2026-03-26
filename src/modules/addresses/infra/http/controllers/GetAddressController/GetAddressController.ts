@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { getAddressParamsSchema } from '#/modules/addresses/schemas/getAddressParamsSchema.js';
+import { getAddressParamsSchema } from '#/modules/addresses/schemas/params/getAddressParamsSchema.js';
 import { GetAddressService } from '#/modules/addresses/services/GetAddressService/GetAddressService.js';
 
 @injectable()

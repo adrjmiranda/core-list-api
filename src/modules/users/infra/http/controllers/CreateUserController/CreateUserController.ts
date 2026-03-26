@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { createUserBodySchema } from '#/modules/users/schemas/createUserBodySchema.js';
+import { createUserBodySchema } from '#/modules/users/schemas/body/createUserBodySchema.js';
 import { CreateUserService } from '#/modules/users/services/CreateUserService/CreateUserService.js';
 
 @injectable()

@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { updatePasswordBodySchema } from '#/modules/users/schemas/updatePasswordBodySchema.js';
+import { updatePasswordBodySchema } from '#/modules/users/schemas/body/updatePasswordBodySchema.js';
 import { UpdatePasswordService } from '#/modules/users/services/UpdatePasswordService/UpdatePasswordService.js';
 
 @injectable()

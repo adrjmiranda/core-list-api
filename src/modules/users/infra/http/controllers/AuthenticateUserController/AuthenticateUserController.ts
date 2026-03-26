@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { authenticateBodySchema } from '#/modules/users/schemas/authenticateBodySchema.js';
+import { authenticateBodySchema } from '#/modules/users/schemas/body/authenticateBodySchema.js';
 import { AuthenticateUserService } from '#/modules/users/services/AuthenticateUserService/AuthenticateUserService.js';
 import { env } from '#/shared/env/index.js';
 

@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { attachTagParamsSchema } from '#/modules/contacts/schemas/attachTagParamsSchema.js';
+import { attachTagParamsSchema } from '#/modules/contacts/schemas/params/attachTagParamsSchema.js';
 import { AttachTagToContactService } from '#/modules/contacts/services/AttachTagToContactService/AttachTagToContactService.js';
 
 @injectable()

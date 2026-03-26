@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { resendVerificationBodySchema } from '#/modules/users/schemas/resendVerificationBodySchema.js';
+import { resendVerificationBodySchema } from '#/modules/users/schemas/body/resendVerificationBodySchema.js';
 import { SendVerificationEmailService } from '#/modules/users/services/SendVerificationEmailService/SendVerificationEmailService.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';

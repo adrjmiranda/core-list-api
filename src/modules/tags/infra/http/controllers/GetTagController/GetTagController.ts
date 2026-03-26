@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { getTagParamsSchema } from '#/modules/tags/schemas/getTagParamsSchema.js';
+import { getTagParamsSchema } from '#/modules/tags/schemas/params/getTagParamsSchema.js';
 import { GetTagService } from '#/modules/tags/services/GetTagService/GetTagService.js';
 
 @injectable()

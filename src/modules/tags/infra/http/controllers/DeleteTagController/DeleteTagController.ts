@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { deleteTagParamsSchema } from '#/modules/tags/schemas/deleteTagParamsSchema.js';
+import { deleteTagParamsSchema } from '#/modules/tags/schemas/params/deleteTagParamsSchema.js';
 import { DeleteTagService } from '#/modules/tags/services/DeleteTagService/DeleteTagService.js';
 
 @injectable()

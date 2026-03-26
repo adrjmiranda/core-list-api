@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { showContactAvatarParamsSchema } from '#/modules/contacts/schemas/showContactAvatarParamsSchema.js';
+import { showContactAvatarParamsSchema } from '#/modules/contacts/schemas/params/showContactAvatarParamsSchema.js';
 import { ShowContactAvatarService } from '#/modules/contacts/services/ShowContactAvatarService/ShowContactAvatarService.js';
 
 @injectable()

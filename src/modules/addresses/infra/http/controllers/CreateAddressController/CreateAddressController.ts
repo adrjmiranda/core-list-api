@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { createAddressBodySchema } from '#/modules/addresses/schemas/createAddressBodySchema.js';
+import { createAddressBodySchema } from '#/modules/addresses/schemas/body/createAddressBodySchema.js';
 import { CreateAddressService } from '#/modules/addresses/services/CreateAddressService/CreateAddressService.js';
-import { getContactParamsSchema } from '#/modules/contacts/schemas/getContactParamsSchema.js';
+import { getContactParamsSchema } from '#/modules/contacts/schemas/params/getContactParamsSchema.js';
 
 @injectable()
 export class CreateAddressController {

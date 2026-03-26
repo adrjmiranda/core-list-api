@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { ListAddressesService } from '#/modules/addresses/services/ListAddressesService/ListAddressesService.js';
-import { getContactParamsSchema } from '#/modules/contacts/schemas/getContactParamsSchema.js';
+import { getContactParamsSchema } from '#/modules/contacts/schemas/params/getContactParamsSchema.js';
 
 @injectable()
 export class ListAddressesController {

@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { listContactsQuerySchema } from '#/modules/contacts/schemas/listContactsQuerySchema.js';
+import { listContactsQuerySchema } from '#/modules/contacts/schemas/queries/listContactsQuerySchema.js';
 import { ListContactsService } from '#/modules/contacts/services/ListContactsService/ListContactsService.js';
 
 @injectable()

@@ -1,8 +1,8 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { getContactParamsSchema } from '#/modules/contacts/schemas/getContactParamsSchema.js';
-import { updateContactBodySchema } from '#/modules/contacts/schemas/updateContactBodySchema.js';
+import { updateContactBodySchema } from '#/modules/contacts/schemas/body/updateContactBodySchema.js';
+import { getContactParamsSchema } from '#/modules/contacts/schemas/params/getContactParamsSchema.js';
 import { UpdateContactService } from '#/modules/contacts/services/UpdateContactService/UpdateContactService.js';
 
 @injectable()

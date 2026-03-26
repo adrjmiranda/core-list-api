@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 import { injectable } from 'tsyringe';
 import * as z from 'zod';
 
-import { authenticateBodySchema } from '#/modules/users/schemas/authenticateBodySchema.js';
+import { authenticateBodySchema } from '#/modules/users/schemas/body/authenticateBodySchema.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
