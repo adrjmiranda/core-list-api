@@ -7,7 +7,7 @@ import path from 'path';
 import uploadConfig from '#/config/upload.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { users } from '#/shared/infra/database/drizzle/users.js';
+import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface ShowUserAvatarRequest {
@@ -18,8 +18,8 @@ export class ShowUserAvatarService {
   public async execute({ userId }: ShowUserAvatarRequest) {
     const [user] = await db
       .select()
-      .from(users)
-      .where(and(eq(users.id, userId)))
+      .from(usersTable)
+      .where(and(eq(usersTable.id, userId)))
       .limit(1);
 
     if (!user) {

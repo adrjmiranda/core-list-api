@@ -5,7 +5,7 @@ import uploadConfig from '#/config/upload.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { IStorageProvider } from '#/shared/container/providers/StorageProvider/models/IStorageProvider.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { users } from '#/shared/infra/database/drizzle/users.js';
+import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface UpdateUserAvatarRequest {
@@ -32,7 +32,10 @@ export class UpdateUserAvatarService {
       throw new AppError(ERROR_CODES.INVALID_FILE_TYPE, 400);
     }
 
-    const [user] = await db.select().from(users).where(eq(users.id, userId));
+    const [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, userId));
 
     if (!user) {
       throw new AppError(ERROR_CODES.USER_NOT_FOUND, 404);
@@ -48,12 +51,12 @@ export class UpdateUserAvatarService {
     );
 
     const [updatedUser] = await db
-      .update(users)
+      .update(usersTable)
       .set({
         avatar: fileName,
         updatedAt: new Date(),
       })
-      .where(eq(users.id, userId))
+      .where(eq(usersTable.id, userId))
       .returning();
 
     return { avatar: updatedUser.avatar };

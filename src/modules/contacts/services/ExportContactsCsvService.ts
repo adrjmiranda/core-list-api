@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 
-import { contacts } from '#/shared/infra/database/drizzle/contacts.js';
+import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface ExportContactsCsvRequest {
@@ -11,8 +11,8 @@ export class ExportContactsCsvService {
   public async execute({ userId }: ExportContactsCsvRequest): Promise<string> {
     const userContacts = await db
       .select()
-      .from(contacts)
-      .where(eq(contacts.userId, userId));
+      .from(contactsTable)
+      .where(eq(contactsTable.userId, userId));
 
     if (userContacts.length === 0) {
       return 'Nome,Email,Telefone\n';

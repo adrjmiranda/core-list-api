@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { users } from '#/shared/infra/database/drizzle/users.js';
+import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface UpdatePasswordRequest {
@@ -18,8 +18,8 @@ export class UpdatePasswordService {
     oldPassword,
     newPassword,
   }: UpdatePasswordRequest) {
-    const user = await db.query.users.findFirst({
-      where: eq(users.id, userId),
+    const user = await db.query.usersTable.findFirst({
+      where: eq(usersTable.id, userId),
     });
 
     if (!user) {
@@ -35,8 +35,8 @@ export class UpdatePasswordService {
     const newPasswordHash = await hash(newPassword, 10);
 
     await db
-      .update(users)
+      .update(usersTable)
       .set({ passwordHash: newPasswordHash })
-      .where(eq(users.id, userId));
+      .where(eq(usersTable.id, userId));
   }
 }

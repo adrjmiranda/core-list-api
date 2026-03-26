@@ -5,14 +5,17 @@ import * as z from 'zod';
 import { authenticateBodySchema } from '#/modules/users/schemas/authenticateBodySchema.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { users } from '#/shared/infra/database/drizzle/users.js';
+import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
 
 type AuthenticateUserServiceRequest = z.infer<typeof authenticateBodySchema>;
 
 export class AuthenticateUserService {
   public async execute({ email, password }: AuthenticateUserServiceRequest) {
-    const [user] = await db.select().from(users).where(eq(users.email, email));
+    const [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.email, email));
 
     if (!user.isVerified) {
       throw new AppError(ERROR_CODES.USER_NOT_VERIFIED, 403);

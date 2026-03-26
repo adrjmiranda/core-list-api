@@ -2,7 +2,7 @@ import { and, eq, lt, sql } from 'drizzle-orm';
 import cron from 'node-cron';
 
 import { env } from '#/shared/env/index.js';
-import { users } from '#/shared/infra/database/drizzle/users.js';
+import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
 import { app } from '#/shared/infra/http/app.js';
 
@@ -11,11 +11,11 @@ cron.schedule('0 0 * * *', async () => {
 
   try {
     const deletedUsers = await db
-      .delete(users)
+      .delete(usersTable)
       .where(
         and(
-          eq(users.isVerified, false),
-          lt(users.tokenExpiresAt, sql`NOW() - INTERVAL '3 days'`),
+          eq(usersTable.isVerified, false),
+          lt(usersTable.tokenExpiresAt, sql`NOW() - INTERVAL '3 days'`),
         ),
       )
       .returning();

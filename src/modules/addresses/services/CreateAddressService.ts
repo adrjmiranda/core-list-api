@@ -2,8 +2,8 @@ import { and, eq } from 'drizzle-orm';
 
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { addresses } from '#/shared/infra/database/drizzle/addresses.js';
-import { contacts } from '#/shared/infra/database/drizzle/contacts.js';
+import { addressesTable } from '#/shared/infra/database/drizzle/addresses.js';
+import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface CreateAddressRequest {
@@ -23,29 +23,32 @@ interface CreateAddressRequest {
 
 export class CreateAddressService {
   public async execute({ contactId, userId, data }: CreateAddressRequest) {
-    const contact = await db.query.contacts.findFirst({
-      where: and(eq(contacts.id, contactId), eq(contacts.userId, userId)),
+    const contact = await db.query.contactsTable.findFirst({
+      where: and(
+        eq(contactsTable.id, contactId),
+        eq(contactsTable.userId, userId),
+      ),
     });
 
     if (!contact) {
       throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
     }
 
-    const existingAddress = await db.query.addresses.findFirst({
-      where: eq(addresses.contactId, contactId),
+    const existingAddress = await db.query.addressesTable.findFirst({
+      where: eq(addressesTable.contactId, contactId),
     });
 
     const shouldBeDefault = !existingAddress || data.isDefault === true;
 
     if (shouldBeDefault) {
       await db
-        .update(addresses)
+        .update(addressesTable)
         .set({ isDefault: false })
-        .where(eq(addresses.contactId, contactId));
+        .where(eq(addressesTable.contactId, contactId));
     }
 
     const [address] = await db
-      .insert(addresses)
+      .insert(addressesTable)
       .values({
         ...data,
         contactId,

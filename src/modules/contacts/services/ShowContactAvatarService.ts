@@ -7,7 +7,7 @@ import mime from 'mime-types';
 import uploadConfig from '#/config/upload.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { contacts } from '#/shared/infra/database/drizzle/contacts.js';
+import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface ShowContactAvatarRequest {
@@ -19,8 +19,10 @@ export class ShowContactAvatarService {
   public async execute({ contactId, userId }: ShowContactAvatarRequest) {
     const [contact] = await db
       .select()
-      .from(contacts)
-      .where(and(eq(contacts.id, contactId), eq(contacts.userId, userId)))
+      .from(contactsTable)
+      .where(
+        and(eq(contactsTable.id, contactId), eq(contactsTable.userId, userId)),
+      )
       .limit(1);
 
     if (!contact) {

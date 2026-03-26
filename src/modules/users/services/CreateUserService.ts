@@ -5,10 +5,10 @@ import { SendVerificationEmailService } from '#/modules/users/services/SendVerif
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { IMailProvider } from '#/shared/container/providers/MailProvider/models/IMailProvider.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { users } from '#/shared/infra/database/drizzle/users.js';
+import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
 
-type CreateUserServiceRequest = typeof users.$inferInsert;
+type CreateUserServiceRequest = typeof usersTable.$inferInsert;
 
 export class CreateUserService {
   constructor(private mailProvider: IMailProvider) {}
@@ -20,8 +20,8 @@ export class CreateUserService {
 
     const [userWithSameEmail] = await db
       .select()
-      .from(users)
-      .where(eq(users.email, email))
+      .from(usersTable)
+      .where(eq(usersTable.email, email))
       .limit(1);
 
     if (userWithSameEmail) {
@@ -35,7 +35,7 @@ export class CreateUserService {
     tokenExpiresAt.setHours(tokenExpiresAt.getHours() + 24);
 
     const [user] = await db
-      .insert(users)
+      .insert(usersTable)
       .values({
         name,
         email,
@@ -45,9 +45,9 @@ export class CreateUserService {
         tokenExpiresAt,
       })
       .returning({
-        id: users.id,
-        name: users.name,
-        email: users.email,
+        id: usersTable.id,
+        name: usersTable.name,
+        email: usersTable.email,
       });
 
     const sendVerificationEmail = new SendVerificationEmailService(

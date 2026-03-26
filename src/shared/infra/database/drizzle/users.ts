@@ -9,7 +9,7 @@ import {
 
 export const userRoleEnum = pgEnum('user_role', ['ADMIN', 'USER', 'MANAGER']);
 
-export const users = pgTable('users', {
+export const usersTable = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
   email: text('email').notNull().unique(),
   name: text('name').notNull(),

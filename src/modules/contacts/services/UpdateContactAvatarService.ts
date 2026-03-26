@@ -5,7 +5,7 @@ import uploadConfig from '#/config/upload.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { IStorageProvider } from '#/shared/container/providers/StorageProvider/models/IStorageProvider.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { contacts } from '#/shared/infra/database/drizzle/contacts.js';
+import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface UpdateContactAvatarRequest {
@@ -32,8 +32,8 @@ export class UpdateContactAvatarService {
 
     const [contact] = await db
       .select()
-      .from(contacts)
-      .where(eq(contacts.id, contactId));
+      .from(contactsTable)
+      .where(eq(contactsTable.id, contactId));
 
     if (!contact) {
       throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
@@ -53,11 +53,11 @@ export class UpdateContactAvatarService {
     );
 
     const [updatedContact] = await db
-      .update(contacts)
+      .update(contactsTable)
       .set({
         avatar: fileName,
       })
-      .where(eq(contacts.id, contactId))
+      .where(eq(contactsTable.id, contactId))
       .returning();
 
     return { avatar: updatedContact.avatar };

@@ -2,7 +2,7 @@ import { and, eq, ne } from 'drizzle-orm';
 
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { tags } from '#/shared/infra/database/drizzle/tags.js';
+import { tagsTable } from '#/shared/infra/database/drizzle/tags.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface UpdateTagRequest {
@@ -18,8 +18,8 @@ export class UpdateTagService {
   public async execute({ tagId, userId, data }: UpdateTagRequest) {
     const [tag] = await db
       .select()
-      .from(tags)
-      .where(and(eq(tags.id, tagId), eq(tags.userId, userId)));
+      .from(tagsTable)
+      .where(and(eq(tagsTable.id, tagId), eq(tagsTable.userId, userId)));
 
     if (!tag) {
       throw new AppError(ERROR_CODES.TAG_NOT_FOUND, 404);
@@ -28,12 +28,12 @@ export class UpdateTagService {
     if (data.name && data.name !== tag.name) {
       const [tagWithSameName] = await db
         .select()
-        .from(tags)
+        .from(tagsTable)
         .where(
           and(
-            eq(tags.name, data.name),
-            eq(tags.userId, userId),
-            ne(tags.id, tagId),
+            eq(tagsTable.name, data.name),
+            eq(tagsTable.userId, userId),
+            ne(tagsTable.id, tagId),
           ),
         );
 
@@ -43,12 +43,12 @@ export class UpdateTagService {
     }
 
     const [updatedTag] = await db
-      .update(tags)
+      .update(tagsTable)
       .set({
         name: data.name ?? tag.name,
         color: data.color ?? tag.color,
       })
-      .where(and(eq(tags.id, tagId), eq(tags.userId, userId)))
+      .where(and(eq(tagsTable.id, tagId), eq(tagsTable.userId, userId)))
       .returning();
 
     return { tag: updatedTag };

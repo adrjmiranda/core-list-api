@@ -1,7 +1,7 @@
 import { and, eq, exists, ilike, inArray, or, SQL, sql } from 'drizzle-orm';
 
-import { contacts } from '#/shared/infra/database/drizzle/contacts.js';
-import { contactsToTags } from '#/shared/infra/database/drizzle/tags.js';
+import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
+import { contactsToTagsTable } from '#/shared/infra/database/drizzle/tags.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface ListContactsRequest {
@@ -24,17 +24,17 @@ export class ListContactsService {
   }: ListContactsRequest) {
     const offset = (page - 1) * perPage;
 
-    const whereConditions: SQL[] = [eq(contacts.userId, userId)];
+    const whereConditions: SQL[] = [eq(contactsTable.userId, userId)];
 
     if (isFavorite !== undefined) {
-      whereConditions.push(eq(contacts.isFavorite, isFavorite));
+      whereConditions.push(eq(contactsTable.isFavorite, isFavorite));
     }
 
     if (search) {
       whereConditions.push(
         or(
-          ilike(contacts.name, `%${search}%`),
-          ilike(contacts.email, `%${search}%`),
+          ilike(contactsTable.name, `%${search}%`),
+          ilike(contactsTable.email, `%${search}%`),
         ) as SQL,
       );
     }
@@ -44,11 +44,11 @@ export class ListContactsService {
         exists(
           db
             .select()
-            .from(contactsToTags)
+            .from(contactsToTagsTable)
             .where(
               and(
-                eq(contactsToTags.contactId, contacts.id),
-                inArray(contactsToTags.tagId, tagIds),
+                eq(contactsToTagsTable.contactId, contactsTable.id),
+                inArray(contactsToTagsTable.tagId, tagIds),
               ),
             ),
         ),
@@ -59,15 +59,15 @@ export class ListContactsService {
 
     const data = await db
       .select()
-      .from(contacts)
+      .from(contactsTable)
       .where(filteredConditions)
       .limit(perPage)
       .offset(offset)
-      .orderBy(contacts.name);
+      .orderBy(contactsTable.name);
 
     const [totalCount] = await db
       .select({ count: sql<number>`COUNT(*)` })
-      .from(contacts)
+      .from(contactsTable)
       .where(and(...whereConditions));
 
     return {

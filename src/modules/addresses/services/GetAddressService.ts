@@ -2,8 +2,8 @@ import { and, eq } from 'drizzle-orm';
 
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { addresses } from '#/shared/infra/database/drizzle/addresses.js';
-import { contacts } from '#/shared/infra/database/drizzle/contacts.js';
+import { addressesTable } from '#/shared/infra/database/drizzle/addresses.js';
+import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface GetAddressRequest {
@@ -14,8 +14,11 @@ interface GetAddressRequest {
 
 export class GetAddressService {
   public async execute({ contactId, addressId, userId }: GetAddressRequest) {
-    const contact = await db.query.contacts.findFirst({
-      where: and(eq(contacts.id, contactId), eq(contacts.userId, userId)),
+    const contact = await db.query.contactsTable.findFirst({
+      where: and(
+        eq(contactsTable.id, contactId),
+        eq(contactsTable.userId, userId),
+      ),
     });
 
     if (!contact) {
@@ -24,9 +27,12 @@ export class GetAddressService {
 
     const [address] = await db
       .select()
-      .from(addresses)
+      .from(addressesTable)
       .where(
-        and(eq(addresses.id, addressId), eq(addresses.contactId, contactId)),
+        and(
+          eq(addressesTable.id, addressId),
+          eq(addressesTable.contactId, contactId),
+        ),
       );
 
     if (!address) {

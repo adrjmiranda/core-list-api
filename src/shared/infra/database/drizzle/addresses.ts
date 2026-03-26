@@ -1,8 +1,8 @@
 import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
-import { contacts } from '#/shared/infra/database/drizzle/contacts.js';
+import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 
-export const addresses = pgTable('addresses', {
+export const addressesTable = pgTable('addresses', {
   id: uuid('id').primaryKey().defaultRandom(),
   street: text('street').notNull(),
   number: text('number').notNull(),
@@ -16,7 +16,7 @@ export const addresses = pgTable('addresses', {
 
   contactId: uuid('contact_id')
     .notNull()
-    .references(() => contacts.id, { onDelete: 'cascade' }),
+    .references(() => contactsTable.id, { onDelete: 'cascade' }),
 
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at')

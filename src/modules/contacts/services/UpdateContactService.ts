@@ -2,7 +2,7 @@ import { and, eq } from 'drizzle-orm';
 
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { contacts } from '#/shared/infra/database/drizzle/contacts.js';
+import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface UpdateContactRequest {
@@ -18,11 +18,13 @@ interface UpdateContactRequest {
 export class UpdateContactService {
   public async execute({ contactId, userId, data }: UpdateContactRequest) {
     const [updatedContact] = await db
-      .update(contacts)
+      .update(contactsTable)
       .set({
         ...data,
       })
-      .where(and(eq(contacts.id, contactId), eq(contacts.userId, userId)))
+      .where(
+        and(eq(contactsTable.id, contactId), eq(contactsTable.userId, userId)),
+      )
       .returning();
 
     if (!updatedContact) {

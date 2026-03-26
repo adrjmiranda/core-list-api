@@ -2,7 +2,7 @@ import { and, eq } from 'drizzle-orm';
 
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { tags } from '#/shared/infra/database/drizzle/tags.js';
+import { tagsTable } from '#/shared/infra/database/drizzle/tags.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface GetTagRequest {
@@ -14,8 +14,8 @@ export class GetTagService {
   public async execute({ tagId, userId }: GetTagRequest) {
     const [tag] = await db
       .select()
-      .from(tags)
-      .where(and(eq(tags.id, tagId), eq(tags.userId, userId)));
+      .from(tagsTable)
+      .where(and(eq(tagsTable.id, tagId), eq(tagsTable.userId, userId)));
 
     if (!tag) {
       throw new AppError(ERROR_CODES.TAG_NOT_FOUND, 404);

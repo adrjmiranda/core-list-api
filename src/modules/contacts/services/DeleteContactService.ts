@@ -2,7 +2,7 @@ import { and, eq } from 'drizzle-orm';
 
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
-import { contacts } from '#/shared/infra/database/drizzle/contacts.js';
+import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface DeleteContactRequest {
@@ -16,8 +16,10 @@ export class DeleteContactService {
     userId,
   }: DeleteContactRequest): Promise<void> {
     const [deletedContact] = await db
-      .delete(contacts)
-      .where(and(eq(contacts.id, contactId), eq(contacts.userId, userId)))
+      .delete(contactsTable)
+      .where(
+        and(eq(contactsTable.id, contactId), eq(contactsTable.userId, userId)),
+      )
       .returning();
 
     if (!deletedContact) {

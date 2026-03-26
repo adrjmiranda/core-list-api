@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 
-import { tags } from '#/shared/infra/database/drizzle/tags.js';
+import { tagsTable } from '#/shared/infra/database/drizzle/tags.js';
 import { db } from '#/shared/infra/database/index.js';
 
 interface ListTagsRequest {
@@ -9,7 +9,10 @@ interface ListTagsRequest {
 
 export class ListTagsService {
   public async execute({ userId }: ListTagsRequest) {
-    const tagList = await db.select().from(tags).where(eq(tags.userId, userId));
+    const tagList = await db
+      .select()
+      .from(tagsTable)
+      .where(eq(tagsTable.userId, userId));
 
     return { tagList };
   }
