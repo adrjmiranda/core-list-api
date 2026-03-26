@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { ShowUserAvatarService } from '@/modules/users/services/ShowUserAvatarService.js';
+import { ShowUserAvatarService } from '#/modules/users/services/ShowUserAvatarService.js';
 
 export class ShowUserAvatarController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

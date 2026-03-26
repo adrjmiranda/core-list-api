@@ -1,10 +1,10 @@
 import { compare, hash } from 'bcrypt';
 import { eq } from 'drizzle-orm';
 
-import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
-import { AppError } from '@/shared/errors/AppError.js';
-import { users } from '@/shared/infra/database/drizzle/users.js';
-import { db } from '@/shared/infra/database/index.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
+import { AppError } from '#/shared/errors/AppError.js';
+import { users } from '#/shared/infra/database/drizzle/users.js';
+import { db } from '#/shared/infra/database/index.js';
 
 interface UpdatePasswordRequest {
   userId: string;

@@ -3,10 +3,10 @@ import path from 'path';
 import Stream from 'stream';
 import { pipeline } from 'stream/promises';
 
-import uploadConfig from '@/config/upload.js';
-import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
-import { IStorageProvider } from '@/shared/container/providers/StorageProvider/models/IStorageProvider.js';
-import { AppError } from '@/shared/errors/AppError.js';
+import uploadConfig from '#/config/upload.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
+import { IStorageProvider } from '#/shared/container/providers/StorageProvider/models/IStorageProvider.js';
+import { AppError } from '#/shared/errors/AppError.js';
 
 export class DiskStorageProvider implements IStorageProvider {
   public async saveFile(

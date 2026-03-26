@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { GetUserProfileService } from '@/modules/users/services/GetUserProfileService.js';
+import { GetUserProfileService } from '#/modules/users/services/GetUserProfileService.js';
 
 export class GetUserProfileController {
   public async handle(request: FastifyRequest, response: FastifyReply) {

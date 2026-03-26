@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { attachTagParamsSchema } from '@/modules/contacts/schemas/attachTagParamsSchema.js';
-import { AttachTagToContactService } from '@/modules/contacts/services/AttachTagToContactService.js';
+import { attachTagParamsSchema } from '#/modules/contacts/schemas/attachTagParamsSchema.js';
+import { AttachTagToContactService } from '#/modules/contacts/services/AttachTagToContactService.js';
 
 export class AttachTagToContactController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

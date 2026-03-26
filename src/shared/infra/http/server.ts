@@ -1,10 +1,10 @@
 import { and, eq, lt, sql } from 'drizzle-orm';
 import cron from 'node-cron';
 
-import { env } from '@/shared/env/index.js';
-import { users } from '@/shared/infra/database/drizzle/users.js';
-import { db } from '@/shared/infra/database/index.js';
-import { app } from '@/shared/infra/http/app.js';
+import { env } from '#/shared/env/index.js';
+import { users } from '#/shared/infra/database/drizzle/users.js';
+import { db } from '#/shared/infra/database/index.js';
+import { app } from '#/shared/infra/http/app.js';
 
 cron.schedule('0 0 * * *', async () => {
   console.log('🧹 Executando limpeza de usuários fantasmas...');

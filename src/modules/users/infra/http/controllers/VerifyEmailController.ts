@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { verifyEmailQuerySchema } from '@/modules/users/schemas/verifyEmailQuerySchema.js';
-import { VerifyEmailService } from '@/modules/users/services/VerifyEmailService.js';
-import { env } from '@/shared/env/index.js';
+import { verifyEmailQuerySchema } from '#/modules/users/schemas/verifyEmailQuerySchema.js';
+import { VerifyEmailService } from '#/modules/users/services/VerifyEmailService.js';
+import { env } from '#/shared/env/index.js';
 
 export class VerifyEmailController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

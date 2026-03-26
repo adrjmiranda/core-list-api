@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { ListAddressesService } from '@/modules/addresses/services/ListAddressesService.js';
-import { getContactParamsSchema } from '@/modules/contacts/schemas/getContactParamsSchema.js';
+import { ListAddressesService } from '#/modules/addresses/services/ListAddressesService.js';
+import { getContactParamsSchema } from '#/modules/contacts/schemas/getContactParamsSchema.js';
 
 export class ListAddressesController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

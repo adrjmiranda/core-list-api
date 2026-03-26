@@ -1,8 +1,8 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import { authenticateBodySchema } from '@/modules/users/schemas/authenticateBodySchema.js';
-import { AuthenticateUserService } from '@/modules/users/services/AuthenticateUserService.js';
-import { env } from '@/shared/env/index.js';
+import { authenticateBodySchema } from '#/modules/users/schemas/authenticateBodySchema.js';
+import { AuthenticateUserService } from '#/modules/users/services/AuthenticateUserService.js';
+import { env } from '#/shared/env/index.js';
 
 export class AuthenticateUserController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

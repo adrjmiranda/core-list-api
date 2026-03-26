@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { updatePasswordBodySchema } from '@/modules/users/schemas/updatePasswordBodySchema.js';
-import { UpdatePasswordService } from '@/modules/users/services/UpdatePasswordService.js';
+import { updatePasswordBodySchema } from '#/modules/users/schemas/updatePasswordBodySchema.js';
+import { UpdatePasswordService } from '#/modules/users/services/UpdatePasswordService.js';
 
 export class UpdatePasswordController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

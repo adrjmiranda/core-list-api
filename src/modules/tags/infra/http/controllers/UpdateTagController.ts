@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { updateTagBodySchema } from '@/modules/tags/schemas/updateTagBodySchema.js';
-import { updateTagParamsSchema } from '@/modules/tags/schemas/updateTagParamsSchema.js';
-import { UpdateTagService } from '@/modules/tags/services/UpdateTagService.js';
+import { updateTagBodySchema } from '#/modules/tags/schemas/updateTagBodySchema.js';
+import { updateTagParamsSchema } from '#/modules/tags/schemas/updateTagParamsSchema.js';
+import { UpdateTagService } from '#/modules/tags/services/UpdateTagService.js';
 
 export class UpdateTagController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

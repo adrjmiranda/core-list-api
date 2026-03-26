@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
-import { AppError } from '@/shared/errors/AppError.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
+import { AppError } from '#/shared/errors/AppError.js';
 
 export async function verifyJWT(request: FastifyRequest, _reply: FastifyReply) {
   try {

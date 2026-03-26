@@ -4,11 +4,11 @@ import { and, eq } from 'drizzle-orm';
 import mime from 'mime-types';
 import path from 'path';
 
-import uploadConfig from '@/config/upload.js';
-import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
-import { AppError } from '@/shared/errors/AppError.js';
-import { users } from '@/shared/infra/database/drizzle/users.js';
-import { db } from '@/shared/infra/database/index.js';
+import uploadConfig from '#/config/upload.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
+import { AppError } from '#/shared/errors/AppError.js';
+import { users } from '#/shared/infra/database/drizzle/users.js';
+import { db } from '#/shared/infra/database/index.js';
 
 interface ShowUserAvatarRequest {
   userId: string;

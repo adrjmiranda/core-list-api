@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { ListTagsService } from '@/modules/tags/services/ListTagsService.js';
+import { ListTagsService } from '#/modules/tags/services/ListTagsService.js';
 
 export class ListTagsController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

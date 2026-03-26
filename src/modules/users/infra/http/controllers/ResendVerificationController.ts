@@ -1,13 +1,13 @@
 import { eq } from 'drizzle-orm';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { resendVerificationBodySchema } from '@/modules/users/schemas/resendVerificationBodySchema.js';
-import { SendVerificationEmailService } from '@/modules/users/services/SendVerificationEmailService.js';
-import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
-import { EtherealMailProvider } from '@/shared/container/providers/MailProvider/implementations/EtherealMailProvider.js';
-import { AppError } from '@/shared/errors/AppError.js';
-import { users } from '@/shared/infra/database/drizzle/users.js';
-import { db } from '@/shared/infra/database/index.js';
+import { resendVerificationBodySchema } from '#/modules/users/schemas/resendVerificationBodySchema.js';
+import { SendVerificationEmailService } from '#/modules/users/services/SendVerificationEmailService.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
+import { EtherealMailProvider } from '#/shared/container/providers/MailProvider/implementations/EtherealMailProvider.js';
+import { AppError } from '#/shared/errors/AppError.js';
+import { users } from '#/shared/infra/database/drizzle/users.js';
+import { db } from '#/shared/infra/database/index.js';
 
 export class ResendVerificationController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

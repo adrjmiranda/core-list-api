@@ -5,10 +5,10 @@ import fastifyRateLimit from '@fastify/rate-limit';
 import * as Sentry from '@sentry/node';
 import fastify from 'fastify';
 
-import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
-import { env } from '@/shared/env/index.js';
-import { globalErrorHandler } from '@/shared/infra/http/handlers/globalErrorHandler.js';
-import { appRoutes } from '@/shared/infra/http/routes.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
+import { env } from '#/shared/env/index.js';
+import { globalErrorHandler } from '#/shared/infra/http/handlers/globalErrorHandler.js';
+import { appRoutes } from '#/shared/infra/http/routes.js';
 
 if (env.NODE_ENV === 'production' && env.SENTRY_DSN) {
   Sentry.init({

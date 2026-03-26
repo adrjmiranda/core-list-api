@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { createAddressBodySchema } from '@/modules/addresses/schemas/createAddressBodySchema.js';
-import { CreateAddressService } from '@/modules/addresses/services/CreateAddressService.js';
-import { getContactParamsSchema } from '@/modules/contacts/schemas/getContactParamsSchema.js';
+import { createAddressBodySchema } from '#/modules/addresses/schemas/createAddressBodySchema.js';
+import { CreateAddressService } from '#/modules/addresses/services/CreateAddressService.js';
+import { getContactParamsSchema } from '#/modules/contacts/schemas/getContactParamsSchema.js';
 
 export class CreateAddressController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

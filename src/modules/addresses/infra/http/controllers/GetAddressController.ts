@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { getAddressParamsSchema } from '@/modules/addresses/schemas/getAddressParamsSchema.js';
-import { GetAddressService } from '@/modules/addresses/services/GetAddressService.js';
+import { getAddressParamsSchema } from '#/modules/addresses/schemas/getAddressParamsSchema.js';
+import { GetAddressService } from '#/modules/addresses/services/GetAddressService.js';
 
 export class GetAddressController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

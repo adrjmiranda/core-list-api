@@ -1,8 +1,8 @@
 import { and, eq, exists, ilike, inArray, or, SQL, sql } from 'drizzle-orm';
 
-import { contacts } from '@/shared/infra/database/drizzle/contacts.js';
-import { contactsToTags } from '@/shared/infra/database/drizzle/tags.js';
-import { db } from '@/shared/infra/database/index.js';
+import { contacts } from '#/shared/infra/database/drizzle/contacts.js';
+import { contactsToTags } from '#/shared/infra/database/drizzle/tags.js';
+import { db } from '#/shared/infra/database/index.js';
 
 interface ListContactsRequest {
   userId: string;

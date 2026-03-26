@@ -146,3 +146,5 @@ vite.config.ts.timestamp-*
 # uploads files
 tmp/uploads/*
 
+# db store
+/.postgres_data

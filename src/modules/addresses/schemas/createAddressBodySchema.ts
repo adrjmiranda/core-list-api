@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 
 export const createAddressBodySchema = z.object({
   street: z.string().trim().min(1, ERROR_CODES.INVALID_STREET),

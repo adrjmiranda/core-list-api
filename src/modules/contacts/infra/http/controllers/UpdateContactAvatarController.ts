@@ -1,11 +1,11 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import uploadConfig from '@/config/upload.js';
-import { updateContactAvatarParamsSchema } from '@/modules/contacts/schemas/updateContactAvatarParamsSchema.js';
-import { UpdateContactAvatarService } from '@/modules/contacts/services/UpdateContactAvatarService.js';
-import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
-import { DiskStorageProvider } from '@/shared/container/providers/StorageProvider/implementations/DiskStorageProvider.js';
-import { AppError } from '@/shared/errors/AppError.js';
+import uploadConfig from '#/config/upload.js';
+import { updateContactAvatarParamsSchema } from '#/modules/contacts/schemas/updateContactAvatarParamsSchema.js';
+import { UpdateContactAvatarService } from '#/modules/contacts/services/UpdateContactAvatarService.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
+import { DiskStorageProvider } from '#/shared/container/providers/StorageProvider/implementations/DiskStorageProvider.js';
+import { AppError } from '#/shared/errors/AppError.js';
 
 export class UpdateContactAvatarController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

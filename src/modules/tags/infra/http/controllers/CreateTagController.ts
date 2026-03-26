@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { createTagBodySchema } from '@/modules/tags/schemas/createTagBodySchema.js';
-import { CreateTagService } from '@/modules/tags/services/CreateTagService.js';
+import { createTagBodySchema } from '#/modules/tags/schemas/createTagBodySchema.js';
+import { CreateTagService } from '#/modules/tags/services/CreateTagService.js';
 
 export class CreateTagController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

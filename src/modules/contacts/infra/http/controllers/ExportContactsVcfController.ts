@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { ExportContactsVcfService } from '@/modules/contacts/services/ExportContactsVcfService.js';
+import { ExportContactsVcfService } from '#/modules/contacts/services/ExportContactsVcfService.js';
 
 export class ExportContactsVcfController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

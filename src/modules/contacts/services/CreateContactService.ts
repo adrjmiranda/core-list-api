@@ -1,5 +1,5 @@
-import { contacts } from '@/shared/infra/database/drizzle/contacts.js';
-import { db } from '@/shared/infra/database/index.js';
+import { contacts } from '#/shared/infra/database/drizzle/contacts.js';
+import { db } from '#/shared/infra/database/index.js';
 
 interface CreateContactRequest {
   name: string;

@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { ExportContactsCsvService } from '@/modules/contacts/services/ExportContactsCsvService.js';
+import { ExportContactsCsvService } from '#/modules/contacts/services/ExportContactsCsvService.js';
 
 export class ExportContactsCsvController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

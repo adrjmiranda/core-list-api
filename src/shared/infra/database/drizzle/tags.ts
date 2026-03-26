@@ -7,8 +7,8 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 
-import { contacts } from '@/shared/infra/database/drizzle/contacts.js';
-import { users } from '@/shared/infra/database/drizzle/users.js';
+import { contacts } from '#/shared/infra/database/drizzle/contacts.js';
+import { users } from '#/shared/infra/database/drizzle/users.js';
 
 export const tags = pgTable(
   'tags',

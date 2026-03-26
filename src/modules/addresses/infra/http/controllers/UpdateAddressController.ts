@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { getAddressParamsSchema } from '@/modules/addresses/schemas/getAddressParamsSchema.js';
-import { updateAddressBodySchema } from '@/modules/addresses/schemas/updateAddressBodySchema.js';
-import { UpdateAddressService } from '@/modules/addresses/services/UpdateAddressService.js';
+import { getAddressParamsSchema } from '#/modules/addresses/schemas/getAddressParamsSchema.js';
+import { updateAddressBodySchema } from '#/modules/addresses/schemas/updateAddressBodySchema.js';
+import { UpdateAddressService } from '#/modules/addresses/services/UpdateAddressService.js';
 
 export class UpdateAddressController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

@@ -1,8 +1,8 @@
 import { eq } from 'drizzle-orm';
 
-import { AppError } from '@/shared/errors/AppError.js';
-import { users } from '@/shared/infra/database/drizzle/users.js';
-import { db } from '@/shared/infra/database/index.js';
+import { AppError } from '#/shared/errors/AppError.js';
+import { users } from '#/shared/infra/database/drizzle/users.js';
+import { db } from '#/shared/infra/database/index.js';
 
 interface GetUserProfileRequest {
   userId: string;

@@ -1,12 +1,12 @@
 import { eq } from 'drizzle-orm';
 import path from 'path';
 
-import uploadConfig from '@/config/upload.js';
-import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
-import { IStorageProvider } from '@/shared/container/providers/StorageProvider/models/IStorageProvider.js';
-import { AppError } from '@/shared/errors/AppError.js';
-import { users } from '@/shared/infra/database/drizzle/users.js';
-import { db } from '@/shared/infra/database/index.js';
+import uploadConfig from '#/config/upload.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
+import { IStorageProvider } from '#/shared/container/providers/StorageProvider/models/IStorageProvider.js';
+import { AppError } from '#/shared/errors/AppError.js';
+import { users } from '#/shared/infra/database/drizzle/users.js';
+import { db } from '#/shared/infra/database/index.js';
 
 interface UpdateUserAvatarRequest {
   userId: string;

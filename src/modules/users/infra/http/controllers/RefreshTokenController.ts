@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import { env } from '@/shared/env/index.js';
+import { env } from '#/shared/env/index.js';
 
 export class RefreshTokenController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

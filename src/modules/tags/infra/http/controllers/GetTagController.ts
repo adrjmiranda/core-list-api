@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { getTagParamsSchema } from '@/modules/tags/schemas/getTagParamsSchema.js';
-import { GetTagService } from '@/modules/tags/services/GetTagService.js';
+import { getTagParamsSchema } from '#/modules/tags/schemas/getTagParamsSchema.js';
+import { GetTagService } from '#/modules/tags/services/GetTagService.js';
 
 export class GetTagController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import { createContactBodySchema } from '@/modules/contacts/schemas/createContactBodySchema.js';
-import { CreateContactService } from '@/modules/contacts/services/CreateContactService.js';
+import { createContactBodySchema } from '#/modules/contacts/schemas/createContactBodySchema.js';
+import { CreateContactService } from '#/modules/contacts/services/CreateContactService.js';
 
 export class CreateContactController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

@@ -1,10 +1,10 @@
 import type { FastifyInstance } from 'fastify';
 
-import { AuthenticateUserController } from '@/modules/users/infra/http/controllers/AuthenticateUserController.js';
-import { CreateUserController } from '@/modules/users/infra/http/controllers/CreateUserController.js';
-import { RefreshTokenController } from '@/modules/users/infra/http/controllers/RefreshTokenController.js';
-import { ResendVerificationController } from '@/modules/users/infra/http/controllers/ResendVerificationController.js';
-import { VerifyEmailController } from '@/modules/users/infra/http/controllers/VerifyEmailController.js';
+import { AuthenticateUserController } from '#/modules/users/infra/http/controllers/AuthenticateUserController.js';
+import { CreateUserController } from '#/modules/users/infra/http/controllers/CreateUserController.js';
+import { RefreshTokenController } from '#/modules/users/infra/http/controllers/RefreshTokenController.js';
+import { ResendVerificationController } from '#/modules/users/infra/http/controllers/ResendVerificationController.js';
+import { VerifyEmailController } from '#/modules/users/infra/http/controllers/VerifyEmailController.js';
 
 export async function usersRoutes(app: FastifyInstance): Promise<void> {
   const createUserController = new CreateUserController();

@@ -1,4 +1,4 @@
-import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 
 export class AppError extends Error {
   public readonly code: keyof typeof ERROR_CODES;

@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { showContactAvatarParamsSchema } from '@/modules/contacts/schemas/showContactAvatarParamsSchema.js';
-import { ShowContactAvatarService } from '@/modules/contacts/services/ShowContactAvatarService.js';
+import { showContactAvatarParamsSchema } from '#/modules/contacts/schemas/showContactAvatarParamsSchema.js';
+import { ShowContactAvatarService } from '#/modules/contacts/services/ShowContactAvatarService.js';
 
 export class ShowContactAvatarController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

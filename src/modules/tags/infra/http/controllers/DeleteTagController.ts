@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { deleteTagParamsSchema } from '@/modules/tags/schemas/deleteTagParamsSchema.js';
-import { DeleteTagService } from '@/modules/tags/services/DeleteTagService.js';
+import { deleteTagParamsSchema } from '#/modules/tags/schemas/deleteTagParamsSchema.js';
+import { DeleteTagService } from '#/modules/tags/services/DeleteTagService.js';
 
 export class DeleteTagController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

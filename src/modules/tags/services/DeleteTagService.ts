@@ -1,9 +1,9 @@
 import { and, eq } from 'drizzle-orm';
 
-import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
-import { AppError } from '@/shared/errors/AppError.js';
-import { tags } from '@/shared/infra/database/drizzle/tags.js';
-import { db } from '@/shared/infra/database/index.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
+import { AppError } from '#/shared/errors/AppError.js';
+import { tags } from '#/shared/infra/database/drizzle/tags.js';
+import { db } from '#/shared/infra/database/index.js';
 
 interface DeleteTagRequest {
   tagId: string;

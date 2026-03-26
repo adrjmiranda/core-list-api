@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
 
-import { tags } from '@/shared/infra/database/drizzle/tags.js';
-import { db } from '@/shared/infra/database/index.js';
+import { tags } from '#/shared/infra/database/drizzle/tags.js';
+import { db } from '#/shared/infra/database/index.js';
 
 interface ListTagsRequest {
   userId: string;

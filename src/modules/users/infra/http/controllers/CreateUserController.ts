@@ -1,8 +1,8 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import { createUserBodySchema } from '@/modules/users/schemas/createUserBodySchema.js';
-import { CreateUserService } from '@/modules/users/services/CreateUserService.js';
-import { EtherealMailProvider } from '@/shared/container/providers/MailProvider/implementations/EtherealMailProvider.js';
+import { createUserBodySchema } from '#/modules/users/schemas/createUserBodySchema.js';
+import { CreateUserService } from '#/modules/users/services/CreateUserService.js';
+import { EtherealMailProvider } from '#/shared/container/providers/MailProvider/implementations/EtherealMailProvider.js';
 
 export class CreateUserController {
   public async handle(request: FastifyRequest, reply: FastifyReply) {

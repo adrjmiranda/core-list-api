@@ -2,9 +2,9 @@ import * as Sentry from '@sentry/node';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { ZodError } from 'zod';
 
-import { ERROR_CODES } from '@/shared/constants/errorCodes.js';
-import { env } from '@/shared/env/index.js';
-import { AppError } from '@/shared/errors/AppError.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
+import { env } from '#/shared/env/index.js';
+import { AppError } from '#/shared/errors/AppError.js';
 
 export function globalErrorHandler(
   error: Error,

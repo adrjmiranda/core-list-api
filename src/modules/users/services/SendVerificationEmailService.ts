@@ -1,5 +1,5 @@
-import { IMailProvider } from '@/shared/container/providers/MailProvider/models/IMailProvider.js';
-import { env } from '@/shared/env/index.js';
+import { IMailProvider } from '#/shared/container/providers/MailProvider/models/IMailProvider.js';
+import { env } from '#/shared/env/index.js';
 
 interface Request {
   name: string;

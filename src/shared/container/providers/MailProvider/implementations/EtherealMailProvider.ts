@@ -3,7 +3,7 @@ import nodemailer, { Transporter } from 'nodemailer';
 import {
   IMailProvider,
   ISendMailDTO,
-} from '@/shared/container/providers/MailProvider/models/IMailProvider.js';
+} from '#/shared/container/providers/MailProvider/models/IMailProvider.js';
 
 export class EtherealMailProvider implements IMailProvider {
   private client: Transporter | null = null;
