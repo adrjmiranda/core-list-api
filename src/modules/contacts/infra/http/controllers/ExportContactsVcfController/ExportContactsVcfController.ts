@@ -1,13 +1,19 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { ExportContactsVcfService } from '#/modules/contacts/services/ExportContactsVcfService/ExportContactsVcfService.js';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class ExportContactsVcfController {
-  public async handle(request: FastifyRequest, reply: FastifyReply) {
-    const userId = request.user.sub;
-    const exportContactsVcfService = new ExportContactsVcfService();
+  constructor(
+    @inject(ExportContactsVcfService)
+    private exportContactsVcfService: ExportContactsVcfService,
+  ) {}
 
-    const vcfContent = await exportContactsVcfService.execute({ userId });
+  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
+    const userId = request.user.sub;
+
+    const vcfContent = await this.exportContactsVcfService.execute({ userId });
 
     const fileName = `contacts-${new Date().getTime()}.vcf`;
 
@@ -16,5 +22,5 @@ export class ExportContactsVcfController {
       .header('Content-Type', 'text/vcard; charset=utf-8')
       .header('Content-Disposition', `attachment; filename="${fileName}"`)
       .send(vcfContent);
-  }
+  };
 }

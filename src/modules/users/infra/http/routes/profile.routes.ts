@@ -7,14 +7,15 @@ import { UpdatePasswordController } from '#/modules/users/infra/http/controllers
 import { UpdateUserAvatarController } from '#/modules/users/infra/http/controllers/UpdateUserAvatarController/UpdateUserAvatarController.js';
 import { UpdateUserController } from '#/modules/users/infra/http/controllers/UpdateUserController/UpdateUserController.js';
 import { verifyJWT } from '#/shared/infra/http/middlewares/verifyJWT.js';
+import { container } from 'tsyringe';
 
 export async function profileRoutes(app: FastifyInstance): Promise<void> {
-  const getUserProfileController = new GetUserProfileController();
-  const updateUserController = new UpdateUserController();
-  const deleteUserController = new DeleteUserController();
-  const updatePasswordController = new UpdatePasswordController();
-  const userAvatarController = new UpdateUserAvatarController();
-  const showUserAvatarController = new ShowUserAvatarController();
+  const getUserProfileController = container.resolve(GetUserProfileController);
+  const updateUserController = container.resolve(UpdateUserController);
+  const deleteUserController = container.resolve(DeleteUserController);
+  const updatePasswordController = container.resolve(UpdatePasswordController);
+  const userAvatarController = container.resolve(UpdateUserAvatarController);
+  const showUserAvatarController = container.resolve(ShowUserAvatarController);
 
   app.addHook('onRequest', verifyJWT);
 

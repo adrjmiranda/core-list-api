@@ -3,14 +3,19 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { verifyEmailQuerySchema } from '#/modules/users/schemas/verifyEmailQuerySchema.js';
 import { VerifyEmailService } from '#/modules/users/services/VerifyEmailService/VerifyEmailService.js';
 import { env } from '#/shared/env/index.js';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class VerifyEmailController {
-  public async handle(request: FastifyRequest, reply: FastifyReply) {
+  constructor(
+    @inject(VerifyEmailService) private verifyEmailService: VerifyEmailService,
+  ) {}
+
+  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
     const { token } = verifyEmailQuerySchema.parse(request.query);
 
-    const verifyEmail = new VerifyEmailService();
-    await verifyEmail.execute({ token });
+    await this.verifyEmailService.execute({ token });
 
     return reply.redirect(`${env.WEB_URL}/login?verified=true`);
-  }
+  };
 }

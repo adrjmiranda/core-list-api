@@ -9,14 +9,16 @@ import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface ShowContactAvatarRequest {
   contactId: string;
   userId: string;
 }
 
+@injectable()
 export class ShowContactAvatarService {
-  public async execute({ contactId, userId }: ShowContactAvatarRequest) {
+  public execute = async ({ contactId, userId }: ShowContactAvatarRequest) => {
     const [contact] = await db
       .select()
       .from(contactsTable)
@@ -44,5 +46,5 @@ export class ShowContactAvatarService {
     const stream = fs.createReadStream(filePath);
 
     return { stream, contentType };
-  }
+  };
 }

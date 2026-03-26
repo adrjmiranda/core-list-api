@@ -3,13 +3,19 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 import { authenticateBodySchema } from '#/modules/users/schemas/authenticateBodySchema.js';
 import { AuthenticateUserService } from '#/modules/users/services/AuthenticateUserService/AuthenticateUserService.js';
 import { env } from '#/shared/env/index.js';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class AuthenticateUserController {
-  public async handle(request: FastifyRequest, reply: FastifyReply) {
+  constructor(
+    @inject(AuthenticateUserService)
+    private authenticateUserService: AuthenticateUserService,
+  ) {}
+
+  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
     const { email, password } = authenticateBodySchema.parse(request.body);
 
-    const authenticateUserService = new AuthenticateUserService();
-    const user = await authenticateUserService.execute({
+    const user = await this.authenticateUserService.execute({
       email,
       password,
     });
@@ -40,5 +46,5 @@ export class AuthenticateUserController {
         },
         accessToken,
       });
-  }
+  };
 }

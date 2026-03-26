@@ -4,14 +4,16 @@ import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface GetContactRequest {
   contactId: string;
   userId: string;
 }
 
+@injectable()
 export class GetContactService {
-  public async execute({ contactId, userId }: GetContactRequest) {
+  public execute = async ({ contactId, userId }: GetContactRequest) => {
     const [contact] = await db
       .select()
       .from(contactsTable)
@@ -24,5 +26,5 @@ export class GetContactService {
     }
 
     return { contact };
-  }
+  };
 }

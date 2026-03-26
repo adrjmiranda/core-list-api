@@ -2,13 +2,17 @@ import { eq } from 'drizzle-orm';
 
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface ExportContactsCsvRequest {
   userId: string;
 }
 
+@injectable()
 export class ExportContactsCsvService {
-  public async execute({ userId }: ExportContactsCsvRequest): Promise<string> {
+  public execute = async ({
+    userId,
+  }: ExportContactsCsvRequest): Promise<string> => {
     const userContacts = await db
       .select()
       .from(contactsTable)
@@ -28,5 +32,5 @@ export class ExportContactsCsvService {
     );
 
     return [header, ...rows].join('\n');
-  }
+  };
 }

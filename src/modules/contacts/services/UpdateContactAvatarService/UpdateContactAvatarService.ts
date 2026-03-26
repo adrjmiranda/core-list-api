@@ -7,6 +7,7 @@ import { IStorageProvider } from '#/shared/container/providers/StorageProvider/m
 import { AppError } from '#/shared/errors/AppError.js';
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { inject, injectable } from 'tsyringe';
 
 interface UpdateContactAvatarRequest {
   contactId: string;
@@ -15,15 +16,19 @@ interface UpdateContactAvatarRequest {
   fileStream: NodeJS.ReadableStream;
 }
 
+@injectable()
 export class UpdateContactAvatarService {
-  constructor(private readonly storageProvider: IStorageProvider) {}
+  constructor(
+    @inject('StorageProvider')
+    private readonly storageProvider: IStorageProvider,
+  ) {}
 
-  public async execute({
+  public execute = async ({
     contactId,
     userId,
     avatarFilename,
     fileStream,
-  }: UpdateContactAvatarRequest): Promise<{ avatar: string | null }> {
+  }: UpdateContactAvatarRequest): Promise<{ avatar: string | null }> => {
     const extension = path.extname(avatarFilename).toLowerCase();
 
     if (!uploadConfig.allowedExtensions.includes(extension)) {
@@ -61,5 +66,5 @@ export class UpdateContactAvatarService {
       .returning();
 
     return { avatar: updatedContact.avatar };
-  }
+  };
 }

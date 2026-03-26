@@ -7,15 +7,17 @@ import { IMailProvider } from '#/shared/container/providers/MailProvider/models/
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
+import { inject, injectable } from 'tsyringe';
 
 type CreateUserServiceRequest = typeof usersTable.$inferInsert;
 
+@injectable()
 export class CreateUserService {
-  constructor(private mailProvider: IMailProvider) {}
+  constructor(@inject('MailProvider') private mailProvider: IMailProvider) {}
 
-  public async execute(
+  public execute = async (
     data: CreateUserServiceRequest,
-  ): Promise<{ user: { id: string; name: string; email: string } }> {
+  ): Promise<{ user: { id: string; name: string; email: string } }> => {
     const { name, email, passwordHash } = data;
 
     const [userWithSameEmail] = await db
@@ -61,5 +63,5 @@ export class CreateUserService {
     });
 
     return { user };
-  }
+  };
 }

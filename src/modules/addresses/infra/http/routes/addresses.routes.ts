@@ -6,13 +6,14 @@ import { GetAddressController } from '#/modules/addresses/infra/http/controllers
 import { ListAddressesController } from '#/modules/addresses/infra/http/controllers/ListAddressesController/ListAddressesController.js';
 import { UpdateAddressController } from '#/modules/addresses/infra/http/controllers/UpdateAddressController/UpdateAddressController.js';
 import { verifyJWT } from '#/shared/infra/http/middlewares/verifyJWT.js';
+import { container } from 'tsyringe';
 
 export async function addressesRoutes(app: FastifyInstance): Promise<void> {
-  const createAddressController = new CreateAddressController();
-  const listAddressesController = new ListAddressesController();
-  const getAddressController = new GetAddressController();
-  const updateAddressControoler = new UpdateAddressController();
-  const deleteAddressController = new DeleteAddressController();
+  const createAddressController = container.resolve(CreateAddressController);
+  const listAddressesController = container.resolve(ListAddressesController);
+  const getAddressController = container.resolve(GetAddressController);
+  const updateAddressControoler = container.resolve(UpdateAddressController);
+  const deleteAddressController = container.resolve(DeleteAddressController);
 
   app.addHook('onRequest', verifyJWT);
 

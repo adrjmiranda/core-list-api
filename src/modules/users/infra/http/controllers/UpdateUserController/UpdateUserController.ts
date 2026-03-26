@@ -2,15 +2,20 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { updateUserBodySchema } from '#/modules/users/schemas/updateUserBodySchema.js';
 import { UpdateUserService } from '#/modules/users/services/UpdateUserService/UpdateUserService.js';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class UpdateUserController {
-  public async handle(request: FastifyRequest, reply: FastifyReply) {
+  constructor(
+    @inject(UpdateUserService) private updateUserService: UpdateUserService,
+  ) {}
+
+  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
     const userId = request.user.sub;
     const data = updateUserBodySchema.parse(request.body);
 
-    const updateUserService = new UpdateUserService();
-    const { user } = await updateUserService.execute({ userId, data });
+    const { user } = await this.updateUserService.execute({ userId, data });
 
     return reply.status(200).send({ user });
-  }
+  };
 }

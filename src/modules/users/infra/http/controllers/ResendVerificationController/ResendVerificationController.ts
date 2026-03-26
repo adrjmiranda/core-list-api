@@ -4,13 +4,19 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { resendVerificationBodySchema } from '#/modules/users/schemas/resendVerificationBodySchema.js';
 import { SendVerificationEmailService } from '#/modules/users/services/SendVerificationEmailService/SendVerificationEmailService.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
-import { EtherealMailProvider } from '#/shared/container/providers/MailProvider/implementations/EtherealMailProvider.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class ResendVerificationController {
-  public async handle(request: FastifyRequest, reply: FastifyReply) {
+  constructor(
+    @inject(SendVerificationEmailService)
+    private sendVerificationEmailService: SendVerificationEmailService,
+  ) {}
+
+  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
     const { email } = resendVerificationBodySchema.parse(request.body);
 
     const [user] = await db
@@ -26,10 +32,7 @@ export class ResendVerificationController {
       throw new AppError(ERROR_CODES.USER_ALREADY_VERIFIED, 400);
     }
 
-    const sendMail = new SendVerificationEmailService(
-      new EtherealMailProvider(),
-    );
-    await sendMail.execute({
+    await this.sendVerificationEmailService.execute({
       name: user.name,
       email: user.email,
       token: user.verificationToken!,
@@ -38,5 +41,5 @@ export class ResendVerificationController {
     return reply
       .status(200)
       .send({ message: 'E-mail de verificação reenviado!' });
-  }
+  };
 }

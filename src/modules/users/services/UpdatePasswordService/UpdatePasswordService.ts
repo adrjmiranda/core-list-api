@@ -5,6 +5,7 @@ import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface UpdatePasswordRequest {
   userId: string;
@@ -12,12 +13,13 @@ interface UpdatePasswordRequest {
   newPassword: string;
 }
 
+@injectable()
 export class UpdatePasswordService {
-  public async execute({
+  public execute = async ({
     userId,
     oldPassword,
     newPassword,
-  }: UpdatePasswordRequest) {
+  }: UpdatePasswordRequest) => {
     const user = await db.query.usersTable.findFirst({
       where: eq(usersTable.id, userId),
     });
@@ -38,5 +40,5 @@ export class UpdatePasswordService {
       .update(usersTable)
       .set({ passwordHash: newPasswordHash })
       .where(eq(usersTable.id, userId));
-  }
+  };
 }

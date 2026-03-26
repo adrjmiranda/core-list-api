@@ -1,14 +1,19 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { ListTagsService } from '#/modules/tags/services/ListTagsService/ListTagsService.js';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class ListTagsController {
-  public async handle(request: FastifyRequest, reply: FastifyReply) {
-    const userId = request.user.sub;
-    const listTagsService = new ListTagsService();
+  constructor(
+    @inject(ListTagsService) private listTagsService: ListTagsService,
+  ) {}
 
-    const { tagList } = await listTagsService.execute({ userId });
+  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
+    const userId = request.user.sub;
+
+    const { tagList } = await this.listTagsService.execute({ userId });
 
     return reply.status(200).send({ tags: tagList });
-  }
+  };
 }

@@ -2,16 +2,21 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import { createContactBodySchema } from '#/modules/contacts/schemas/createContactBodySchema.js';
 import { CreateContactService } from '#/modules/contacts/services/CreateContactService/CreateContactService.js';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class CreateContactController {
-  public async handle(request: FastifyRequest, reply: FastifyReply) {
+  constructor(
+    @inject(CreateContactService)
+    private createContactService: CreateContactService,
+  ) {}
+
+  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
     const { name, email, phone } = createContactBodySchema.parse(request.body);
 
     const userId = request.user.sub;
 
-    const createContactService = new CreateContactService();
-
-    const { contact } = await createContactService.execute({
+    const { contact } = await this.createContactService.execute({
       name,
       email,
       phone,
@@ -19,5 +24,5 @@ export class CreateContactController {
     });
 
     return reply.status(201).send({ contact });
-  }
+  };
 }

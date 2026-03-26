@@ -2,19 +2,24 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { ListAddressesService } from '#/modules/addresses/services/ListAddressesService/ListAddressesService.js';
 import { getContactParamsSchema } from '#/modules/contacts/schemas/getContactParamsSchema.js';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class ListAddressesController {
-  public async handle(request: FastifyRequest, reply: FastifyReply) {
+  constructor(
+    @inject(ListAddressesService)
+    private listAddressesService: ListAddressesService,
+  ) {}
+
+  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
     const { contactId } = getContactParamsSchema.parse(request.params);
     const userId = request.user.sub;
 
-    const listAddressesService = new ListAddressesService();
-
-    const { addresses } = await listAddressesService.execute({
+    const { addresses } = await this.listAddressesService.execute({
       contactId,
       userId,
     });
 
     return reply.status(200).send({ addresses });
-  }
+  };
 }

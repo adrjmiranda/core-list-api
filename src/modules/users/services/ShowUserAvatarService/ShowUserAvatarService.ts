@@ -9,13 +9,15 @@ import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface ShowUserAvatarRequest {
   userId: string;
 }
 
+@injectable()
 export class ShowUserAvatarService {
-  public async execute({ userId }: ShowUserAvatarRequest) {
+  public execute = async ({ userId }: ShowUserAvatarRequest) => {
     const [user] = await db
       .select()
       .from(usersTable)
@@ -43,5 +45,5 @@ export class ShowUserAvatarService {
     const stream = fs.createReadStream(filePath);
 
     return { stream, contentType };
-  }
+  };
 }

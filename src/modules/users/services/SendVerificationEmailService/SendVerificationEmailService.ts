@@ -1,5 +1,6 @@
 import { IMailProvider } from '#/shared/container/providers/MailProvider/models/IMailProvider.js';
 import { env } from '#/shared/env/index.js';
+import { inject, injectable } from 'tsyringe';
 
 interface Request {
   name: string;
@@ -7,10 +8,11 @@ interface Request {
   token: string;
 }
 
+@injectable()
 export class SendVerificationEmailService {
-  constructor(private mailProvider: IMailProvider) {}
+  constructor(@inject('MailProvider') private mailProvider: IMailProvider) {}
 
-  public async execute({ name, email, token }: Request): Promise<void> {
+  public execute = async ({ name, email, token }: Request): Promise<void> => {
     const confirmationLink = `${env.API_URL}/users/verify?token=${token}`;
 
     await this.mailProvider.sendMail({
@@ -28,5 +30,5 @@ export class SendVerificationEmailService {
         </div>
       `,
     });
-  }
+  };
 }

@@ -2,22 +2,27 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { getAddressParamsSchema } from '#/modules/addresses/schemas/getAddressParamsSchema.js';
 import { DeleteAddressService } from '#/modules/addresses/services/DeleteAddressService/DeleteAddressService.js';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class DeleteAddressController {
-  public async handle(request: FastifyRequest, reply: FastifyReply) {
+  constructor(
+    @inject(DeleteAddressService)
+    private deleteAddressService: DeleteAddressService,
+  ) {}
+
+  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
     const { contactId, addressId } = getAddressParamsSchema.parse(
       request.params,
     );
     const userId = request.user.sub;
 
-    const deleteAddresssService = new DeleteAddressService();
-
-    await deleteAddresssService.execute({
+    await this.deleteAddressService.execute({
       contactId,
       addressId,
       userId,
     });
 
     return reply.status(204).send();
-  }
+  };
 }

@@ -28,12 +28,12 @@
   "author": "Adriano Miranda",
   "license": "MIT",
   "type": "module",
-  	"imports": {
-		"#/*": {
-			"types": "./src/*.ts",
-			"default": "./dist/*.js"
-		}
-	},
+  "imports": {
+    "#/*": {
+      "types": "./src/*.ts",
+      "default": "./dist/*.js"
+    }
+  },
   "bugs": {
     "url": "https://github.com/adrjmiranda/core-list-api/issues"
   },
@@ -52,6 +52,8 @@
     "node-cron": "^4.2.1",
     "nodemailer": "^8.0.1",
     "pg": "^8.19.0",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.10.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {

@@ -4,13 +4,15 @@ import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface VerifyEmailRequest {
   token: string;
 }
 
+@injectable()
 export class VerifyEmailService {
-  public async execute({ token }: VerifyEmailRequest): Promise<void> {
+  public execute = async ({ token }: VerifyEmailRequest): Promise<void> => {
     const [user] = await db
       .select()
       .from(usersTable)
@@ -34,5 +36,5 @@ export class VerifyEmailService {
       })
       .where(eq(usersTable.id, user.id))
       .returning();
-  }
+  };
 }

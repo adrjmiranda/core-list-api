@@ -2,22 +2,26 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { getAddressParamsSchema } from '#/modules/addresses/schemas/getAddressParamsSchema.js';
 import { GetAddressService } from '#/modules/addresses/services/GetAddressService/GetAddressService.js';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class GetAddressController {
-  public async handle(request: FastifyRequest, reply: FastifyReply) {
+  constructor(
+    @inject(GetAddressService) private getAddressService: GetAddressService,
+  ) {}
+
+  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
     const { contactId, addressId } = getAddressParamsSchema.parse(
       request.params,
     );
     const userId = request.user.sub;
 
-    const getAddressService = new GetAddressService();
-
-    const { address } = await getAddressService.execute({
+    const { address } = await this.getAddressService.execute({
       contactId,
       addressId,
       userId,
     });
 
     return reply.status(200).send({ address });
-  }
+  };
 }

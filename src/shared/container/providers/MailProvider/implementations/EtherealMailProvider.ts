@@ -4,11 +4,13 @@ import {
   IMailProvider,
   ISendMailDTO,
 } from '#/shared/container/providers/MailProvider/models/IMailProvider.js';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class EtherealMailProvider implements IMailProvider {
   private client: Transporter | null = null;
 
-  private async getClient(): Promise<Transporter> {
+  private getClient = async (): Promise<Transporter> => {
     if (!this.client) {
       const account = await nodemailer.createTestAccount();
 
@@ -26,9 +28,13 @@ export class EtherealMailProvider implements IMailProvider {
     }
 
     return this.client;
-  }
+  };
 
-  public async sendMail({ to, subject, body }: ISendMailDTO): Promise<void> {
+  public sendMail = async ({
+    to,
+    subject,
+    body,
+  }: ISendMailDTO): Promise<void> => {
     const transporter = await this.getClient();
 
     const message = await transporter.sendMail({
@@ -40,5 +46,5 @@ export class EtherealMailProvider implements IMailProvider {
 
     console.log('Message sent: %s', message.messageId);
     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message));
-  }
+  };
 }

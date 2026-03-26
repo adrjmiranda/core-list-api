@@ -7,11 +7,16 @@ import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 type AuthenticateUserServiceRequest = z.infer<typeof authenticateBodySchema>;
 
+@injectable()
 export class AuthenticateUserService {
-  public async execute({ email, password }: AuthenticateUserServiceRequest) {
+  public execute = async ({
+    email,
+    password,
+  }: AuthenticateUserServiceRequest) => {
     const [user] = await db
       .select()
       .from(usersTable)
@@ -32,5 +37,5 @@ export class AuthenticateUserService {
     }
 
     return user;
-  }
+  };
 }

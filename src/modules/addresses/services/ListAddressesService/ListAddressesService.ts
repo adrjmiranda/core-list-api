@@ -5,14 +5,16 @@ import { AppError } from '#/shared/errors/AppError.js';
 import { addressesTable } from '#/shared/infra/database/drizzle/addresses.js';
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface ListAddressesRequest {
   contactId: string;
   userId: string;
 }
 
+@injectable()
 export class ListAddressesService {
-  public async execute({ contactId, userId }: ListAddressesRequest) {
+  public execute = async ({ contactId, userId }: ListAddressesRequest) => {
     const contact = await db.query.contactsTable.findFirst({
       where: and(
         eq(contactsTable.id, contactId),
@@ -31,5 +33,5 @@ export class ListAddressesService {
       .orderBy(addressesTable.createdAt);
 
     return { addresses: allAddresses };
-  }
+  };
 }

@@ -5,6 +5,7 @@ import { AppError } from '#/shared/errors/AppError.js';
 import { addressesTable } from '#/shared/infra/database/drizzle/addresses.js';
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface CreateAddressRequest {
   contactId: string;
@@ -21,8 +22,13 @@ interface CreateAddressRequest {
   };
 }
 
+@injectable()
 export class CreateAddressService {
-  public async execute({ contactId, userId, data }: CreateAddressRequest) {
+  public execute = async ({
+    contactId,
+    userId,
+    data,
+  }: CreateAddressRequest) => {
     const contact = await db.query.contactsTable.findFirst({
       where: and(
         eq(contactsTable.id, contactId),
@@ -57,5 +63,5 @@ export class CreateAddressService {
       .returning();
 
     return { address };
-  }
+  };
 }

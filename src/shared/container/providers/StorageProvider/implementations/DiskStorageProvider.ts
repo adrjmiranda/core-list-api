@@ -7,12 +7,14 @@ import uploadConfig from '#/config/upload.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { IStorageProvider } from '#/shared/container/providers/StorageProvider/models/IStorageProvider.js';
 import { AppError } from '#/shared/errors/AppError.js';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class DiskStorageProvider implements IStorageProvider {
-  public async saveFile(
+  public saveFile = async (
     fileName: string,
     fileStream: NodeJS.ReadableStream,
-  ): Promise<string> {
+  ): Promise<string> => {
     const filePath = path.resolve(uploadConfig.uploadsFolder, fileName);
     let byteCount = 0;
 
@@ -36,9 +38,9 @@ export class DiskStorageProvider implements IStorageProvider {
       }
       throw error;
     }
-  }
+  };
 
-  public async deleteFile(file: string): Promise<void> {
+  public deleteFile = async (file: string): Promise<void> => {
     const filePath = path.resolve(uploadConfig.uploadsFolder, file);
 
     try {
@@ -48,5 +50,5 @@ export class DiskStorageProvider implements IStorageProvider {
     }
 
     await fs.promises.unlink(filePath);
-  }
+  };
 }

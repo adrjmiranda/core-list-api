@@ -1,15 +1,20 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { GetUserProfileService } from '#/modules/users/services/GetUserProfileService/GetUserProfileService.js';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class GetUserProfileController {
-  public async handle(request: FastifyRequest, response: FastifyReply) {
-    const getUserProfile = new GetUserProfileService();
+  constructor(
+    @inject(GetUserProfileService)
+    private getUserProfileService: GetUserProfileService,
+  ) {}
 
-    const { user } = await getUserProfile.execute({
+  public handle = async (request: FastifyRequest, response: FastifyReply) => {
+    const { user } = await this.getUserProfileService.execute({
       userId: request.user.sub,
     });
 
     return response.status(200).send({ user });
-  }
+  };
 }

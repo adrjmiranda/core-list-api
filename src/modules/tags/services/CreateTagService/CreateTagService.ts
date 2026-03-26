@@ -5,6 +5,7 @@ import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { tagsTable } from '#/shared/infra/database/drizzle/tags.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface CreateTagRequest {
   userId: string;
@@ -14,8 +15,9 @@ interface CreateTagRequest {
   };
 }
 
+@injectable()
 export class CreateTagService {
-  public async execute({ data, userId }: CreateTagRequest) {
+  public execute = async ({ data, userId }: CreateTagRequest) => {
     const [result] = await db
       .select({ total: count() })
       .from(tagsTable)
@@ -44,5 +46,5 @@ export class CreateTagService {
       .returning();
 
     return { tag };
-  }
+  };
 }

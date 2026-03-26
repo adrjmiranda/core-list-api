@@ -2,16 +2,21 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import { getContactParamsSchema } from '#/modules/contacts/schemas/getContactParamsSchema.js';
 import { DeleteContactService } from '#/modules/contacts/services/DeleteContactService/DeleteContactService.js';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class DeleteContactController {
-  public async handle(request: FastifyRequest, reply: FastifyReply) {
+  constructor(
+    @inject(DeleteContactService)
+    private deleteContactService: DeleteContactService,
+  ) {}
+
+  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
     const { contactId } = getContactParamsSchema.parse(request.params);
     const userId = request.user.sub;
 
-    const deleteContactService = new DeleteContactService();
-
-    await deleteContactService.execute({ contactId, userId });
+    await this.deleteContactService.execute({ contactId, userId });
 
     return reply.status(204).send();
-  }
+  };
 }

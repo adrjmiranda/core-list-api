@@ -2,13 +2,17 @@ import { eq } from 'drizzle-orm';
 
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface ExportContactsVcfRequest {
   userId: string;
 }
 
+@injectable()
 export class ExportContactsVcfService {
-  public async execute({ userId }: ExportContactsVcfRequest): Promise<string> {
+  public execute = async ({
+    userId,
+  }: ExportContactsVcfRequest): Promise<string> => {
     const userContacts = await db
       .select()
       .from(contactsTable)
@@ -30,5 +34,5 @@ export class ExportContactsVcfService {
       .join('\n');
 
     return vcfContent;
-  }
+  };
 }

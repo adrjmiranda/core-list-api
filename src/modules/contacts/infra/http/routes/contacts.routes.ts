@@ -12,18 +12,29 @@ import { UpdateContactController } from '#/modules/contacts/infra/http/controlle
 import { verifyJWT } from '#/shared/infra/http/middlewares/verifyJWT.js';
 
 import { ExportContactsVcfController } from '../controllers/ExportContactsVcfController/ExportContactsVcfController.js';
+import { container } from 'tsyringe';
 
 export async function contactsRoutes(app: FastifyInstance): Promise<void> {
-  const createContactController = new CreateContactController();
-  const listContactsController = new ListContactsController();
-  const getContactController = new GetContactController();
-  const updateContactController = new UpdateContactController();
-  const deleteContactController = new DeleteContactController();
-  const attachTagToContactController = new AttachTagToContactController();
-  const updateContactAvatarController = new UpdateContactAvatarController();
-  const showContactAvatarController = new ShowContactAvatarController();
-  const exportContactsCsvController = new ExportContactsCsvController();
-  const exportContactsVcfController = new ExportContactsVcfController();
+  const createContactController = container.resolve(CreateContactController);
+  const listContactsController = container.resolve(ListContactsController);
+  const getContactController = container.resolve(GetContactController);
+  const updateContactController = container.resolve(UpdateContactController);
+  const deleteContactController = container.resolve(DeleteContactController);
+  const attachTagToContactController = container.resolve(
+    AttachTagToContactController,
+  );
+  const updateContactAvatarController = container.resolve(
+    UpdateContactAvatarController,
+  );
+  const showContactAvatarController = container.resolve(
+    ShowContactAvatarController,
+  );
+  const exportContactsCsvController = container.resolve(
+    ExportContactsCsvController,
+  );
+  const exportContactsVcfController = container.resolve(
+    ExportContactsVcfController,
+  );
 
   app.addHook('onRequest', verifyJWT);
 

@@ -1,9 +1,11 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import { env } from '#/shared/env/index.js';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class RefreshTokenController {
-  public async handle(request: FastifyRequest, reply: FastifyReply) {
+  public handle = async (request: FastifyRequest, reply: FastifyReply) => {
     await request.jwtVerify({ onlyCookie: true });
 
     const { sub, role, isVerified } = request.user;
@@ -29,5 +31,5 @@ export class RefreshTokenController {
       .send({
         accessToken,
       });
-  }
+  };
 }

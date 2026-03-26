@@ -8,6 +8,7 @@ import {
   tagsTable,
 } from '#/shared/infra/database/drizzle/tags.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface AttachTagToContactRequest {
   contactId: string;
@@ -15,12 +16,13 @@ interface AttachTagToContactRequest {
   userId: string;
 }
 
+@injectable()
 export class AttachTagToContactService {
-  public async execute({
+  public execute = async ({
     contactId,
     tagId,
     userId,
-  }: AttachTagToContactRequest) {
+  }: AttachTagToContactRequest) => {
     const [contactExists] = await db
       .select()
       .from(contactsTable)
@@ -45,5 +47,5 @@ export class AttachTagToContactService {
       contactId,
       tagId,
     });
-  }
+  };
 }

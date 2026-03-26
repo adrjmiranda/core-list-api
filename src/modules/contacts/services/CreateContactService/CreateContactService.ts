@@ -1,5 +1,6 @@
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface CreateContactRequest {
   name: string;
@@ -8,8 +9,14 @@ interface CreateContactRequest {
   userId: string;
 }
 
+@injectable()
 export class CreateContactService {
-  public async execute({ name, email, phone, userId }: CreateContactRequest) {
+  public execute = async ({
+    name,
+    email,
+    phone,
+    userId,
+  }: CreateContactRequest) => {
     const [contact] = await db
       .insert(contactsTable)
       .values({
@@ -21,5 +28,5 @@ export class CreateContactService {
       .returning();
 
     return { contact };
-  }
+  };
 }

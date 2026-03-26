@@ -4,14 +4,16 @@ import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { tagsTable } from '#/shared/infra/database/drizzle/tags.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface GetTagRequest {
   tagId: string;
   userId: string;
 }
 
+@injectable()
 export class GetTagService {
-  public async execute({ tagId, userId }: GetTagRequest) {
+  public execute = async ({ tagId, userId }: GetTagRequest) => {
     const [tag] = await db
       .select()
       .from(tagsTable)
@@ -22,5 +24,5 @@ export class GetTagService {
     }
 
     return { tag };
-  }
+  };
 }

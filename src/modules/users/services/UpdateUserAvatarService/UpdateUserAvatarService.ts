@@ -7,6 +7,7 @@ import { IStorageProvider } from '#/shared/container/providers/StorageProvider/m
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
+import { inject, injectable } from 'tsyringe';
 
 interface UpdateUserAvatarRequest {
   userId: string;
@@ -14,14 +15,18 @@ interface UpdateUserAvatarRequest {
   fileStream: NodeJS.ReadableStream;
 }
 
+@injectable()
 export class UpdateUserAvatarService {
-  constructor(private storageProvider: IStorageProvider) {}
+  constructor(
+    @inject('StorageProvider')
+    private storageProvider: IStorageProvider,
+  ) {}
 
-  public async execute({
+  public execute = async ({
     userId,
     avatarFilename,
     fileStream,
-  }: UpdateUserAvatarRequest): Promise<{ avatar: string | null }> {
+  }: UpdateUserAvatarRequest): Promise<{ avatar: string | null }> => {
     const extension = path.extname(avatarFilename).toLowerCase();
 
     console.log('DEBUG: avatarFilename recebido ->', avatarFilename);
@@ -60,5 +65,5 @@ export class UpdateUserAvatarService {
       .returning();
 
     return { avatar: updatedUser.avatar };
-  }
+  };
 }

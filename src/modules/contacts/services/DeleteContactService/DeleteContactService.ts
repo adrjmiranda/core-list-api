@@ -4,17 +4,19 @@ import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface DeleteContactRequest {
   contactId: string;
   userId: string;
 }
 
+@injectable()
 export class DeleteContactService {
-  public async execute({
+  public execute = async ({
     contactId,
     userId,
-  }: DeleteContactRequest): Promise<void> {
+  }: DeleteContactRequest): Promise<void> => {
     const [deletedContact] = await db
       .delete(contactsTable)
       .where(
@@ -25,5 +27,5 @@ export class DeleteContactService {
     if (!deletedContact) {
       throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
     }
-  }
+  };
 }

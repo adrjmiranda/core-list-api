@@ -3,6 +3,7 @@ import { and, eq, exists, ilike, inArray, or, SQL, sql } from 'drizzle-orm';
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { contactsToTagsTable } from '#/shared/infra/database/drizzle/tags.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface ListContactsRequest {
   userId: string;
@@ -13,15 +14,16 @@ interface ListContactsRequest {
   tagIds?: string[];
 }
 
+@injectable()
 export class ListContactsService {
-  public async execute({
+  public execute = async ({
     userId,
     page,
     perPage,
     search,
     isFavorite,
     tagIds,
-  }: ListContactsRequest) {
+  }: ListContactsRequest) => {
     const offset = (page - 1) * perPage;
 
     const whereConditions: SQL[] = [eq(contactsTable.userId, userId)];
@@ -79,5 +81,5 @@ export class ListContactsService {
         totalPages: Math.ceil(Number(totalCount.count) / perPage),
       },
     };
-  }
+  };
 }

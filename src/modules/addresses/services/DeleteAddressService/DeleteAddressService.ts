@@ -5,6 +5,7 @@ import { AppError } from '#/shared/errors/AppError.js';
 import { addressesTable } from '#/shared/infra/database/drizzle/addresses.js';
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface DeleteAddressRequest {
   contactId: string;
@@ -12,12 +13,13 @@ interface DeleteAddressRequest {
   userId: string;
 }
 
+@injectable()
 export class DeleteAddressService {
-  public async execute({
+  public execute = async ({
     contactId,
     addressId,
     userId,
-  }: DeleteAddressRequest): Promise<void> {
+  }: DeleteAddressRequest): Promise<void> => {
     const contact = await db.query.contactsTable.findFirst({
       where: and(
         eq(contactsTable.id, contactId),
@@ -42,5 +44,5 @@ export class DeleteAddressService {
     if (!deletedAddress) {
       throw new AppError(ERROR_CODES.ADDRESS_NOT_FOUND, 404);
     }
-  }
+  };
 }

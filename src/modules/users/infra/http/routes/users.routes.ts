@@ -5,13 +5,18 @@ import { CreateUserController } from '#/modules/users/infra/http/controllers/Cre
 import { RefreshTokenController } from '#/modules/users/infra/http/controllers/RefreshTokenController/RefreshTokenController.js';
 import { ResendVerificationController } from '#/modules/users/infra/http/controllers/ResendVerificationController/ResendVerificationController.js';
 import { VerifyEmailController } from '#/modules/users/infra/http/controllers/VerifyEmailController/VerifyEmailController.js';
+import { container } from 'tsyringe';
 
 export async function usersRoutes(app: FastifyInstance): Promise<void> {
-  const createUserController = new CreateUserController();
-  const authenticateUserController = new AuthenticateUserController();
-  const refreshTokenController = new RefreshTokenController();
-  const verifyEmailController = new VerifyEmailController();
-  const resendVerificationController = new ResendVerificationController();
+  const createUserController = container.resolve(CreateUserController);
+  const authenticateUserController = container.resolve(
+    AuthenticateUserController,
+  );
+  const refreshTokenController = container.resolve(RefreshTokenController);
+  const verifyEmailController = container.resolve(VerifyEmailController);
+  const resendVerificationController = container.resolve(
+    ResendVerificationController,
+  );
 
   app.post('/', createUserController.handle);
   app.post(

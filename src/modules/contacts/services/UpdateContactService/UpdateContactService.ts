@@ -4,6 +4,7 @@ import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { injectable } from 'tsyringe';
 
 interface UpdateContactRequest {
   contactId: string;
@@ -15,8 +16,13 @@ interface UpdateContactRequest {
   };
 }
 
+@injectable()
 export class UpdateContactService {
-  public async execute({ contactId, userId, data }: UpdateContactRequest) {
+  public execute = async ({
+    contactId,
+    userId,
+    data,
+  }: UpdateContactRequest) => {
     const [updatedContact] = await db
       .update(contactsTable)
       .set({
@@ -32,5 +38,5 @@ export class UpdateContactService {
     }
 
     return { contact: updatedContact };
-  }
+  };
 }
