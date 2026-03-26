@@ -1,17 +1,17 @@
 import type { FastifyInstance } from 'fastify';
 
-import { AttachTagToContactController } from '#/modules/contacts/infra/http/controllers/AttachTagToContactController.js';
-import { CreateContactController } from '#/modules/contacts/infra/http/controllers/CreateContactController.js';
-import { DeleteContactController } from '#/modules/contacts/infra/http/controllers/DeleteContactController.js';
-import { ExportContactsCsvController } from '#/modules/contacts/infra/http/controllers/ExportContactsCsvController.js';
-import { GetContactController } from '#/modules/contacts/infra/http/controllers/GetContactController.js';
-import { ListContactsController } from '#/modules/contacts/infra/http/controllers/ListContactsController.js';
-import { ShowContactAvatarController } from '#/modules/contacts/infra/http/controllers/ShowContactAvatarController.js';
-import { UpdateContactAvatarController } from '#/modules/contacts/infra/http/controllers/UpdateContactAvatarController.js';
-import { UpdateContactController } from '#/modules/contacts/infra/http/controllers/UpdateContactController.js';
+import { AttachTagToContactController } from '#/modules/contacts/infra/http/controllers/AttachTagToContactController/AttachTagToContactController.js';
+import { CreateContactController } from '#/modules/contacts/infra/http/controllers/CreateContactController/CreateContactController.js';
+import { DeleteContactController } from '#/modules/contacts/infra/http/controllers/DeleteContactController/DeleteContactController.js';
+import { ExportContactsCsvController } from '#/modules/contacts/infra/http/controllers/ExportContactsCsvController/ExportContactsCsvController.js';
+import { GetContactController } from '#/modules/contacts/infra/http/controllers/GetContactController/GetContactController.js';
+import { ListContactsController } from '#/modules/contacts/infra/http/controllers/ListContactsController/ListContactsController.js';
+import { ShowContactAvatarController } from '#/modules/contacts/infra/http/controllers/ShowContactAvatarController/ShowContactAvatarController.js';
+import { UpdateContactAvatarController } from '#/modules/contacts/infra/http/controllers/UpdateContactAvatarController/UpdateContactAvatarController.js';
+import { UpdateContactController } from '#/modules/contacts/infra/http/controllers/UpdateContactController/UpdateContactController.js';
 import { verifyJWT } from '#/shared/infra/http/middlewares/verifyJWT.js';
 
-import { ExportContactsVcfController } from '../controllers/ExportContactsVcfController.js';
+import { ExportContactsVcfController } from '../controllers/ExportContactsVcfController/ExportContactsVcfController.js';
 
 export async function contactsRoutes(app: FastifyInstance): Promise<void> {
   const createContactController = new CreateContactController();

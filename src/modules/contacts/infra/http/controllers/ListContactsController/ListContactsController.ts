@@ -1,0 +1,24 @@
+import { FastifyReply, FastifyRequest } from 'fastify';
+
+import { listContactsQuerySchema } from '#/modules/contacts/schemas/listContactsQuerySchema.js';
+import { ListContactsService } from '#/modules/contacts/services/ListContactsService/ListContactsService.js';
+
+export class ListContactsController {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
+    const { page, perPage, search, isFavorite, tagIds } =
+      listContactsQuerySchema.parse(request.query);
+    const userId = request.user.sub;
+    const listContactsService = new ListContactsService();
+
+    const result = await listContactsService.execute({
+      userId,
+      page,
+      perPage,
+      search,
+      isFavorite,
+      tagIds,
+    });
+
+    return reply.status(200).send(result);
+  }
+}

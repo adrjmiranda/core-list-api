@@ -1,11 +1,11 @@
 import { FastifyInstance } from 'fastify';
 
-import { DeleteUserController } from '#/modules/users/infra/http/controllers/DeleteUserController.js';
-import { GetUserProfileController } from '#/modules/users/infra/http/controllers/GetUserProfileController.js';
-import { ShowUserAvatarController } from '#/modules/users/infra/http/controllers/ShowUserAvatarController.js';
-import { UpdatePasswordController } from '#/modules/users/infra/http/controllers/UpdatePasswordController.js';
-import { UpdateUserAvatarController } from '#/modules/users/infra/http/controllers/UpdateUserAvatarController.js';
-import { UpdateUserController } from '#/modules/users/infra/http/controllers/UpdateUserController.js';
+import { DeleteUserController } from '#/modules/users/infra/http/controllers/DeleteUserController/DeleteUserController.js';
+import { GetUserProfileController } from '#/modules/users/infra/http/controllers/GetUserProfileController/GetUserProfileController.js';
+import { ShowUserAvatarController } from '#/modules/users/infra/http/controllers/ShowUserAvatarController/ShowUserAvatarController.js';
+import { UpdatePasswordController } from '#/modules/users/infra/http/controllers/UpdatePasswordController/UpdatePasswordController.js';
+import { UpdateUserAvatarController } from '#/modules/users/infra/http/controllers/UpdateUserAvatarController/UpdateUserAvatarController.js';
+import { UpdateUserController } from '#/modules/users/infra/http/controllers/UpdateUserController/UpdateUserController.js';
 import { verifyJWT } from '#/shared/infra/http/middlewares/verifyJWT.js';
 
 export async function profileRoutes(app: FastifyInstance): Promise<void> {

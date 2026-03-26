@@ -1,0 +1,23 @@
+import { FastifyReply, FastifyRequest } from 'fastify';
+
+import { getAddressParamsSchema } from '#/modules/addresses/schemas/getAddressParamsSchema.js';
+import { GetAddressService } from '#/modules/addresses/services/GetAddressService/GetAddressService.js';
+
+export class GetAddressController {
+  public async handle(request: FastifyRequest, reply: FastifyReply) {
+    const { contactId, addressId } = getAddressParamsSchema.parse(
+      request.params,
+    );
+    const userId = request.user.sub;
+
+    const getAddressService = new GetAddressService();
+
+    const { address } = await getAddressService.execute({
+      contactId,
+      addressId,
+      userId,
+    });
+
+    return reply.status(200).send({ address });
+  }
+}
