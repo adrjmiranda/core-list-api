@@ -6,6 +6,7 @@ import { DeleteTagController } from '#/modules/tags/infra/http/controllers/Delet
 import { GetTagController } from '#/modules/tags/infra/http/controllers/GetTagController/GetTagController.js';
 import { ListTagsController } from '#/modules/tags/infra/http/controllers/ListTagsController/ListTagsController.js';
 import { UpdateTagController } from '#/modules/tags/infra/http/controllers/UpdateTagController/UpdateTagController.js';
+import { httpRouteAdapter } from '#/shared/adapters/HttpRouteAdapter.js';
 import { verifyJWT } from '#/shared/infra/http/middlewares/verifyJWT.js';
 
 export async function tagsRoutes(app: FastifyInstance) {
@@ -17,9 +18,9 @@ export async function tagsRoutes(app: FastifyInstance) {
 
 	app.addHook('onRequest', verifyJWT);
 
-	app.post('/', createTagController.handle);
-	app.get('/', listTagsController.handle);
-	app.delete('/:tagId', deleteTagController.handle);
-	app.get('/:tagId', getTagController.handle);
-	app.patch('/:tagId', updateTagController.handle);
+	app.post('/', httpRouteAdapter(createTagController));
+	app.get('/', httpRouteAdapter(listTagsController));
+	app.delete('/:tagId', httpRouteAdapter(deleteTagController));
+	app.get('/:tagId', httpRouteAdapter(getTagController));
+	app.patch('/:tagId', httpRouteAdapter(updateTagController));
 }

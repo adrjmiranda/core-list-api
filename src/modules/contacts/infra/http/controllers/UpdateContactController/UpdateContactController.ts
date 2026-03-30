@@ -1,9 +1,12 @@
-import type { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { updateContactBodySchema } from '#/modules/contacts/schemas/body/updateContactBodySchema.js';
 import { getContactParamsSchema } from '#/modules/contacts/schemas/params/getContactParamsSchema.js';
 import { UpdateContactService } from '#/modules/contacts/services/UpdateContactService/UpdateContactService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class UpdateContactController {
@@ -12,10 +15,10 @@ export class UpdateContactController {
 		private updateContactService: UpdateContactService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		const { contactId } = getContactParamsSchema.parse(request.params);
-		const userId = request.user.sub;
-		const data = updateContactBodySchema.parse(request.body);
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
+		const { contactId } = getContactParamsSchema.parse(httpRequest.params);
+		const userId = String(httpRequest.userId);
+		const data = updateContactBodySchema.parse(httpRequest.body);
 
 		const { contact } = await this.updateContactService.execute({
 			contactId,
@@ -23,6 +26,9 @@ export class UpdateContactController {
 			data,
 		});
 
-		return reply.status(200).send({ contact });
+		return {
+			statusCode: 200,
+			body: { contact },
+		};
 	};
 }

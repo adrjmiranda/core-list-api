@@ -1,9 +1,12 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
-import { verifyEmailQuerySchema } from '#/modules/users/schemas/verifyEmailQuerySchema.js';
+import { verifyEmailQuerySchema } from '#/modules/users/schemas/queries/verifyEmailQuerySchema.js';
 import { VerifyEmailService } from '#/modules/users/services/VerifyEmailService/VerifyEmailService.js';
-import { env } from '#/shared/env/index.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
+import { env } from '#/shared/env/env.js';
 
 @injectable()
 export class VerifyEmailController {
@@ -11,11 +14,14 @@ export class VerifyEmailController {
 		@inject(VerifyEmailService) private verifyEmailService: VerifyEmailService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		const { token } = verifyEmailQuerySchema.parse(request.query);
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
+		const { token } = verifyEmailQuerySchema.parse(httpRequest.query);
 
 		await this.verifyEmailService.execute({ token });
 
-		return reply.redirect(`${env.WEB_URL}/login?verified=true`);
+		return {
+			statusCode: 302,
+			redirect: `${env.WEB_URL}/login?verified=true`,
+		};
 	};
 }

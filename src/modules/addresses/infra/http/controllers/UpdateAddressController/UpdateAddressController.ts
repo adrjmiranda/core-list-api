@@ -1,9 +1,12 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { updateAddressBodySchema } from '#/modules/addresses/schemas/body/updateAddressBodySchema.js';
 import { getAddressParamsSchema } from '#/modules/addresses/schemas/params/getAddressParamsSchema.js';
 import { UpdateAddressService } from '#/modules/addresses/services/UpdateAddressService/UpdateAddressService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class UpdateAddressController {
@@ -12,12 +15,12 @@ export class UpdateAddressController {
 		private updateAddressService: UpdateAddressService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
 		const { contactId, addressId } = getAddressParamsSchema.parse(
-			request.params
+			httpRequest.params
 		);
-		const userId = request.user.sub;
-		const data = updateAddressBodySchema.parse(request.body);
+		const userId = String(httpRequest.userId);
+		const data = updateAddressBodySchema.parse(httpRequest.body);
 
 		const { address } = await this.updateAddressService.execute({
 			contactId,
@@ -26,6 +29,9 @@ export class UpdateAddressController {
 			data,
 		});
 
-		return reply.status(200).send({ address });
+		return {
+			statusCode: 200,
+			body: { address },
+		};
 	};
 }

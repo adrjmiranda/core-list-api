@@ -1,7 +1,10 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { ShowUserAvatarService } from '#/modules/users/services/ShowUserAvatarService/ShowUserAvatarService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class ShowUserAvatarController {
@@ -10,13 +13,17 @@ export class ShowUserAvatarController {
 		private showUserAvatarService: ShowUserAvatarService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		const userId = request.user.sub;
-
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
 		const { stream, contentType } = await this.showUserAvatarService.execute({
-			userId,
+			userId: String(httpRequest.userId),
 		});
 
-		return reply.status(200).header('Content-Type', contentType).send(stream);
+		return {
+			statusCode: 200,
+			headers: {
+				'Content-Type': contentType,
+			},
+			body: stream,
+		};
 	};
 }

@@ -6,6 +6,16 @@ import { CreateUserController } from '#/modules/users/infra/http/controllers/Cre
 import { RefreshTokenController } from '#/modules/users/infra/http/controllers/RefreshTokenController/RefreshTokenController.js';
 import { ResendVerificationController } from '#/modules/users/infra/http/controllers/ResendVerificationController/ResendVerificationController.js';
 import { VerifyEmailController } from '#/modules/users/infra/http/controllers/VerifyEmailController/VerifyEmailController.js';
+import { httpRouteAdapter } from '#/shared/adapters/HttpRouteAdapter.js';
+
+const loginRateLimit = {
+	config: {
+		rateLimit: {
+			max: 5,
+			timeWindow: 60 * 1000,
+		},
+	},
+};
 
 export async function usersRoutes(app: FastifyInstance): Promise<void> {
 	const createUserController = container.resolve(CreateUserController);
@@ -18,22 +28,15 @@ export async function usersRoutes(app: FastifyInstance): Promise<void> {
 		ResendVerificationController
 	);
 
-	app.post('/', createUserController.handle);
+	app.post('/', httpRouteAdapter(createUserController));
 	app.post(
 		'/sessions',
-		{
-			config: {
-				rateLimit: {
-					max: 5,
-					timeWindow: 60 * 1000,
-				},
-			},
-		},
-		authenticateUserController.handle
+		loginRateLimit,
+		httpRouteAdapter(authenticateUserController)
 	);
 
-	app.patch('/token/refresh', refreshTokenController.handle);
+	app.patch('/token/refresh', httpRouteAdapter(refreshTokenController));
 
-	app.get('/verify', verifyEmailController.handle);
-	app.post('/verify/resend', resendVerificationController.handle);
+	app.get('/verify', httpRouteAdapter(verifyEmailController));
+	app.post('/verify/resend', httpRouteAdapter(resendVerificationController));
 }

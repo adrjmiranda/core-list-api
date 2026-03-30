@@ -7,6 +7,7 @@ import { ShowUserAvatarController } from '#/modules/users/infra/http/controllers
 import { UpdatePasswordController } from '#/modules/users/infra/http/controllers/UpdatePasswordController/UpdatePasswordController.js';
 import { UpdateUserAvatarController } from '#/modules/users/infra/http/controllers/UpdateUserAvatarController/UpdateUserAvatarController.js';
 import { UpdateUserController } from '#/modules/users/infra/http/controllers/UpdateUserController/UpdateUserController.js';
+import { httpRouteAdapter } from '#/shared/adapters/HttpRouteAdapter.js';
 import { verifyJWT } from '#/shared/infra/http/middlewares/verifyJWT.js';
 
 export async function profileRoutes(app: FastifyInstance): Promise<void> {
@@ -19,11 +20,11 @@ export async function profileRoutes(app: FastifyInstance): Promise<void> {
 
 	app.addHook('onRequest', verifyJWT);
 
-	app.get('/me', getUserProfileController.handle);
-	app.patch('/me', updateUserController.handle);
-	app.delete('/me', deleteUserController.handle);
-	app.patch('/me/password', updatePasswordController.handle);
+	app.get('/me', httpRouteAdapter(getUserProfileController));
+	app.patch('/me', httpRouteAdapter(updateUserController));
+	app.delete('/me', httpRouteAdapter(deleteUserController));
+	app.patch('/me/password', httpRouteAdapter(updatePasswordController));
 
-	app.patch('/avatar', userAvatarController.handle);
-	app.get('/avatar', showUserAvatarController.handle);
+	app.patch('/avatar', httpRouteAdapter(userAvatarController));
+	app.get('/avatar', httpRouteAdapter(showUserAvatarController));
 }

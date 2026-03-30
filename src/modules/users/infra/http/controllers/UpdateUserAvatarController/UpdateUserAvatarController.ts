@@ -1,8 +1,11 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import uploadConfig from '#/config/upload.js';
 import { UpdateUserAvatarService } from '#/modules/users/services/UpdateUserAvatarService/UpdateUserAvatarService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 
@@ -13,14 +16,18 @@ export class UpdateUserAvatarController {
 		private updateAvatarService: UpdateUserAvatarService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		const data = await request.file();
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
+		if (!httpRequest.file) {
+			throw new AppError(ERROR_CODES.INTERNAL_SERVER_ERROR, 500);
+		}
+
+		const data = await httpRequest.file();
 
 		if (!data) {
 			throw new AppError(ERROR_CODES.FILE_REQUIRED, 400);
 		}
 
-		const userId = request.user.sub;
+		const userId = String(httpRequest.userId);
 
 		const fileName = uploadConfig.generateHashName(data.filename);
 
@@ -30,6 +37,9 @@ export class UpdateUserAvatarController {
 			fileStream: data.file,
 		});
 
-		return reply.status(200).send({ avatar });
+		return {
+			statusCode: 200,
+			body: { avatar },
+		};
 	};
 }

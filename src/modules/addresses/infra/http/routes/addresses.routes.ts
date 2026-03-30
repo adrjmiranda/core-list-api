@@ -6,6 +6,7 @@ import { DeleteAddressController } from '#/modules/addresses/infra/http/controll
 import { GetAddressController } from '#/modules/addresses/infra/http/controllers/GetAddressController/GetAddressController.js';
 import { ListAddressesController } from '#/modules/addresses/infra/http/controllers/ListAddressesController/ListAddressesController.js';
 import { UpdateAddressController } from '#/modules/addresses/infra/http/controllers/UpdateAddressController/UpdateAddressController.js';
+import { httpRouteAdapter } from '#/shared/adapters/HttpRouteAdapter.js';
 import { verifyJWT } from '#/shared/infra/http/middlewares/verifyJWT.js';
 
 export async function addressesRoutes(app: FastifyInstance): Promise<void> {
@@ -17,12 +18,18 @@ export async function addressesRoutes(app: FastifyInstance): Promise<void> {
 
 	app.addHook('onRequest', verifyJWT);
 
-	app.post('/:contactId/addresses', createAddressController.handle);
-	app.get('/:contactId/addresses', listAddressesController.handle);
-	app.get('/:contactId/addresses/:addressId', getAddressController.handle);
-	app.patch('/:contactId/addresses/:addressId', updateAddressControoler.handle);
+	app.post('/:contactId/addresses', httpRouteAdapter(createAddressController));
+	app.get('/:contactId/addresses', httpRouteAdapter(listAddressesController));
+	app.get(
+		'/:contactId/addresses/:addressId',
+		httpRouteAdapter(getAddressController)
+	);
+	app.patch(
+		'/:contactId/addresses/:addressId',
+		httpRouteAdapter(updateAddressControoler)
+	);
 	app.delete(
 		'/:contactId/addresses/:addressId',
-		deleteAddressController.handle
+		httpRouteAdapter(deleteAddressController)
 	);
 }

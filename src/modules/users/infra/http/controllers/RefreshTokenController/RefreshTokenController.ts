@@ -1,35 +1,45 @@
-import type { FastifyReply, FastifyRequest } from 'fastify';
-import { injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 
-import { env } from '#/shared/env/index.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
+import { ITokenProvider } from '#/shared/container/providers/TokenProvider/models/ITokenProvider.js';
+import { AppError } from '#/shared/errors/AppError.js';
 
 @injectable()
 export class RefreshTokenController {
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		await request.jwtVerify({ onlyCookie: true });
+	constructor(
+		@inject('TokenProvider')
+		private tokenProvider: ITokenProvider
+	) {}
 
-		const { sub, role, isVerified } = request.user;
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
+		const { refreshToken: token } = httpRequest.cookies as {
+			refreshToken?: string;
+		};
 
-		const accessToken = await reply.jwtSign(
-			{ role, isVerified },
-			{ sign: { sub } }
-		);
+		if (!token) {
+			throw new AppError(ERROR_CODES.UNAUTHORIZED, 401);
+		}
 
-		const refreshToken = await reply.jwtSign(
-			{ role, isVerified },
-			{ sign: { sub, expiresIn: '7d' } }
-		);
+		const { sub: userId, role, isVerified } = this.tokenProvider.verify(token);
 
-		return reply
-			.setCookie('refreshToken', refreshToken, {
-				path: '/',
-				secure: env.NODE_ENV === 'production',
-				sameSite: true,
-				httpOnly: true,
-			})
-			.status(200)
-			.send({
+		const payload = {
+			role: role,
+			isVerified: isVerified,
+		};
+
+		const accessToken = this.tokenProvider.generate(payload, userId, '15m');
+		const refreshToken = this.tokenProvider.generate(payload, userId, '7d');
+
+		return {
+			statusCode: 200,
+			body: {
 				accessToken,
-			});
+				refreshToken,
+			},
+		};
 	};
 }

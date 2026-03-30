@@ -1,8 +1,11 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { ListAddressesService } from '#/modules/addresses/services/ListAddressesService/ListAddressesService.js';
 import { getContactParamsSchema } from '#/modules/contacts/schemas/params/getContactParamsSchema.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class ListAddressesController {
@@ -11,15 +14,20 @@ export class ListAddressesController {
 		private listAddressesService: ListAddressesService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		const { contactId } = getContactParamsSchema.parse(request.params);
-		const userId = request.user.sub;
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
+		const { contactId } = getContactParamsSchema.parse(httpRequest.params);
+		const userId = String(httpRequest.userId);
 
 		const { addresses } = await this.listAddressesService.execute({
 			contactId,
 			userId,
 		});
 
-		return reply.status(200).send({ addresses });
+		return {
+			statusCode: 200,
+			body: {
+				addresses,
+			},
+		};
 	};
 }

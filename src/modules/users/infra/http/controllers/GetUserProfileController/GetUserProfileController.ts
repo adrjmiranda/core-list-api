@@ -1,7 +1,10 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { GetUserProfileService } from '#/modules/users/services/GetUserProfileService/GetUserProfileService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class GetUserProfileController {
@@ -10,11 +13,14 @@ export class GetUserProfileController {
 		private getUserProfileService: GetUserProfileService
 	) {}
 
-	public handle = async (request: FastifyRequest, response: FastifyReply) => {
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
 		const { user } = await this.getUserProfileService.execute({
-			userId: request.user.sub,
+			userId: String(httpRequest.userId),
 		});
 
-		return response.status(200).send({ user });
+		return {
+			statusCode: 200,
+			body: { user },
+		};
 	};
 }

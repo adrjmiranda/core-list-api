@@ -1,8 +1,11 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { listContactsQuerySchema } from '#/modules/contacts/schemas/queries/listContactsQuerySchema.js';
 import { ListContactsService } from '#/modules/contacts/services/ListContactsService/ListContactsService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class ListContactsController {
@@ -11,12 +14,12 @@ export class ListContactsController {
 		private listContactsService: ListContactsService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
 		const { page, perPage, search, isFavorite, tagIds } =
-			listContactsQuerySchema.parse(request.query);
-		const userId = request.user.sub;
+			listContactsQuerySchema.parse(httpRequest.query);
+		const userId = String(httpRequest.userId);
 
-		const result = await this.listContactsService.execute({
+		const { contacts } = await this.listContactsService.execute({
 			userId,
 			page,
 			perPage,
@@ -25,6 +28,11 @@ export class ListContactsController {
 			tagIds,
 		});
 
-		return reply.status(200).send(result);
+		return {
+			statusCode: 200,
+			body: {
+				contacts,
+			},
+		};
 	};
 }

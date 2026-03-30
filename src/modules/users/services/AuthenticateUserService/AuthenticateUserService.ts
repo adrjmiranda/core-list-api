@@ -20,14 +20,15 @@ export class AuthenticateUserService {
 		const [user] = await db
 			.select()
 			.from(usersTable)
-			.where(eq(usersTable.email, email));
-
-		if (!user.isVerified) {
-			throw new AppError(ERROR_CODES.USER_NOT_VERIFIED, 403);
-		}
+			.where(eq(usersTable.email, email))
+			.limit(1);
 
 		if (!user) {
 			throw new AppError(ERROR_CODES.INVALID_CREDENTIALS, 401);
+		}
+
+		if (!user.isVerified) {
+			throw new AppError(ERROR_CODES.USER_NOT_VERIFIED, 403);
 		}
 
 		const passwordMatch = await compare(password, user.passwordHash);

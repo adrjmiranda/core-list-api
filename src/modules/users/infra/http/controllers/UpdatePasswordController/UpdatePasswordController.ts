@@ -1,8 +1,11 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { updatePasswordBodySchema } from '#/modules/users/schemas/body/updatePasswordBodySchema.js';
 import { UpdatePasswordService } from '#/modules/users/services/UpdatePasswordService/UpdatePasswordService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class UpdatePasswordController {
@@ -11,10 +14,10 @@ export class UpdatePasswordController {
 		private updatePasswordService: UpdatePasswordService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		const userId = request.user.sub;
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
+		const userId = String(httpRequest.userId);
 		const { oldPassword, newPassword } = updatePasswordBodySchema.parse(
-			request.body
+			httpRequest.body
 		);
 
 		await this.updatePasswordService.execute({
@@ -23,6 +26,8 @@ export class UpdatePasswordController {
 			newPassword,
 		});
 
-		return reply.status(204).send();
+		return {
+			statusCode: 204,
+		};
 	};
 }

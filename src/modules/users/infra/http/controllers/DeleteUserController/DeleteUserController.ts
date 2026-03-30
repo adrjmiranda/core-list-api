@@ -1,7 +1,10 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { DeleteUserService } from '#/modules/users/services/DeleteUserService/DeleteUserService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class DeleteUserController {
@@ -9,11 +12,13 @@ export class DeleteUserController {
 		@inject(DeleteUserService) private deleteUserService: DeleteUserService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		const userId = request.user.sub;
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
+		const userId = String(httpRequest.userId);
 
-		await this.deleteUserService.execute(userId);
+		await this.deleteUserService.execute({ userId });
 
-		return reply.status(204).send();
+		return {
+			statusCode: 204,
+		};
 	};
 }

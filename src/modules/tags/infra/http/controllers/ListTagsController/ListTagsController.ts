@@ -1,7 +1,10 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { ListTagsService } from '#/modules/tags/services/ListTagsService/ListTagsService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class ListTagsController {
@@ -9,11 +12,16 @@ export class ListTagsController {
 		@inject(ListTagsService) private listTagsService: ListTagsService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		const userId = request.user.sub;
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
+		const userId = String(httpRequest.userId);
 
 		const { tagList } = await this.listTagsService.execute({ userId });
 
-		return reply.status(200).send({ tags: tagList });
+		return {
+			statusCode: 200,
+			body: {
+				tags: tagList,
+			},
+		};
 	};
 }

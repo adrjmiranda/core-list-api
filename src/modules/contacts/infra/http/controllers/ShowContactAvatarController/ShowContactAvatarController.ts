@@ -1,8 +1,11 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { showContactAvatarParamsSchema } from '#/modules/contacts/schemas/params/showContactAvatarParamsSchema.js';
 import { ShowContactAvatarService } from '#/modules/contacts/services/ShowContactAvatarService/ShowContactAvatarService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class ShowContactAvatarController {
@@ -11,9 +14,11 @@ export class ShowContactAvatarController {
 		private showContactAvatarService: ShowContactAvatarService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		const { contactId } = showContactAvatarParamsSchema.parse(request.params);
-		const userId = request.user.sub;
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
+		const { contactId } = showContactAvatarParamsSchema.parse(
+			httpRequest.params
+		);
+		const userId = String(httpRequest.userId);
 
 		const { stream, contentType } = await this.showContactAvatarService.execute(
 			{
@@ -22,6 +27,12 @@ export class ShowContactAvatarController {
 			}
 		);
 
-		return reply.status(200).header('Content-Type', contentType).send(stream);
+		return {
+			statusCode: 200,
+			headers: {
+				'Content-Type': contentType,
+			},
+			body: stream,
+		};
 	};
 }

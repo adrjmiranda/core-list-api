@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
 import { IMailProvider } from '#/shared/container/providers/MailProvider/models/IMailProvider.js';
-import { env } from '#/shared/env/index.js';
+import { env } from '#/shared/env/env.js';
 
 interface Request {
 	name: string;

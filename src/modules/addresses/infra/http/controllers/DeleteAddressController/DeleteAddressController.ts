@@ -1,8 +1,11 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { getAddressParamsSchema } from '#/modules/addresses/schemas/params/getAddressParamsSchema.js';
 import { DeleteAddressService } from '#/modules/addresses/services/DeleteAddressService/DeleteAddressService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class DeleteAddressController {
@@ -11,11 +14,11 @@ export class DeleteAddressController {
 		private deleteAddressService: DeleteAddressService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
 		const { contactId, addressId } = getAddressParamsSchema.parse(
-			request.params
+			httpRequest.params
 		);
-		const userId = request.user.sub;
+		const userId = String(httpRequest.userId);
 
 		await this.deleteAddressService.execute({
 			contactId,
@@ -23,6 +26,8 @@ export class DeleteAddressController {
 			userId,
 		});
 
-		return reply.status(204).send();
+		return {
+			statusCode: 204,
+		};
 	};
 }

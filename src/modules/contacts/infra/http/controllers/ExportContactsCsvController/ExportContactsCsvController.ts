@@ -1,7 +1,10 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { ExportContactsCsvService } from '#/modules/contacts/services/ExportContactsCsvService/ExportContactsCsvService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class ExportContactsCsvController {
@@ -10,17 +13,20 @@ export class ExportContactsCsvController {
 		private exportContactsCsvService: ExportContactsCsvService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		const userId = request.user.sub;
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
+		const userId = String(httpRequest.userId);
 
 		const csvContent = await this.exportContactsCsvService.execute({ userId });
 
 		const fileName = `contacts-${new Date().getTime()}.csv`;
 
-		return reply
-			.status(200)
-			.header('Content-Type', 'text/csv')
-			.header('Content-Disposition', `attachment; filename="${fileName}"`)
-			.send(csvContent);
+		return {
+			statusCode: 200,
+			headers: {
+				'Content-Type': 'text/csv',
+				'Content-Disposition': `attachment; filename="${fileName}"`,
+			},
+			body: csvContent,
+		};
 	};
 }

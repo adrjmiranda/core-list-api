@@ -1,8 +1,11 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { createTagBodySchema } from '#/modules/tags/schemas/body/createTagBodySchema.js';
 import { CreateTagService } from '#/modules/tags/services/CreateTagService/CreateTagService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 
 @injectable()
 export class CreateTagController {
@@ -10,15 +13,18 @@ export class CreateTagController {
 		@inject(CreateTagService) private createTagService: CreateTagService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		const { name, color } = createTagBodySchema.parse(request.body);
-		const userId = request.user.sub;
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
+		const { name, color } = createTagBodySchema.parse(httpRequest.body);
+		const userId = String(httpRequest.userId);
 
 		const { tag } = await this.createTagService.execute({
 			data: { name, color },
 			userId,
 		});
 
-		return reply.status(201).send({ tag });
+		return {
+			statusCode: 201,
+			body: { tag },
+		};
 	};
 }

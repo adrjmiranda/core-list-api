@@ -1,9 +1,12 @@
 import { eq } from 'drizzle-orm';
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'tsyringe';
 
 import { resendVerificationBodySchema } from '#/modules/users/schemas/body/resendVerificationBodySchema.js';
 import { SendVerificationEmailService } from '#/modules/users/services/SendVerificationEmailService/SendVerificationEmailService.js';
+import {
+	IHttpRequest,
+	IHttpResponse,
+} from '#/shared/adapters/HttpRouteAdapter.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
@@ -16,8 +19,8 @@ export class ResendVerificationController {
 		private sendVerificationEmailService: SendVerificationEmailService
 	) {}
 
-	public handle = async (request: FastifyRequest, reply: FastifyReply) => {
-		const { email } = resendVerificationBodySchema.parse(request.body);
+	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
+		const { email } = resendVerificationBodySchema.parse(httpRequest.body);
 
 		const [user] = await db
 			.select()
@@ -38,8 +41,11 @@ export class ResendVerificationController {
 			token: user.verificationToken!,
 		});
 
-		return reply
-			.status(200)
-			.send({ message: 'E-mail de verificação reenviado!' });
+		return {
+			statusCode: 200,
+			body: {
+				message: 'Verification email sent',
+			},
+		};
 	};
 }
