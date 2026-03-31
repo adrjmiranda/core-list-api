@@ -1,4 +1,4 @@
-import { compare } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
 import { injectable } from 'tsyringe';
 import * as z from 'zod';
@@ -31,7 +31,7 @@ export class AuthenticateUserService {
 			throw new AppError(ERROR_CODES.USER_NOT_VERIFIED, 403);
 		}
 
-		const passwordMatch = await compare(password, user.passwordHash);
+		const passwordMatch = await bcrypt.compare(password, user.passwordHash);
 
 		if (!passwordMatch) {
 			throw new AppError(ERROR_CODES.INVALID_CREDENTIALS, 401);
