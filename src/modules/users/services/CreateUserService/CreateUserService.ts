@@ -4,7 +4,6 @@ import { inject, injectable } from 'tsyringe';
 
 import { SendVerificationEmailService } from '#/modules/users/services/SendVerificationEmailService/SendVerificationEmailService.js';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
-import { IMailProvider } from '#/shared/container/providers/MailProvider/models/IMailProvider.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
@@ -13,7 +12,10 @@ type CreateUserServiceRequest = typeof usersTable.$inferInsert;
 
 @injectable()
 export class CreateUserService {
-	constructor(@inject('MailProvider') private mailProvider: IMailProvider) {}
+	constructor(
+		@inject(SendVerificationEmailService)
+		private sendVerificationEmailService: SendVerificationEmailService
+	) {}
 
 	public execute = async (
 		data: CreateUserServiceRequest
@@ -52,11 +54,7 @@ export class CreateUserService {
 				email: usersTable.email,
 			});
 
-		const sendVerificationEmail = new SendVerificationEmailService(
-			this.mailProvider
-		);
-
-		await sendVerificationEmail.execute({
+		await this.sendVerificationEmailService.execute({
 			name: user.name,
 			email: user.email,
 			token: verificationToken,
