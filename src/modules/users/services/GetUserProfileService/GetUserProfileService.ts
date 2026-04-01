@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { injectable } from 'tsyringe';
 
+import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 import { db } from '#/shared/infra/database/index.js';
@@ -21,10 +22,11 @@ export class GetUserProfileService {
 				updatedAt: usersTable.updatedAt,
 			})
 			.from(usersTable)
-			.where(eq(usersTable.id, userId));
+			.where(eq(usersTable.id, userId))
+			.limit(1);
 
 		if (!user) {
-			throw new AppError('USER_NOT_FOUND', 404);
+			throw new AppError(ERROR_CODES.USER_NOT_FOUND, 404);
 		}
 
 		return { user };
