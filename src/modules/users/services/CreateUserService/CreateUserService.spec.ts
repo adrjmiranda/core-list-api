@@ -9,7 +9,7 @@ import { container } from 'tsyringe';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { db } from '#/shared/infra/database/index.js';
-import { makeFakeUser } from '#/test/utils/faker-data.js';
+import { makeFakeUser } from '#/test/factories/faker-data.js';
 
 import { SendVerificationEmailService } from '../SendVerificationEmailService/SendVerificationEmailService.js';
 import { CreateUserService } from './CreateUserService.js';
