@@ -11,6 +11,6 @@ interface DeleteUserRequest {
 @injectable()
 export class DeleteUserService {
 	public execute = async ({ userId }: DeleteUserRequest): Promise<void> => {
-		await db.delete(usersTable).where(eq(usersTable.id, userId));
+		await db.delete(usersTable).where(eq(usersTable.id, userId)).execute();
 	};
 }
