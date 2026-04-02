@@ -29,10 +29,6 @@ export class UpdateUserAvatarService {
 	}: UpdateUserAvatarRequest): Promise<{ avatar: string | null }> => {
 		const extension = path.extname(avatarFilename).toLowerCase();
 
-		console.log('DEBUG: avatarFilename recebido ->', avatarFilename);
-		console.log('DEBUG: Extensão extraída ->', extension);
-		console.log('DEBUG: Lista permitida ->', uploadConfig.allowedExtensions);
-
 		if (!uploadConfig.allowedExtensions.includes(extension)) {
 			throw new AppError(ERROR_CODES.INVALID_FILE_TYPE, 400);
 		}
@@ -40,7 +36,8 @@ export class UpdateUserAvatarService {
 		const [user] = await db
 			.select()
 			.from(usersTable)
-			.where(eq(usersTable.id, userId));
+			.where(eq(usersTable.id, userId))
+			.limit(1);
 
 		if (!user) {
 			throw new AppError(ERROR_CODES.USER_NOT_FOUND, 404);
