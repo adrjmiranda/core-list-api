@@ -39,9 +39,6 @@ export class ShowUserAvatarService {
 		}
 
 		const contentType = mime.lookup(filePath) || 'application/octet-stream';
-
-		console.log('Mime Type identificado:', contentType);
-
 		const stream = fs.createReadStream(filePath);
 
 		return { stream, contentType };

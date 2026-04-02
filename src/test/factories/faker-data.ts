@@ -14,7 +14,7 @@ export function makeFakeUser(overrides: Partial<UserEntity> = {}): UserEntity {
 		verificationToken: faker.string.alphanumeric(32),
 		tokenExpiresAt: new Date(),
 		role: 'USER',
-		avatar: faker.image.avatar(),
+		avatar: `${faker.string.uuid()}.jpg`,
 		isActive: true,
 		tenantId: faker.string.uuid(),
 		createdAt: new Date(),
