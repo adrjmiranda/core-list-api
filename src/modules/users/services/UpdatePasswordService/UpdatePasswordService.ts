@@ -1,4 +1,4 @@
-import { compare, hash } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
 import { injectable } from 'tsyringe';
 
@@ -20,25 +20,31 @@ export class UpdatePasswordService {
 		oldPassword,
 		newPassword,
 	}: UpdatePasswordRequest) => {
-		const user = await db.query.usersTable.findFirst({
-			where: eq(usersTable.id, userId),
-		});
+		const [user] = await db
+			.select()
+			.from(usersTable)
+			.where(eq(usersTable.id, userId))
+			.limit(1);
 
 		if (!user) {
 			throw new AppError(ERROR_CODES.USER_NOT_FOUND, 404);
 		}
 
-		const isOldPasswordCorrect = await compare(oldPassword, user.passwordHash);
+		const isOldPasswordCorrect = await bcrypt.compare(
+			oldPassword,
+			user.passwordHash
+		);
 
 		if (!isOldPasswordCorrect) {
 			throw new AppError(ERROR_CODES.INVALID_CREDENTIALS, 401);
 		}
 
-		const newPasswordHash = await hash(newPassword, 10);
+		const newPasswordHash = await bcrypt.hash(newPassword, 10);
 
 		await db
 			.update(usersTable)
 			.set({ passwordHash: newPasswordHash })
-			.where(eq(usersTable.id, userId));
+			.where(eq(usersTable.id, userId))
+			.execute();
 	};
 }
