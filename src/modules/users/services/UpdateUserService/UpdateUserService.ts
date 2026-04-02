@@ -17,10 +17,22 @@ interface UpdateUserRequest {
 @injectable()
 export class UpdateUserService {
 	public execute = async ({ userId, data }: UpdateUserRequest) => {
+		const [user] = await db
+			.select()
+			.from(usersTable)
+			.where(eq(usersTable.id, userId))
+			.limit(1);
+
+		if (!user) {
+			throw new AppError(ERROR_CODES.USER_NOT_FOUND, 404);
+		}
+
 		if (data.email) {
-			const userWithSameEmail = await db.query.usersTable.findFirst({
-				where: eq(usersTable.email, data.email),
-			});
+			const [userWithSameEmail] = await db
+				.select()
+				.from(usersTable)
+				.where(eq(usersTable.email, data.email))
+				.limit(1);
 
 			if (userWithSameEmail && userWithSameEmail.id !== userId) {
 				throw new AppError(ERROR_CODES.USER_ALREADY_EXISTS, 409);
