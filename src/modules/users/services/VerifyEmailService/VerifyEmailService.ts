@@ -16,7 +16,8 @@ export class VerifyEmailService {
 		const [user] = await db
 			.select()
 			.from(usersTable)
-			.where(eq(usersTable.verificationToken, token));
+			.where(eq(usersTable.verificationToken, token))
+			.limit(1);
 
 		if (!user) {
 			throw new AppError(ERROR_CODES.INVALID_TOKEN, 401);
