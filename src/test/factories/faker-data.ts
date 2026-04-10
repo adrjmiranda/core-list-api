@@ -1,8 +1,10 @@
 import { faker } from '@faker-js/faker';
 
+import { tagsTable } from '#/shared/infra/database/drizzle/tags.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 
 type UserEntity = typeof usersTable.$inferSelect;
+type TagEntity = typeof tagsTable.$inferSelect;
 
 export function makeFakeUser(overrides: Partial<UserEntity> = {}): UserEntity {
 	const defaults: UserEntity = {
@@ -17,6 +19,22 @@ export function makeFakeUser(overrides: Partial<UserEntity> = {}): UserEntity {
 		avatar: `${faker.string.uuid()}.jpg`,
 		isActive: true,
 		tenantId: faker.string.uuid(),
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	};
+
+	return {
+		...defaults,
+		...overrides,
+	};
+}
+
+export function makeFakeTag(overrides: Partial<TagEntity> = {}): TagEntity {
+	const defaults: TagEntity = {
+		id: faker.string.ulid(),
+		name: faker.word.sample(),
+		color: faker.color.rgb().toUpperCase(),
+		userId: faker.string.ulid(),
 		createdAt: new Date(),
 		updatedAt: new Date(),
 	};

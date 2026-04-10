@@ -30,7 +30,8 @@ export class CreateTagService {
 		const [existingTag] = await db
 			.select()
 			.from(tagsTable)
-			.where(and(eq(tagsTable.name, data.name), eq(tagsTable.userId, userId)));
+			.where(and(eq(tagsTable.name, data.name), eq(tagsTable.userId, userId)))
+			.limit(1);
 
 		if (existingTag) {
 			throw new AppError(ERROR_CODES.TAG_ALREADY_EXISTS, 409);
