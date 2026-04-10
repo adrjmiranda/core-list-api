@@ -20,12 +20,13 @@ export class DeleteTagService {
 		const [tag] = await db
 			.select()
 			.from(tagsTable)
-			.where(and(eq(tagsTable.id, tagId), eq(tagsTable.userId, userId)));
+			.where(and(eq(tagsTable.id, tagId), eq(tagsTable.userId, userId)))
+			.limit(1);
 
 		if (!tag) {
 			throw new AppError(ERROR_CODES.TAG_NOT_FOUND, 404);
 		}
 
-		await db.delete(tagsTable).where(eq(tagsTable.id, tagId));
+		await db.delete(tagsTable).where(eq(tagsTable.id, tagId)).execute();
 	};
 }
