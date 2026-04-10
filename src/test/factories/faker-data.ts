@@ -8,7 +8,7 @@ type TagEntity = typeof tagsTable.$inferSelect;
 
 export function makeFakeUser(overrides: Partial<UserEntity> = {}): UserEntity {
 	const defaults: UserEntity = {
-		id: faker.string.ulid(),
+		id: faker.string.uuid(),
 		email: faker.internet.email().toLowerCase(),
 		name: faker.person.fullName(),
 		passwordHash: faker.string.alphanumeric(60),
@@ -31,7 +31,7 @@ export function makeFakeUser(overrides: Partial<UserEntity> = {}): UserEntity {
 
 export function makeFakeTag(overrides: Partial<TagEntity> = {}): TagEntity {
 	const defaults: TagEntity = {
-		id: faker.string.ulid(),
+		id: faker.string.uuid(),
 		name: faker.word.sample(),
 		color: faker.color.rgb().toUpperCase(),
 		userId: faker.string.ulid(),

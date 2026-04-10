@@ -14,7 +14,8 @@ export class ListTagsService {
 		const tagList = await db
 			.select()
 			.from(tagsTable)
-			.where(eq(tagsTable.userId, userId));
+			.where(eq(tagsTable.userId, userId))
+			.execute();
 
 		return { tagList };
 	};
