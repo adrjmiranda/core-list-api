@@ -28,7 +28,8 @@ export class AttachTagToContactService {
 			.from(contactsTable)
 			.where(
 				and(eq(contactsTable.id, contactId), eq(contactsTable.userId, userId))
-			);
+			)
+			.limit(1);
 
 		if (!contactExists) {
 			throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
@@ -37,15 +38,19 @@ export class AttachTagToContactService {
 		const [tagExists] = await db
 			.select()
 			.from(tagsTable)
-			.where(and(eq(tagsTable.id, tagId), eq(tagsTable.userId, userId)));
+			.where(and(eq(tagsTable.id, tagId), eq(tagsTable.userId, userId)))
+			.limit(1);
 
 		if (!tagExists) {
 			throw new AppError(ERROR_CODES.TAG_NOT_FOUND, 404);
 		}
 
-		await db.insert(contactsToTagsTable).values({
-			contactId,
-			tagId,
-		});
+		await db
+			.insert(contactsToTagsTable)
+			.values({
+				contactId,
+				tagId,
+			})
+			.execute();
 	};
 }
