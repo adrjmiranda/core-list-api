@@ -1,12 +1,16 @@
 import { faker } from '@faker-js/faker';
 
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
-import { tagsTable } from '#/shared/infra/database/drizzle/tags.js';
+import {
+	contactsToTagsTable,
+	tagsTable,
+} from '#/shared/infra/database/drizzle/tags.js';
 import { usersTable } from '#/shared/infra/database/drizzle/users.js';
 
 type UserEntity = typeof usersTable.$inferSelect;
 type TagEntity = typeof tagsTable.$inferSelect;
 type ContactEntity = typeof contactsTable.$inferSelect;
+type ContactToTagEntity = typeof contactsToTagsTable.$inferSelect;
 
 export function makeFakeUser(overrides: Partial<UserEntity> = {}): UserEntity {
 	const defaults: UserEntity = {
@@ -64,6 +68,20 @@ export function makeFakeContact(
 		tenantId: faker.string.ulid(),
 		createdAt: new Date(),
 		updatedAt: new Date(),
+	};
+
+	return {
+		...defaults,
+		...overrides,
+	};
+}
+
+export function contactsToTags(
+	overrides: Partial<TagEntity> = {}
+): ContactToTagEntity {
+	const defaults: ContactToTagEntity = {
+		contactId: faker.string.uuid(),
+		tagId: faker.string.uuid(),
 	};
 
 	return {
