@@ -19,7 +19,8 @@ export class GetContactService {
 			.from(contactsTable)
 			.where(
 				and(eq(contactsTable.id, contactId), eq(contactsTable.userId, userId))
-			);
+			)
+			.limit(1);
 
 		if (!contact) {
 			throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
