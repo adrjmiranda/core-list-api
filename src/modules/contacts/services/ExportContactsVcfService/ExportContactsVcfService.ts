@@ -3,6 +3,7 @@ import { injectable } from 'tsyringe';
 
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { contactListToVcfFormat } from '#/shared/utils/contact-list-to-vcf-format.js';
 
 interface ExportContactsVcfRequest {
 	userId: string;
@@ -18,21 +19,8 @@ export class ExportContactsVcfService {
 			.from(contactsTable)
 			.where(eq(contactsTable.userId, userId));
 
-		const vcfContent = userContacts
-			.map((contact) =>
-				[
-					'BEGIN:VCARD',
-					'VERSION:3.0',
-					`FN:${contact.name}`,
-					contact.email ? `EMAIL:${contact.email}` : '',
-					`TEL;TYPE=CELL:${contact.phone}`,
-					'END:VCARD',
-				]
-					.filter(Boolean)
-					.join('\n')
-			)
-			.join('\n');
+		const contactsInVcfFormat = contactListToVcfFormat(userContacts);
 
-		return vcfContent;
+		return contactsInVcfFormat;
 	};
 }
