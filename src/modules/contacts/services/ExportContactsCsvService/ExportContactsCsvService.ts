@@ -3,6 +3,7 @@ import { injectable } from 'tsyringe';
 
 import { contactsTable } from '#/shared/infra/database/drizzle/contacts.js';
 import { db } from '#/shared/infra/database/index.js';
+import { contactListToCsvFormat } from '#/shared/utils/contact-list-to-csv-format.js';
 
 interface ExportContactsCsvRequest {
 	userId: string;
@@ -18,19 +19,8 @@ export class ExportContactsCsvService {
 			.from(contactsTable)
 			.where(eq(contactsTable.userId, userId));
 
-		if (userContacts.length === 0) {
-			return 'Nome,Email,Telefone\n';
-		}
+		const contactsInCsvFormat = contactListToCsvFormat(userContacts);
 
-		const header = ['Nome', 'Email', 'Telefone'].join(',');
-		const rows = userContacts.map((contact) =>
-			[
-				`"${contact.name}"`,
-				`"${contact.email || ''}"`,
-				`"${contact.phone}"`,
-			].join(',')
-		);
-
-		return [header, ...rows].join('\n');
+		return contactsInCsvFormat;
 	};
 }
