@@ -38,7 +38,8 @@ export class UpdateContactAvatarService {
 		const [contact] = await db
 			.select()
 			.from(contactsTable)
-			.where(eq(contactsTable.id, contactId));
+			.where(eq(contactsTable.id, contactId))
+			.limit(1);
 
 		if (!contact) {
 			throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
