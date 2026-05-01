@@ -9,7 +9,10 @@ import { container } from 'tsyringe';
 import { ERROR_CODES } from '#/shared/constants/errorCodes.js';
 import { AppError } from '#/shared/errors/AppError.js';
 import { db } from '#/shared/infra/database/index.js';
-import { makeFakeContact } from '#/test/factories/faker-data.js';
+import {
+	makeFakeAddress,
+	makeFakeContact,
+} from '#/test/factories/faker-data.js';
 
 import { DeleteAddressService } from './DeleteAddressService.js';
 
@@ -103,5 +106,32 @@ describe('DeleteAddressService (Spec)', () => {
 				return true;
 			}
 		);
+	});
+
+	it('should remove the address', async (t) => {
+		const mockContact = makeFakeContact();
+		const mockAddress = makeFakeAddress({ contactId: mockContact.id });
+
+		t.mock.method(db, 'select', () => ({
+			from: () => ({
+				where: () => ({
+					limit: () => Promise.resolve([mockContact]),
+				}),
+			}),
+		}));
+
+		t.mock.method(db, 'delete', () => ({
+			where: () => ({
+				returning: () => Promise.resolve([mockAddress]),
+			}),
+		}));
+
+		await assert.doesNotReject(async () => {
+			await deleteAddressService.execute({
+				addressId: mockAddress.id,
+				contactId: mockContact.id,
+				userId: mockContact.userId,
+			});
+		});
 	});
 });
