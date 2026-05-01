@@ -1,6 +1,3 @@
-import 'reflect-metadata';
-import '#/shared/container/index.js';
-
 import { and, eq, lt, sql } from 'drizzle-orm';
 import cron from 'node-cron';
 

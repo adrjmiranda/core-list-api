@@ -1,3 +1,6 @@
+import 'reflect-metadata';
+import '#/shared/container/index.js';
+
 import fastifyCookie from '@fastify/cookie';
 import fastifyJwt from '@fastify/jwt';
 import multipart from '@fastify/multipart';

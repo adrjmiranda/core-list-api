@@ -29,20 +29,23 @@ export class CreateAddressService {
 		userId,
 		data,
 	}: CreateAddressRequest) => {
-		const contact = await db.query.contactsTable.findFirst({
-			where: and(
-				eq(contactsTable.id, contactId),
-				eq(contactsTable.userId, userId)
-			),
-		});
+		const [contact] = await db
+			.select()
+			.from(contactsTable)
+			.where(
+				and(eq(contactsTable.id, contactId), eq(contactsTable.userId, userId))
+			)
+			.limit(1);
 
 		if (!contact) {
 			throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
 		}
 
-		const existingAddress = await db.query.addressesTable.findFirst({
-			where: eq(addressesTable.contactId, contactId),
-		});
+		const [existingAddress] = await db
+			.select()
+			.from(addressesTable)
+			.where(eq(addressesTable.contactId, contactId))
+			.limit(1);
 
 		const shouldBeDefault = !existingAddress || data.isDefault === true;
 
