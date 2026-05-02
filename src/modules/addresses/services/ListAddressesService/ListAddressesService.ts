@@ -15,12 +15,13 @@ interface ListAddressesRequest {
 @injectable()
 export class ListAddressesService {
 	public execute = async ({ contactId, userId }: ListAddressesRequest) => {
-		const contact = await db.query.contactsTable.findFirst({
-			where: and(
-				eq(contactsTable.id, contactId),
-				eq(contactsTable.userId, userId)
-			),
-		});
+		const [contact] = await db
+			.select()
+			.from(contactsTable)
+			.where(
+				and(eq(contactsTable.id, contactId), eq(contactsTable.userId, userId))
+			)
+			.limit(1);
 
 		if (!contact) {
 			throw new AppError(ERROR_CODES.CONTACT_NOT_FOUND, 404);
@@ -30,7 +31,8 @@ export class ListAddressesService {
 			.select()
 			.from(addressesTable)
 			.where(eq(addressesTable.contactId, contactId))
-			.orderBy(addressesTable.createdAt);
+			.orderBy(addressesTable.createdAt)
+			.execute();
 
 		return { addresses: allAddresses };
 	};
