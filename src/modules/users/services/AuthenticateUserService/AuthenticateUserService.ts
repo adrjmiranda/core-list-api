@@ -37,6 +37,6 @@ export class AuthenticateUserService {
 			throw new AppError(ERROR_CODES.INVALID_CREDENTIALS, 401);
 		}
 
-		return user;
+		return { user };
 	};
 }

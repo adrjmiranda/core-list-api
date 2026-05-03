@@ -21,7 +21,7 @@ export class AuthenticateUserController {
 	public handle = async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
 		const { email, password } = authenticateBodySchema.parse(httpRequest.body);
 
-		const user = await this.authenticateUserService.execute({
+		const { user } = await this.authenticateUserService.execute({
 			email,
 			password,
 		});
